@@ -15,4 +15,5 @@ return [
     'source_missing' => '관리자가 아직 소스 링크를 설정하지 않았습니다 (SHOEBILL_SOURCE_URL).',
     'trademarks' => '“Pterodactyl”은 해당 소유자의 등록 상표입니다. 프로젝트 이름은 원저작자를 표기하기 위해서만 사용됩니다.',
     'mit_notice' => 'Pterodactyl 라이선스 고지',
+    'contact' => '제작자 연락처:',
 ];

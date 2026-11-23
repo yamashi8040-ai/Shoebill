@@ -20,3 +20,5 @@ it is linked from every page footer and from `/credits`.
 Shoebill uses these names only to credit where its code comes from and does not use their logos.
 
 Third-party dependencies keep their own licenses (see `composer.lock`, `yarn.lock`).
+
+Maintainer contact: <concat@windspace.dev>

@@ -22,6 +22,7 @@
 - [Updating](#updating)
 - [Local development](#local-development)
 - [Troubleshooting](#troubleshooting)
+- [Contact](#contact)
 - [Credits and license](#credits-and-license)
 
 ## What it is
@@ -304,6 +305,10 @@ vendor/bin/pint
 | "Could not connect to the node" | Wings is down, the FQDN/port is wrong, or SSL settings don't match. Check `journalctl -u wings` on the node |
 | 500 error after an update | `php artisan optimize:clear`, check `storage/logs/laravel.log`, and fix permissions (step 6) |
 | Out of memory while running tests | Run Pest with `php -d memory_limit=2G` |
+
+## Contact
+- Maintainer: <concat@windspace.dev>
+- Questions and ideas: [GitHub Discussions](https://github.com/yamashi8040-ai/Shoebill/discussions) · Bugs: [Issues](https://github.com/yamashi8040-ai/Shoebill/issues) · Security: [security.md](security.md)
 
 ## Credits and license
 Shoebill is built on:

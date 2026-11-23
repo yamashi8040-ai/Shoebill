@@ -2,6 +2,19 @@
     "name": "pelican/panel",
     "description": "The free, open-source game management panel. Supporting Minecraft, Spigot, BungeeCord, and SRCDS servers.",
     "license": "AGPL-3.0-only",
+    "homepage": "https://github.com/yamashi8040-ai/Shoebill",
+    "authors": [
+        {
+            "name": "Shoebill",
+            "email": "concat@windspace.dev",
+            "role": "Maintainer"
+        }
+    ],
+    "support": {
+        "email": "concat@windspace.dev",
+        "issues": "https://github.com/yamashi8040-ai/Shoebill/issues",
+        "source": "https://github.com/yamashi8040-ai/Shoebill"
+    },
     "require": {
         "php": "^8.4 || ^8.5",
         "ext-intl": "*",

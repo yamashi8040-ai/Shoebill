@@ -15,4 +15,5 @@ return [
     'source_missing' => 'the administrator has not published a source link yet (SHOEBILL_SOURCE_URL).',
     'trademarks' => '“Pterodactyl” is a registered trademark of its owner. Project names are used only to credit the original authors.',
     'mit_notice' => 'Pterodactyl license notice',
+    'contact' => 'Maintainer contact:',
 ];

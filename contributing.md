@@ -24,3 +24,4 @@ By contributing you agree that your contribution is licensed under the AGPL-3.0.
 - Questions and ideas: [GitHub Discussions](https://github.com/yamashi8040-ai/Shoebill/discussions)
 - Bugs: [GitHub Issues](https://github.com/yamashi8040-ai/Shoebill/issues)
 - Security: see [security.md](security.md)
+- Email: <concat@windspace.dev>

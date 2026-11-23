@@ -22,6 +22,7 @@
 - [アップデート](#アップデート)
 - [ローカル開発](#ローカル開発)
 - [トラブルシューティング](#トラブルシューティング)
+- [連絡先](#連絡先)
 - [クレジットとライセンス](#クレジットとライセンス)
 
 ## 概要
@@ -289,6 +290,10 @@ vendor/bin/pint
 | 「ノードに接続できませんでした」 | Wings が停止中、FQDN/ポートの誤り、SSL 設定の不一致。ノードで `journalctl -u wings` を確認 |
 | アップデート後に 500 エラー | `php artisan optimize:clear`、`storage/logs/laravel.log` を確認、権限を直す(手順6) |
 | テスト実行中にメモリ不足 | `php -d memory_limit=2G` を付けて Pest を実行 |
+
+## 連絡先
+- 製作者:<concat@windspace.dev>
+- 質問・要望:[GitHub Discussions](https://github.com/yamashi8040-ai/Shoebill/discussions) · 不具合:[Issues](https://github.com/yamashi8040-ai/Shoebill/issues) · セキュリティ:[security.md](security.md)
 
 ## クレジットとライセンス
 Shoebill は以下をもとに作られています:

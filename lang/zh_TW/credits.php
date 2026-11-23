@@ -15,4 +15,5 @@ return [
     'source_missing' => '管理員尚未設定原始碼連結（SHOEBILL_SOURCE_URL）。',
     'trademarks' => '「Pterodactyl」是其所有者的註冊商標。專案名稱僅用於標示原作者。',
     'mit_notice' => 'Pterodactyl 授權聲明',
+    'contact' => '維護者聯絡方式：',
 ];

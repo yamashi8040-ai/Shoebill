@@ -29,6 +29,7 @@
         @endif
     </p>
     <p>{{ trans('credits.trademarks') }}</p>
+    <p>{{ trans('credits.contact') }} <a href="mailto:concat@windspace.dev">concat@windspace.dev</a></p>
     <h2>{{ trans('credits.mit_notice') }}</h2>
     <pre>{{ file_get_contents(base_path('licenses/PTERODACTYL-MIT.md')) }}</pre>
 </body>

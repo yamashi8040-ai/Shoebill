@@ -15,4 +15,5 @@ return [
     'source_missing' => '管理员尚未设置源代码链接（SHOEBILL_SOURCE_URL）。',
     'trademarks' => '“Pterodactyl”是其所有者的注册商标。项目名称仅用于注明原作者。',
     'mit_notice' => 'Pterodactyl 许可声明',
+    'contact' => '维护者联系方式：',
 ];

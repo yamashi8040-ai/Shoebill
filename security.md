@@ -6,7 +6,11 @@ Only the latest commit on `main` (currently 1.0.0-alpha) receives security fixes
 
 ## Reporting a vulnerability
 
-Report vulnerabilities privately through a [GitHub security advisory](https://github.com/yamashi8040-ai/Shoebill/security/advisories/new).
+Report vulnerabilities privately through **one** of these:
+
+- a [GitHub security advisory](https://github.com/yamashi8040-ai/Shoebill/security/advisories/new)
+- an email to <concat@windspace.dev>
+
 Do not open a public issue.
 
 Include steps to reproduce, the affected version or commit, the impact, and a proof of concept if you have one.
