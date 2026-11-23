@@ -4,6 +4,8 @@ return [
     'title' => '設定',
     'save_success' => '設定が保存されました',
     'save_failed' => '設定の保存に失敗しました',
+    'env_locked' => 'サーバーの環境変数 :key で設定されています',
+    'env_read_only' => '.env ファイルに書き込めないため、これらの設定はパネルの外で管理されています。',
     'navigation' => [
         'languages' => '言語',
         'general' => '一般',
@@ -24,6 +26,10 @@ return [
         'debug_mode' => 'デバッグモード',
         'navigation' => 'ナビゲーション',
         'default_navigation' => 'デフォルトのナビゲーションタイプ',
+        'default_theme' => '既定のテーマ',
+        'default_theme_help' => '自分でテーマを選んでいないユーザーに表示されるテーマです。',
+        'force_theme' => '既定のテーマを強制',
+        'force_theme_help' => '全員に既定のテーマを適用し、テーマの選択を非表示にします。',
         'sidebar' => 'サイドバー',
         'topbar' => 'トップバー',
         'mixed' => '両方',
@@ -90,6 +96,8 @@ return [
             'bucket' => 'バケット',
             'endpoint' => 'エンドポイント',
             'use_path_style_endpoint' => 'パススタイルのエンドポイントを使用',
+            'use_presigned_requests' => '署名付きリクエストを使用',
+            'use_presigned_requests_help' => 'すべてのリクエストをクエリ文字列認証で署名します。Hetzner など一部のプロバイダーで必要です。',
         ],
     ],
     'oauth' => [

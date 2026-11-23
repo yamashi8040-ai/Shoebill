@@ -8,6 +8,7 @@ return [
     'actions' => [
         'open' => '開く',
         'download' => 'ダウンロード',
+        'connect_sftp' => '現在のフォルダを SFTP で開く',
         'copy' => [
             'title' => 'コピー',
             'notification' => 'ファイルがコピーされました',
@@ -22,6 +23,21 @@ return [
             'failed' => 'ファイルのアップロードに失敗しました',
             'header' => 'ファイルをアップロード中',
             'error' => 'アップロード中にエラーが発生しました',
+            'progress' => ':total 件中 :done 件完了',
+            'partial_failure' => ':total 件中 :failed 件のアップロードに失敗しました',
+            'too_large' => ':name はアップロード上限の :limit を超えています',
+            'network_error' => 'ネットワークエラー',
+            'token_failed' => 'アップロード用トークンを取得できませんでした',
+            'session_expired' => 'セッションの有効期限が切れました。ページを再読み込みしてもう一度お試しください',
+            'cancelled' => 'キャンセルしました',
+            'cancel' => 'キャンセル',
+            'retry' => '再試行',
+            'retry_failed' => '失敗した分を再試行 (:count)',
+            'minimize' => '最小化',
+            'restore' => '元に戻す',
+            'close' => '閉じる',
+            'large_batch' => ':count 件のファイルをアップロードしようとしています。',
+            'upload_anyway' => 'アップロードする',
         ],
         'rename' => [
             'title' => '名前の変更',
@@ -102,6 +118,7 @@ return [
         ],
         'files_node_error' => [
             'title' => 'ファイルを読み込めませんでした！',
+            'offline' => 'ノードから応答がありません。ノードで Wings が起動していて、パネルから接続できるか確認してください。',
         ],
         'pelicanignore' => [
             'title' => '<code>.pelicanignore</code> ファイルを編集しています！',

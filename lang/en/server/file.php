@@ -118,6 +118,7 @@ return [
         ],
         'files_node_error' => [
             'title' => 'Could not load files!',
+            'offline' => 'The node did not respond. Check that Wings is running on the node and that the panel can reach it.',
         ],
         'pelicanignore' => [
             'title' => 'You are editing a <code>.pelicanignore</code> file!',

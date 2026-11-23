@@ -102,6 +102,7 @@ return [
         ],
         'files_node_error' => [
             'title' => '無法載入檔案！',
+            'offline' => '節點沒有回應。請確認節點上的 Wings 正在執行，且面板可以連線到它。',
         ],
         'pelicanignore' => [
             'title' => '您正在編輯 <code>.pelicanignore</code> 檔案！',

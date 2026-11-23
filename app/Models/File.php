@@ -72,6 +72,9 @@ class File extends Model
 
     protected static ?string $searchTerm;
 
+    /** Why the last listing failed, so the table can say so instead of "no files". */
+    public static ?string $loadError = null;
+
     /** @var array<string, array<string, string|Closure|null>> */
     protected static array $customSpecialFiles = [];
 
@@ -242,8 +245,10 @@ class File extends Model
             }
 
             if ($exception instanceof ConnectionException) {
-                $message = str('Node connection failed');
+                $message = str(trans('server/file.alerts.files_node_error.offline'));
             }
+
+            static::$loadError = $message->toString();
 
             AlertBanner::make('files_node_error')
                 ->title(trans('server/file.alerts.files_node_error.title'))

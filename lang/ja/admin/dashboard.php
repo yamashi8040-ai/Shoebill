@@ -17,7 +17,13 @@ return [
         'intro-update-available' => [
             'heading' => 'アップデート利用可能',
             'content' => ':latestVersion が利用可能になりました！パネルを更新するには、ドキュメントをご覧ください。',
+            'content_container' => ':latestVersion が利用可能です！新しいイメージを取得してコンテナを再作成し、パネルを更新してください。',
             'button_changelog' => '新着情報',
+            'button_guide' => '更新ガイド',
+        ],
+        'intro-version-unavailable' => [
+            'heading' => 'バージョンを確認できません',
+            'content' => '現在 :version を使用しています。GitHub から最新バージョンを取得できなかったため、更新があるかどうか分かりません。',
         ],
         'intro-no-update' => [
             'heading' => 'お使いのパネルは最新の状態です',

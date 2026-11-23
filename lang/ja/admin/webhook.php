@@ -9,6 +9,14 @@ return [
     'name' => '名前',
     'type' => 'タイプ',
     'server' => 'サーバー',
+    'scope' => [
+        'global' => 'グローバル',
+        'server' => 'サーバー',
+    ],
+    'tabs' => [
+        'global' => 'グローバル Webhook',
+        'server' => 'サーバー Webhook',
+    ],
     'information' => '情報',
     'payload' => 'ペイロード',
     'events' => 'イベント',
@@ -16,7 +24,6 @@ return [
     'help' => 'ヘルプ',
     'help_text' => '変数には{{ }}を使用する必要があります。例えば名前をAPIで取得したい場合は{{name}}と入力します。',
     'test_now' => 'テストする',
-    'test_now_help' => '`created: Server`イベントが発生します',
     'table' => [
         'description' => '説明',
         'endpoint' => 'エンドポイント',
@@ -24,6 +31,10 @@ return [
     'headers' => 'ヘッダー',
     'regular' => '通常',
     'reset_headers' => 'ヘッダーをリセット',
+    'unavailable_type' => '利用できない種類',
+    'unavailable_type_option' => ':type (利用不可)',
+    'unavailable_type_text' => 'この Webhook は「:type」タイプを使っていますが、それを提供するプラグインがインストールされていないか無効です。保存済みの内容で送信は続きますが、プラグインが使えるようになるまで編集できません。',
+    'test_now_help' => '`created: Server`イベントが発生します',
     'discord' => 'Discord',
     'discord_message' => [
         'profile' => 'プロファイル',

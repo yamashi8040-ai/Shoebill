@@ -101,6 +101,9 @@ class ListFiles extends ListRecords
             ->deferLoading()
             ->searchable()
             ->query(fn () => File::get($server, $this->path)->orderByDesc('is_directory'))
+            ->emptyStateHeading(fn () => File::$loadError ? trans('server/file.alerts.files_node_error.title') : null)
+            ->emptyStateDescription(fn () => File::$loadError)
+            ->emptyStateIcon(fn () => File::$loadError ? TablerIcon::PlugConnectedX : null)
             ->defaultSort('name')
             ->columns([
                 TextColumn::make('name')

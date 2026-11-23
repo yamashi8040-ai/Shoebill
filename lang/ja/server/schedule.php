@@ -24,17 +24,13 @@ return [
     'next_run' => '次回実行',
     'never' => 'しない',
     'cancel' => 'キャンセル',
-
     'only_online' => 'サーバーがオンラインの時のみ実行しますか？',
     'only_online_hint' => 'サーバーが実行中の状態の時のみこのスケジュールを実行します。',
     'enabled' => 'スケジュールを有効にしますか？',
     'enabled_hint' => '有効にするとこのスケジュールは自動的に実行されます。',
-
     'cron_body' => 'Cron 入力は常に UTC を前提としていることに注意してください。',
     'cron_timezone' => 'お使いのタイムゾーン (:timezone) での次回実行時刻: <b> :next_run </b>',
-
     'invalid' => '無効',
-
     'time' => [
         'minute' => '分',
         'hour' => '時',
@@ -43,7 +39,6 @@ return [
         'month' => '月',
         'day_of_month' => '日（月ごと）',
         'day_of_week' => '曜日',
-
         'hourly' => '毎時',
         'daily' => '毎日',
         'weekly_mon' => '毎週（月曜日）',
@@ -55,13 +50,11 @@ return [
         'every_week' => 'x 週ごと',
         'every_month' => 'x か月ごと',
         'every_day_of_week' => '毎週 x 曜日',
-
         'every' => '毎',
         'minutes' => '分',
         'hours' => '時間',
         'days' => '日',
         'months' => '月',
-
         'monday' => '月曜日',
         'tuesday' => '火曜日',
         'wednesday' => '水曜日',
@@ -70,7 +63,6 @@ return [
         'saturday' => '土曜日',
         'sunday' => '日曜日',
     ],
-
     'tasks' => [
         'title' => 'タスク',
         'create' => 'タスクを作成',
@@ -82,7 +74,7 @@ return [
         'first_task' => '最初のタスク',
         'seconds' => '秒|秒',
         'continue_on_failure' => '失敗時も続行',
-
+        'no_permission' => 'このタスクを使用する権限がありません。',
         'actions' => [
             'title' => 'アクション',
             'power' => [
@@ -107,9 +99,7 @@ return [
             ],
         ],
     ],
-
     'notification_invalid_cron' => '指定された Cron データは有効な式として評価できません',
-
     'import_action' => [
         'file' => 'ファイル',
         'url' => 'URL',

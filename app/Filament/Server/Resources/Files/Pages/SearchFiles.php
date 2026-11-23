@@ -5,6 +5,7 @@ namespace App\Filament\Server\Resources\Files\Pages;
 use App\Filament\Components\Tables\Columns\BytesColumn;
 use App\Filament\Components\Tables\Columns\DateTimeColumn;
 use App\Filament\Server\Resources\Files\FileResource;
+use App\Enums\TablerIcon;
 use App\Models\File;
 use App\Models\Server;
 use App\Traits\Filament\CanCustomizeHeaderActions;
@@ -48,6 +49,9 @@ class SearchFiles extends ListRecords
         return $table
             ->paginated(false)
             ->query(fn () => File::get($server, $this->path, $this->searchTerm)->orderByDesc('is_directory')->orderBy('name'))
+            ->emptyStateHeading(fn () => File::$loadError ? trans('server/file.alerts.files_node_error.title') : null)
+            ->emptyStateDescription(fn () => File::$loadError)
+            ->emptyStateIcon(fn () => File::$loadError ? TablerIcon::PlugConnectedX : null)
             ->columns([
                 TextColumn::make('name')
                     ->label(trans('server/file.name'))

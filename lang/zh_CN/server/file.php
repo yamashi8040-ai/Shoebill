@@ -102,6 +102,7 @@ return [
         ],
         'files_node_error' => [
             'title' => '无法加载文件！',
+            'offline' => '节点没有响应。请确认节点上的 Wings 正在运行，并且面板可以连接到它。',
         ],
         'pelicanignore' => [
             'title' => '您正在编辑 <code>.pelicanover</code> 文件！',

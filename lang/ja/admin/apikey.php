@@ -8,6 +8,8 @@ return [
     'whitelist_placeholder' => '例: 127.0.0.1 または 192.168.1.1',
     'description' => '説明',
     'description_help' => 'このキーが何のために使用されるか、簡単な説明を記入してください。',
+    'return_to' => '作成を押すと、このキーは :host に送信されます。',
+    'return_failed' => 'キーは作成されましたが、:host に送信できませんでした。一覧からコピーして貼り付けてください。',
     'nav_title' => 'API キー',
     'model_label' => 'アプリケーション API キー',
     'model_label_plural' => 'アプリケーション API キー',
