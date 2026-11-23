@@ -9,7 +9,7 @@ Only the latest commit on `main` (currently 1.0.0-alpha) receives security fixes
 Report vulnerabilities privately through **one** of these:
 
 - a [GitHub security advisory](https://github.com/yamashi8040-ai/Shoebill/security/advisories/new)
-- an email to <concat@windspace.dev>
+- an email to <contact@windspace.dev>
 
 Do not open a public issue.
 

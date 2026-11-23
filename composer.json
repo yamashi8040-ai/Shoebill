@@ -6,12 +6,12 @@
     "authors": [
         {
             "name": "Shoebill",
-            "email": "concat@windspace.dev",
+            "email": "contact@windspace.dev",
             "role": "Maintainer"
         }
     ],
     "support": {
-        "email": "concat@windspace.dev",
+        "email": "contact@windspace.dev",
         "issues": "https://github.com/yamashi8040-ai/Shoebill/issues",
         "source": "https://github.com/yamashi8040-ai/Shoebill"
     },

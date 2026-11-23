@@ -307,7 +307,7 @@ vendor/bin/pint
 | Out of memory while running tests | Run Pest with `php -d memory_limit=2G` |
 
 ## Contact
-- Maintainer: <concat@windspace.dev>
+- Maintainer: <contact@windspace.dev>
 - Questions and ideas: [GitHub Discussions](https://github.com/yamashi8040-ai/Shoebill/discussions) · Bugs: [Issues](https://github.com/yamashi8040-ai/Shoebill/issues) · Security: [security.md](security.md)
 
 ## Credits and license

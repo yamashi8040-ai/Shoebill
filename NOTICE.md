@@ -21,4 +21,4 @@ Shoebill uses these names only to credit where its code comes from and does not 
 
 Third-party dependencies keep their own licenses (see `composer.lock`, `yarn.lock`).
 
-Maintainer contact: <concat@windspace.dev>
+Maintainer contact: <contact@windspace.dev>

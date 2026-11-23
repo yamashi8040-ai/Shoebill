@@ -292,7 +292,7 @@ vendor/bin/pint
 | テスト実行中にメモリ不足 | `php -d memory_limit=2G` を付けて Pest を実行 |
 
 ## 連絡先
-- 製作者:<concat@windspace.dev>
+- 製作者:<contact@windspace.dev>
 - 質問・要望:[GitHub Discussions](https://github.com/yamashi8040-ai/Shoebill/discussions) · 不具合:[Issues](https://github.com/yamashi8040-ai/Shoebill/issues) · セキュリティ:[security.md](security.md)
 
 ## クレジットとライセンス
