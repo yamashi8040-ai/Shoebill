@@ -21,4 +21,11 @@ return [
     'protocols' => ['none' => '없음', 'minecraft' => 'Minecraft: Java Edition', 'bedrock' => 'Minecraft: Bedrock Edition', 'source' => 'Steam / Source (A2S)'],
     'egg_field' => '플레이어 조회 방식',
     'egg_field_help' => '상태 페이지에서 인원을 세는 방식입니다. 비워 두면 Egg의 태그와 기능으로 자동 감지합니다.',
+    'history' => '플레이어 기록',
+    'history_help' => '게임 쿼리로 확인된 플레이어(최근 순). 플레이 시간은 접속 1분마다 집계됩니다.',
+    'history_empty' => '아직 확인된 플레이어가 없습니다.',
+    'player' => '플레이어',
+    'last_seen' => '마지막 접속',
+    'first_seen' => '첫 접속',
+    'play_time' => '플레이 시간',
 ];

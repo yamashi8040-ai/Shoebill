@@ -21,4 +21,11 @@ return [
     'protocols' => ['none' => '无', 'minecraft' => 'Minecraft: Java Edition', 'bedrock' => 'Minecraft: Bedrock Edition', 'source' => 'Steam / Source (A2S)'],
     'egg_field' => '玩家查询方式',
     'egg_field_help' => '状态页统计人数的方式。留空则根据 Egg 的标签和功能自动判断。',
+    'history' => '玩家历史',
+    'history_help' => '游戏查询发现的玩家(按最近排序)。游戏时长按在线分钟计算。',
+    'history_empty' => '尚未发现任何玩家。',
+    'player' => '玩家',
+    'last_seen' => '最后在线',
+    'first_seen' => '首次在线',
+    'play_time' => '游戏时长',
 ];

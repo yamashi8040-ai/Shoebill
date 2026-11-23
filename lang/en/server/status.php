@@ -31,4 +31,11 @@ return [
     ],
     'egg_field' => 'Player query',
     'egg_field_help' => 'How Shoebill counts players for the Status page. Leave empty to detect it from the egg\'s tags and features.',
+    'history' => 'Player History',
+    'history_help' => 'Players seen by the game query, most recent first. Play time is counted per minute online.',
+    'history_empty' => 'No players have been seen yet.',
+    'player' => 'Player',
+    'last_seen' => 'Last Seen',
+    'first_seen' => 'First Seen',
+    'play_time' => 'Play Time',
 ];

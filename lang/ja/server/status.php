@@ -21,4 +21,11 @@ return [
     'protocols' => ['none' => 'なし', 'minecraft' => 'Minecraft: Java Edition', 'bedrock' => 'Minecraft: Bedrock Edition', 'source' => 'Steam / Source (A2S)'],
     'egg_field' => 'プレイヤー取得方式',
     'egg_field_help' => 'ステータスページで人数を数える方法です。空欄ならEggのタグと機能から自動判定します。',
+    'history' => 'プレイヤー履歴',
+    'history_help' => 'ゲームクエリで確認されたプレイヤー(新しい順)。プレイ時間はオンライン1分ごとに加算されます。',
+    'history_empty' => 'まだプレイヤーは確認されていません。',
+    'player' => 'プレイヤー',
+    'last_seen' => '最終確認',
+    'first_seen' => '初回確認',
+    'play_time' => 'プレイ時間',
 ];

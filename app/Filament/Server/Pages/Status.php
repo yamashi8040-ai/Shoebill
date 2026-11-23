@@ -7,6 +7,7 @@ use App\Enums\SubuserPermission;
 use App\Enums\TablerIcon;
 use App\Filament\Server\Widgets\ServerStatusChart;
 use App\Models\Server;
+use App\Models\ServerPlayer;
 use App\Services\Servers\ServerStatsService;
 use BackedEnum;
 use Filament\Facades\Filament;
@@ -37,6 +38,7 @@ class Status extends Page
             'hasPlayers' => $protocol !== QueryProtocol::None,
             'protocol' => $protocol,
             'online' => Cache::get("servers.$server->uuid.players"),
+            'history' => ServerPlayer::query()->where('server_id', $server->id)->latest('last_seen_at')->limit(50)->get(),
             'cpuLimit' => $server->cpu,
             'memoryLimit' => $server->memory * 1048576,
         ];

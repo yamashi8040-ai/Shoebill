@@ -21,4 +21,11 @@ return [
     'protocols' => ['none' => '無', 'minecraft' => 'Minecraft: Java Edition', 'bedrock' => 'Minecraft: Bedrock Edition', 'source' => 'Steam / Source (A2S)'],
     'egg_field' => '玩家查詢方式',
     'egg_field_help' => '狀態頁統計人數的方式。留空則依 Egg 的標籤與功能自動判斷。',
+    'history' => '玩家歷史',
+    'history_help' => '遊戲查詢發現的玩家(依最近排序)。遊戲時間以在線分鐘計算。',
+    'history_empty' => '尚未發現任何玩家。',
+    'player' => '玩家',
+    'last_seen' => '最後上線',
+    'first_seen' => '首次上線',
+    'play_time' => '遊戲時間',
 ];

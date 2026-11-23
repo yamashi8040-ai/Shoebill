@@ -55,5 +55,34 @@
                 <p class="text-sm text-gray-500">{{ trans('server/status.no_names') }}</p>
             @endif
         </x-filament::section>
+
+        <x-filament::section :heading="trans('server/status.history')" :description="trans('server/status.history_help')">
+            @if($history->isEmpty())
+                <p class="text-sm text-gray-500">{{ trans('server/status.history_empty') }}</p>
+            @else
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm sb-stagger">
+                        <thead>
+                            <tr class="text-left text-gray-500 dark:text-gray-400">
+                                <th class="py-2 pe-4">{{ trans('server/status.player') }}</th>
+                                <th class="py-2 pe-4">{{ trans('server/status.last_seen') }}</th>
+                                <th class="py-2 pe-4">{{ trans('server/status.first_seen') }}</th>
+                                <th class="py-2 pe-4">{{ trans('server/status.play_time') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tabular-nums">
+                            @foreach($history as $player)
+                                <tr class="border-t border-gray-200 dark:border-white/10">
+                                    <td class="py-2 pe-4 font-medium">{{ $player->name }}</td>
+                                    <td class="py-2 pe-4" title="{{ $player->last_seen_at }}">{{ $player->last_seen_at->diffForHumans() }}</td>
+                                    <td class="py-2 pe-4">{{ $player->first_seen_at->toDateString() }}</td>
+                                    <td class="py-2 pe-4">{{ \Carbon\CarbonInterval::minutes($player->minutes_played)->cascade()->forHumans(short: true) }}</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            @endif
+        </x-filament::section>
     @endif
 </x-filament-panels::page>
