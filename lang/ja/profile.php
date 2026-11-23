@@ -89,5 +89,4 @@ return [
     'delete_account_help' => 'アカウント、API キー、SSH キー、サーバーへのアクセス権が完全に削除されます。元に戻せません。',
     'delete_account_last_admin' => 'ルート管理者はあなただけです。アカウントを削除する前に、他のユーザーをルート管理者にしてください。',
     'delete_account_username' => '確認のためユーザー名を入力してください',
-    'classic_ui' => 'クラシックUI',
 ];

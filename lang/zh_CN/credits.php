@@ -9,7 +9,7 @@ return [
     'project' => '项目',
     'license' => '许可证',
     'backend' => '后端、管理面板与服务器面板',
-    'classic' => '经典界面',
+    'classic' => 'Pterodactyl 的功能与设计',
     'changes' => 'Shoebill 的修改',
     'agpl' => 'Shoebill 是遵循 GNU Affero 通用公共许可证 v3.0 的自由软件。可在此获取本面板的源代码：',
     'source_missing' => '管理员尚未设置源代码链接（SHOEBILL_SOURCE_URL）。',

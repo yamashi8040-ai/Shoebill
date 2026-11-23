@@ -3,7 +3,6 @@
 namespace App\Providers\Filament;
 
 use App\Enums\CustomizationKey;
-use App\Enums\TablerIcon;
 use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Auth\Login;
 use App\Http\Controllers\UpdateThemeController;
@@ -75,10 +74,6 @@ abstract class PanelProvider extends BasePanelProvider
             ->userMenuItems([
                 'profile' => fn (Action $action) => $action
                     ->url(fn () => EditProfile::getUrl(panel: 'app')),
-                Action::make('to_classic')
-                    ->label(fn () => trans('profile.classic_ui'))
-                    ->url(fn () => route('classic'))
-                    ->icon(TablerIcon::ArrowsExchange),
             ])
             ->authenticatedRoutes(fn () => Route::post('theme', UpdateThemeController::class)->name('theme'))
             ->renderHook(PanelsRenderHook::USER_MENU_PROFILE_AFTER, fn (ThemeService $themeService) => $themeService->canChooseTheme() ? view('filament.components.theme-select', [

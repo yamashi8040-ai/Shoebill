@@ -1,7 +1,7 @@
 # Shoebill
 
-A game server panel that mixes **Pelican** (backend, admin panel, plugins, 40+ languages) with the
-**Pterodactyl** client UI (as the switchable *Classic UI*). Eggs in both formats (`PTDL_v1`, `PTDL_v2`,
+A game server panel that merges **Pelican** (backend, admin panel, plugins, 40+ languages) with
+**Pterodactyl** features and design into one interface, roughly 60:40. Eggs in both formats (`PTDL_v1`, `PTDL_v2`,
 `PLCN_v1`–`v3`) import directly.
 
 ## What Shoebill adds

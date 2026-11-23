@@ -30,6 +30,5 @@ public/assets/manifest.json
 _ide_helper*
 /.phpstorm.meta.php
 /public/hot
-/public/classic-assets
 node_modules
 /storage/dev-credentials.txt

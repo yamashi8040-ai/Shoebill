@@ -9,7 +9,7 @@ return [
     'project' => 'プロジェクト',
     'license' => 'ライセンス',
     'backend' => 'バックエンド・管理画面・サーバー画面',
-    'classic' => 'クラシックUI',
+    'classic' => 'Pterodactyl の機能とデザイン',
     'changes' => 'Shoebill での変更',
     'agpl' => 'Shoebill は GNU Affero General Public License v3.0 のフリーソフトウェアです。このパネルのソースコードはこちらから入手できます：',
     'source_missing' => '管理者がまだソースのリンクを設定していません（SHOEBILL_SOURCE_URL）。',

@@ -67,7 +67,6 @@ return [
     'no_oauth' => '没有关联的账户',
     'no_api_keys' => '无 API 密钥',
     'no_ssh_keys' => '无 SSH 密钥',
-    'classic_ui' => '经典界面',
     'accent_color' => '强调色',
     'accent_color_help' => '你的个人主色。留空则使用面板默认值。',
 ];

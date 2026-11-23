@@ -9,7 +9,7 @@ return [
     'project' => 'Project',
     'license' => 'License',
     'backend' => 'Backend, admin and server panels',
-    'classic' => 'Classic UI',
+    'classic' => 'Pterodactyl features and design',
     'changes' => 'Shoebill changes',
     'agpl' => 'Shoebill is free software under the GNU Affero General Public License v3.0. You can get the source code of this installation here:',
     'source_missing' => 'the administrator has not published a source link yet (SHOEBILL_SOURCE_URL).',

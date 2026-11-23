@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\ClassicLocaleController;
-use App\Http\Controllers\ClassicUiController;
 use App\Http\Controllers\UpdateStatusController;
 use App\Http\Middleware\RedirectIfNotInstalled;
 use App\Livewire\Installer\PanelInstaller;
@@ -26,7 +24,3 @@ Route::get('language/{code}', function (string $code, LanguageService $languages
 
     return redirect()->back();
 })->name('language.switch')->withoutMiddleware(['auth', RedirectIfNotInstalled::class]);
-
-// The Pterodactyl client UI, kept as a switchable alternative to the main panel.
-Route::get('classic/{path?}', ClassicUiController::class)->where('path', '.*')->name('classic')->middleware('auth');
-Route::get('locales/locale.json', ClassicLocaleController::class)->name('classic.locale')->middleware('auth');
