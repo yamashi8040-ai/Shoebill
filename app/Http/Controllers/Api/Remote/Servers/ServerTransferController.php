@@ -1,0 +1,140 @@
+<?php
+
+namespace App\Http\Controllers\Api\Remote\Servers;
+
+use App\Exceptions\Http\HttpForbiddenException;
+use App\Http\Controllers\Controller;
+use App\Jobs\AdvanceServerTransferBatch;
+use App\Models\Allocation;
+use App\Models\Node;
+use App\Models\Server;
+use App\Models\ServerTransfer;
+use App\Models\ServerTransferBatchItem;
+use App\Repositories\Daemon\DaemonServerRepository;
+use App\Services\Servers\ServerTransferBatchService;
+use Illuminate\Database\ConnectionInterface;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
+use Throwable;
+use Webmozart\Assert\Assert;
+
+class ServerTransferController extends Controller
+{
+    /**
+     * ServerTransferController constructor.
+     */
+    public function __construct(
+        private ConnectionInterface $connection,
+        private DaemonServerRepository $daemonServerRepository,
+        private ServerTransferBatchService $batchService,
+    ) {}
+
+    /**
+     * The daemon notifies us about a transfer failure.
+     *
+     * @throws Throwable
+     */
+    public function failure(Request $request, Server $server): JsonResponse
+    {
+        $transfer = $server->transfer;
+        throw_if(is_null($transfer), new ConflictHttpException('Server is not being transferred.'));
+
+        /* @var Node $node */
+        Assert::isInstanceOf($node = $request->attributes->get('node'), Node::class);
+
+        // Either node can tell the panel that the transfer has failed. Only the new node
+        // can tell the panel that it was successful.
+        throw_if(!$node->is($transfer->newNode) && !$node->is($transfer->oldNode), new HttpForbiddenException('Requesting node does not have permission to access this server.'));
+
+        $transfer->markFailed();
+
+        $this->wakeBatch($transfer);
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * The daemon notifies us about a transfer success.
+     *
+     * @throws Throwable
+     */
+    public function success(Request $request, Server $server): JsonResponse
+    {
+        $transfer = $server->transfer;
+        throw_if(is_null($transfer), new ConflictHttpException('Server is not being transferred.'));
+
+        /* @var Node $node */
+        Assert::isInstanceOf($node = $request->attributes->get('node'), Node::class);
+
+        // Only the new node communicates a successful state to the panel, so we should
+        // not allow the old node to hit this endpoint.
+        throw_unless($node->is($transfer->newNode), new HttpForbiddenException('Requesting node does not have permission to access this server.'));
+
+        /** @var Server $server */
+        $server = $this->connection->transaction(function () use ($server, $transfer) {
+            $data = [];
+
+            if ($transfer->old_allocation || $transfer->old_additional_allocations) {
+                $allocations = array_merge([$transfer->old_allocation], $transfer->old_additional_allocations);
+                // Remove the old allocations for the server and re-assign the server to the new
+                // primary allocation and node.
+                Allocation::query()->whereIn('id', $allocations)->update(Allocation::RELEASE_ATTRIBUTES);
+                $data['allocation_id'] = $transfer->new_allocation;
+            }
+
+            $data['node_id'] = $transfer->new_node;
+            $server->update($data);
+
+            // The node's own backups sent with the transfer are now on the new node. The old
+            // node deletes the rest with the server, like a batch transfer that leaves them.
+            // Backups held by another node are not touched by either.
+            foreach ($this->batchService->localBackups($server) as $backup) {
+                // A listed backup held by another node was not sent by the old node.
+                if ($backup->node_id !== null && $backup->node_id !== $transfer->old_node) {
+                    continue;
+                }
+
+                if (in_array($backup->uuid, $transfer->backup_uuids ?? [], true)) {
+                    $backup->update(['node_id' => $transfer->new_node]);
+                } else {
+                    $backup->delete();
+                }
+            }
+
+            $server = $server->fresh();
+            $server->transfer->update(['successful' => true]);
+
+            return $server;
+        });
+
+        // Delete the server from the old node making sure to point it to the old node so
+        // that we do not delete it from the new node the server was transferred to.
+        try {
+            $this->daemonServerRepository
+                ->setServer($server)
+                ->setNode($transfer->oldNode)
+                ->delete();
+        } catch (ConnectionException $exception) {
+            logger()->warning($exception, ['transfer_id' => $transfer->id]);
+        }
+
+        $this->wakeBatch($transfer);
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * If the transfer is part of a batch, the batch can now continue with its next server.
+     */
+    private function wakeBatch(ServerTransfer $transfer): void
+    {
+        $item = ServerTransferBatchItem::query()->where('server_transfer_id', $transfer->id)->first();
+
+        if ($item) {
+            AdvanceServerTransferBatch::dispatch($item->batch);
+        }
+    }
+}

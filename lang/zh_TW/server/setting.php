@@ -1,0 +1,67 @@
+<?php
+
+return [
+    'title' => '设置',
+    'server_info' => [
+        'title' => '服务器信息',
+        'information' => '信息',
+        'name' => '服务器名称',
+        'server_name' => '服务器名称： :name',
+        'notification_name' => '已更新服务器名称',
+        'description' => '服务器描述',
+        'notification_description' => '已更新服务器描述',
+        'failed' => '失败',
+        'uuid' => '服务器 UUID',
+        'uuid_short' => '服务器 ID',
+        'node_name' => '节点名称',
+        'icon' => [
+            'upload' => '上传图标',
+            'tooltip' => '正在使用 Egg 图标',
+            'updated' => '服务器图标已更新',
+            'deleted' => '服务器图标已删除',
+        ],
+        'limits' => [
+            'title' => '限制',
+            'unlimited' => '无限制',
+            'of' => '共 :max',
+            'cpu' => 'CPU',
+            'memory' => '内存',
+            'disk' => '磁盘空间',
+            'backups' => '备份',
+            'databases' => '数据库',
+            'allocations' => '分配',
+            'no_allocations' => '没有额外的分配',
+        ],
+        'sftp' => [
+            'title' => 'SFTP 信息',
+            'connection' => '连接',
+            'action' => '连接到 SFTP',
+            'username' => '用户名',
+            'password' => '密码',
+            'password_body' => '您的 SFTP 密码与您用于访问此面板的密码相同。',
+        ],
+    ],
+    'notifications' => [
+        'title' => '通知',
+        'saved' => '通知设置已更新',
+        'backup_manual' => [
+            'label' => '手动备份通知',
+            'helper' => '当此服务器的手动备份完成或失败时，接收通知和电子邮件。',
+        ],
+        'backup_scheduled' => [
+            'label' => '计划备份通知',
+            'helper' => '当此服务器的计划备份完成或失败时，接收通知和电子邮件。',
+        ],
+    ],
+    'reinstall' => [
+        'title' => '重新安装服务器',
+        'body' => '重新安装您的服务器将停止它，然后重新运行最初设置它的安装脚本。',
+        'body2' => '在此过程中可能会删除或修改某些文件，请在继续之前备份您的数据。',
+        'action' => '重新安装',
+        'modal' => '您确定要重新安装服务器吗？',
+        'modal_description' => '在此过程中可能会删除或修改某些文件，请在继续之前备份您的数据。',
+        'yes' => '是，重新安装',
+        'notification_start' => '已开始重新安装',
+        'notification_fail' => '重新安装失败',
+    ],
+];

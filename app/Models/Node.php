@@ -1,0 +1,700 @@
+<?php
+
+namespace App\Models;
+
+use App\Casts\DaemonConfigCast;
+use App\Contracts\Validatable;
+use App\Enums\ServerTransferBatchStatus;
+use App\Exceptions\Service\HasActiveServersException;
+use App\Repositories\Daemon\DaemonSystemRepository;
+use App\Traits\HasValidation;
+use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use Symfony\Component\Yaml\Yaml;
+
+/**
+ * @property int $id
+ * @property bool $public
+ * @property string $name
+ * @property string $fqdn
+ * @property string $scheme
+ * @property int $memory
+ * @property int $memory_overallocate
+ * @property int $disk
+ * @property int $disk_overallocate
+ * @property string $daemon_token
+ * @property int $daemon_listen
+ * @property int $daemon_sftp
+ * @property string $daemon_base
+ * @property array<string, mixed>|null $daemon_config
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property int $upload_size
+ * @property bool $behind_proxy
+ * @property string|null $description
+ * @property bool $maintenance_mode
+ * @property string|null $uuid
+ * @property string|null $daemon_token_id
+ * @property array<array-key, mixed>|null $tags
+ * @property int $cpu
+ * @property int $cpu_overallocate
+ * @property string|null $daemon_sftp_alias
+ * @property int $daemon_connect
+ * @property-read Collection<int, Allocation> $allocations
+ * @property-read int|null $allocations_count
+ * @property-read Collection<int, DatabaseHost> $databaseHosts
+ * @property-read int|null $database_hosts_count
+ * @property-read Collection<int, Mount> $mounts
+ * @property-read int|null $mounts_count
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read Collection<int, Role> $roles
+ * @property-read int|null $roles_count
+ * @property-read Collection<int, Server> $servers
+ * @property-read int|null $servers_count
+ * @property-read Collection<int, Backup> $backups
+ * @property-read int|null $backups_count
+ * @property-read Collection<int, BackupHost> $backupHosts
+ * @property-read int|null $backup_hosts_count
+ * @property-read int|null $servers_sum_memory
+ * @property-read int|null $servers_sum_disk
+ * @property-read int|null $servers_sum_cpu
+ *
+ * @method static \Database\Factories\NodeFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereBehindProxy($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereCpu($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereCpuOverallocate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereDaemonBase($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereDaemonConnect($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereDaemonListen($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereDaemonSftp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereDaemonSftpAlias($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereDaemonToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereDaemonTokenId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereDisk($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereDiskOverallocate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereFqdn($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereMaintenanceMode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereMemory($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereMemoryOverallocate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node wherePublic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereScheme($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereTags($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereUploadSize($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Node whereUuid($value)
+ */
+class Node extends Model implements Validatable
+{
+    use HasFactory;
+    use HasValidation;
+    use Notifiable;
+
+    /**
+     * Stand-in for the daemon token when the configuration is rendered read-only.
+     */
+    public const REDACTED = '********';
+
+    /**
+     * The resource name for this model when it is transformed into an
+     * API representation using fractal. Also used as name for api key permissions.
+     */
+    public const RESOURCE_NAME = 'node';
+
+    public const DAEMON_TOKEN_ID_LENGTH = 16;
+
+    public const DAEMON_TOKEN_LENGTH = 64;
+
+    /**
+     * Optional Wings config.yml keys that can be managed from the panel, mapped to the
+     * type they must be sent as. Only keys whose YAML name also matches the Go JSON
+     * binding in Wings are listed here, since Wings applies panel config updates by
+     * JSON unmarshalling them onto its current configuration.
+     *
+     * @var array<string, 'bool'|'int'|'float'|'string'|'list'>
+     */
+    public const DAEMON_CONFIG_KEYS = [
+        'debug' => 'bool',
+        'app_name' => 'string',
+        'allowed_origins' => 'list',
+        'allow_cors_private_network' => 'bool',
+        'api.trusted_proxies' => 'list',
+        'api.ssl.cert' => 'string',
+        'api.ssl.key' => 'string',
+        'api.remote_download.max_redirects' => 'int',
+        'remote_query.timeout' => 'int',
+        'system.timezone' => 'string',
+        'system.quotas.enabled' => 'bool',
+        'system.sftp.bind_address' => 'string',
+        'system.user.passwd.enable' => 'bool',
+        'system.machine_id.enable' => 'bool',
+        'docker.network.name' => 'string',
+        'docker.network.driver' => 'string',
+        'docker.network.interface' => 'string',
+        'docker.network.dns' => 'list',
+        'docker.network.ispn' => 'bool',
+        'docker.network.IPv6' => 'bool',
+        'docker.network.interfaces.v4.subnet' => 'string',
+        'docker.network.interfaces.v4.gateway' => 'string',
+        'docker.network.interfaces.v6.subnet' => 'string',
+        'docker.network.interfaces.v6.gateway' => 'string',
+        'docker.domainname' => 'string',
+        'docker.tmpfs_size' => 'int',
+        'docker.container_pid_limit' => 'int',
+        'docker.installer_limits.memory' => 'int',
+        'docker.installer_limits.cpu' => 'int',
+        'docker.overhead.override' => 'bool',
+        'docker.overhead.default_multiplier' => 'float',
+        'docker.use_performant_inspect' => 'bool',
+        'docker.system_ips' => 'list',
+        'docker.log_config.type' => 'string',
+        'throttles.enabled' => 'bool',
+        'throttles.lines' => 'int',
+        'throttles.line_reset_interval' => 'int',
+    ];
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     */
+    protected $hidden = ['daemon_token_id', 'daemon_token'];
+
+    /**
+     * Fields that are mass assignable.
+     */
+    protected $fillable = [
+        'public', 'name',
+        'fqdn', 'scheme', 'behind_proxy',
+        'memory', 'memory_overallocate', 'disk',
+        'disk_overallocate', 'cpu', 'cpu_overallocate',
+        'upload_size', 'daemon_base', 'daemon_config',
+        'daemon_sftp', 'daemon_sftp_alias', 'daemon_listen', 'daemon_connect',
+        'description', 'maintenance_mode', 'tags',
+    ];
+
+    /** @var array<array-key, string[]> */
+    public static array $validationRules = [
+        'name' => ['required', 'string', 'min:1', 'max:100'],
+        'description' => ['string', 'nullable'],
+        'public' => ['boolean'],
+        'fqdn' => ['required', 'string', 'notIn:0.0.0.0,127.0.0.1,localhost'],
+        'scheme' => ['required', 'string', 'in:http,https'],
+        'behind_proxy' => ['boolean'],
+        'memory' => ['required', 'numeric', 'min:0'],
+        'memory_overallocate' => ['required', 'numeric', 'min:-1'],
+        'disk' => ['required', 'numeric', 'min:0'],
+        'disk_overallocate' => ['required', 'numeric', 'min:-1'],
+        'cpu' => ['required', 'numeric', 'min:0'],
+        'cpu_overallocate' => ['required', 'numeric', 'min:-1'],
+        'daemon_base' => ['sometimes', 'required', 'regex:/^([\/][\d\w.\-\/]+)$/'],
+        'daemon_sftp' => ['required', 'numeric', 'between:1,65535'],
+        'daemon_sftp_alias' => ['nullable', 'string'],
+        'daemon_listen' => ['required', 'numeric', 'between:1,65535'],
+        'daemon_connect' => ['required', 'numeric', 'between:1,65535'],
+        'maintenance_mode' => ['boolean'],
+        'upload_size' => ['int', 'min:1'],
+        'tags' => ['array'],
+        'daemon_config' => ['nullable', 'array'],
+    ];
+
+    /**
+     * Adds a rule for each optional Wings config key, so values sent through the API are
+     * rejected when they can't be cast to the type Wings expects.
+     *
+     * @return array<array-key, string[]>
+     */
+    public static function getRules(): array
+    {
+        $rules = static::$validationRules;
+
+        foreach (self::DAEMON_CONFIG_KEYS as $path => $type) {
+            $rules["daemon_config.$path"] = match ($type) {
+                'bool' => ['nullable', 'boolean'],
+                'int' => ['nullable', 'integer', 'min:0'],
+                // The upper bound also rejects values like 1e309, which PHP reads as INF and can't encode as JSON.
+                'float' => ['nullable', 'numeric', 'min:0', 'max:100'],
+                'string' => ['nullable', 'string'],
+                'list' => ['nullable', 'array'],
+            };
+
+            if ($type === 'list') {
+                $rules["daemon_config.$path.*"] = ['nullable', 'string'];
+            }
+        }
+
+        // A custom certificate needs its matching key (and vice versa), otherwise Wings pairs it with the default path.
+        $rules['daemon_config.api.ssl.cert'][] = 'regex:/^\/[^\s]+$/';
+        $rules['daemon_config.api.ssl.cert'][] = 'required_with:daemon_config.api.ssl.key';
+        $rules['daemon_config.api.ssl.key'][] = 'regex:/^\/[^\s]+$/';
+        $rules['daemon_config.api.ssl.key'][] = 'required_with:daemon_config.api.ssl.cert';
+
+        return $rules;
+    }
+
+    /**
+     * Default values for specific columns that are generally not changed on base installs.
+     */
+    protected $attributes = [
+        'public' => true,
+        'behind_proxy' => false,
+        'memory' => 0,
+        'memory_overallocate' => 0,
+        'disk' => 0,
+        'disk_overallocate' => 0,
+        'cpu' => 0,
+        'cpu_overallocate' => 0,
+        'daemon_base' => '/var/lib/pelican/volumes',
+        'daemon_sftp' => 2022,
+        'daemon_listen' => 8080,
+        'daemon_connect' => 8080,
+        'maintenance_mode' => false,
+        'tags' => '[]',
+    ];
+
+    protected function casts(): array
+    {
+        return [
+            'memory' => 'integer',
+            'disk' => 'integer',
+            'cpu' => 'integer',
+            'daemon_listen' => 'integer',
+            'daemon_connect' => 'integer',
+            'daemon_sftp' => 'integer',
+            'daemon_token' => 'encrypted',
+            'behind_proxy' => 'boolean',
+            'public' => 'boolean',
+            'maintenance_mode' => 'boolean',
+            'tags' => 'array',
+            'daemon_config' => DaemonConfigCast::class,
+        ];
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (self $node) {
+            $node->uuid = Str::uuid();
+            $node->daemon_token = Str::random(self::DAEMON_TOKEN_LENGTH);
+            $node->daemon_token_id = Str::random(self::DAEMON_TOKEN_ID_LENGTH);
+
+            return true;
+        });
+
+        static::deleting(function (self $node) {
+            throw_if($node->servers()->count(), new HasActiveServersException(trans('exceptions.egg.delete_has_servers')));
+
+            // The batch would go with the node, and with it the restart of the servers it stopped.
+            throw_if($node->isInRunningTransferBatch(), new HasActiveServersException(trans('exceptions.node.in_transfer_batch')));
+        });
+    }
+
+    public function isInRunningTransferBatch(): bool
+    {
+        return ServerTransferBatch::query()
+            ->where('status', ServerTransferBatchStatus::Running)
+            ->where(fn ($query) => $query->where('old_node', $this->id)->orWhere('new_node', $this->id))
+            ->exists();
+    }
+
+    /**
+     * Get the connection address to use when making calls to this node.
+     */
+    public function getConnectionAddress(): string
+    {
+        return "$this->scheme://$this->fqdn:$this->daemon_connect";
+    }
+
+    /**
+     * Returns the configuration as an array.
+     *
+     * Pass $redacted to mask the daemon token, for read-only surfaces that show the
+     * config without granting the credential wings authenticates with.
+     *
+     * @return array{
+     *     debug?: bool,
+     *     uuid: string|null,
+     *     token_id: string|null,
+     *     token: string,
+     *     api: array{
+     *         host: string,
+     *         port: int,
+     *         ssl: array{enabled: bool, cert: string, key: string},
+     *         upload_limit: int,
+     *         ...
+     *     },
+     *     system: array{data: string, sftp: array{bind_port: int, ...}, ...},
+     *     allowed_mounts: array<mixed>,
+     *     remote: string,
+     *     ...
+     * }
+     */
+    public function getConfiguration(bool $redacted = false): array
+    {
+        $extras = $this->getDaemonConfigOverrides();
+
+        // Custom certificate paths replace the default Let's Encrypt paths the panel sends.
+        $sslCert = Arr::pull($extras, 'api.ssl.cert') ?? '/etc/letsencrypt/live/' . Str::lower($this->fqdn) . '/fullchain.pem';
+        $sslKey = Arr::pull($extras, 'api.ssl.key') ?? '/etc/letsencrypt/live/' . Str::lower($this->fqdn) . '/privkey.pem';
+
+        $base = [
+            'uuid' => $this->uuid,
+            'token_id' => $redacted ? self::REDACTED : $this->daemon_token_id,
+            'token' => $redacted ? self::REDACTED : $this->daemon_token,
+            'api' => [
+                'host' => '0.0.0.0',
+                'port' => $this->daemon_listen,
+                'ssl' => [
+                    'enabled' => (!$this->behind_proxy && $this->scheme === 'https'),
+                    'cert' => $sslCert,
+                    'key' => $sslKey,
+                ],
+                'upload_limit' => $this->upload_size,
+            ],
+            'system' => [
+                'data' => $this->daemon_base,
+                'sftp' => [
+                    'bind_port' => $this->daemon_sftp,
+                ],
+            ],
+            'allowed_mounts' => $this->mounts->pluck('source')->toArray(),
+            'remote' => (string) config('app.url'),
+        ];
+
+        // The keys the panel manages directly always win over the optional overrides.
+        return array_replace_recursive($extras, $base);
+    }
+
+    /**
+     * Returns the optional Wings config.yml keys set for this node, cast to the types
+     * Wings expects. Keys that are not set are omitted so Wings keeps its own value.
+     *
+     * @return array<string, mixed>
+     */
+    public function getDaemonConfigOverrides(): array
+    {
+        $config = $this->daemon_config ?? [];
+        $extras = [];
+
+        foreach (self::DAEMON_CONFIG_KEYS as $path => $type) {
+            $value = Arr::get($config, $path);
+
+            if (self::isEmptyDaemonConfigValue($value)) {
+                continue;
+            }
+
+            $value = match ($type) {
+                'bool' => filter_var($value, FILTER_VALIDATE_BOOLEAN),
+                'int' => (int) $value,
+                'float' => (float) $value,
+                'string' => (string) $value,
+                'list' => array_values(array_filter(Arr::wrap($value), fn ($item) => $item !== null && $item !== '')),
+            };
+
+            if ($value === []) {
+                continue;
+            }
+
+            Arr::set($extras, $path, $value);
+        }
+
+        return $extras;
+    }
+
+    /**
+     * Drops unknown and empty keys from the stored Wings overrides, so a form that
+     * submits every field as null does not count as a change to the node.
+     *
+     * @param  array<string, mixed>|null  $config
+     * @return array<string, mixed>|null
+     */
+    public static function normalizeDaemonConfig(?array $config): ?array
+    {
+        $normalized = [];
+
+        foreach (self::DAEMON_CONFIG_KEYS as $path => $type) {
+            $value = Arr::get($config ?? [], $path);
+
+            if ($type === 'list' && $value !== null) {
+                $value = array_values(array_filter(Arr::wrap($value), fn ($item) => $item !== null && $item !== ''));
+            }
+
+            if (self::isEmptyDaemonConfigValue($value)) {
+                continue;
+            }
+
+            if ($type === 'bool') {
+                $value = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+
+                if ($value === null) {
+                    continue;
+                }
+
+                $value = (int) $value;
+            }
+
+            Arr::set($normalized, $path, $value);
+        }
+
+        return $normalized ?: null;
+    }
+
+    private static function isEmptyDaemonConfigValue(mixed $value): bool
+    {
+        return $value === null || $value === '' || $value === [];
+    }
+
+    /**
+     * Returns the configuration in Yaml format.
+     */
+    public function getYamlConfiguration(bool $redacted = false): string
+    {
+        return Yaml::dump($this->getConfiguration($redacted), 8, 2, Yaml::DUMP_EMPTY_ARRAY_AS_SEQUENCE);
+    }
+
+    /**
+     * Returns the configuration in JSON format.
+     *
+     * @throws \JsonException
+     */
+    public function getJsonConfiguration(bool $pretty = false): string
+    {
+        return json_encode($this->getConfiguration(), JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | ($pretty ? JSON_PRETTY_PRINT : 0));
+    }
+
+    public function isUnderMaintenance(): bool
+    {
+        return $this->maintenance_mode;
+    }
+
+    /**
+     * Whether the daemon recently failed to answer a status request. While it is marked, status
+     * lookups for its servers skip the request, so a list of servers on a dead node waits for one
+     * timeout instead of one per server.
+     */
+    public function isUnreachable(): bool
+    {
+        return cache()->has("nodes.$this->id.unreachable");
+    }
+
+    public function markUnreachable(): void
+    {
+        cache()->put("nodes.$this->id.unreachable", true, now()->addSeconds(15));
+    }
+
+    public function mounts(): MorphToMany
+    {
+        return $this->morphToMany(Mount::class, 'mountable');
+    }
+
+    /**
+     * Gets the servers associated with a node.
+     *
+     * @return HasMany<Server, $this>
+     */
+    public function servers(): HasMany
+    {
+        return $this->hasMany(Server::class);
+    }
+
+    /**
+     * Gets the backups made on this node, including the ones kept after their
+     * server was deleted. Backups stored on a node move with their server when
+     * it is transferred.
+     *
+     * @return HasMany<Backup, $this>
+     */
+    public function backups(): HasMany
+    {
+        return $this->hasMany(Backup::class);
+    }
+
+    /**
+     * Gets the batches moving servers off this node.
+     *
+     * @return HasMany<ServerTransferBatch, $this>
+     */
+    public function transferBatches(): HasMany
+    {
+        return $this->hasMany(ServerTransferBatch::class, 'old_node');
+    }
+
+    /**
+     * Preload the server resource sums the application API reports for each node, so
+     * listing nodes doesn't run a query per node. NodeData reads and strips them.
+     *
+     * @param  Builder<self>  $query
+     * @return Builder<self>
+     */
+    public function scopeWithAllocatedResources(Builder $query): Builder
+    {
+        return $query->withSum('servers as allocated_memory', 'memory')
+            ->withSum('servers as allocated_disk', 'disk')
+            ->withSum('servers as allocated_cpu', 'cpu');
+    }
+
+    /**
+     * Gets the allocations associated with a node.
+     */
+    public function allocations(): HasMany
+    {
+        return $this->hasMany(Allocation::class);
+    }
+
+    /** @return BelongsToMany<DatabaseHost, $this> */
+    public function databaseHosts(): BelongsToMany
+    {
+        return $this->belongsToMany(DatabaseHost::class);
+    }
+
+    public function backupHosts(): BelongsToMany
+    {
+        return $this->belongsToMany(BackupHost::class);
+    }
+
+    public function roles(): HasManyThrough
+    {
+        return $this->hasManyThrough(Role::class, NodeRole::class, 'node_id', 'id', 'id', 'role_id');
+    }
+
+    /**
+     * Returns a boolean if the node is viable for an additional server to be placed on it.
+     */
+    public function isViable(int $memory, int $disk, int $cpu): bool
+    {
+        if ($this->memory > 0 && $this->memory_overallocate >= 0) {
+            $memorySum = $this->servers_sum_memory ?? $this->servers()->sum('memory');
+            $memoryLimit = $this->memory * (1 + ($this->memory_overallocate / 100));
+            if ($memorySum + $memory > $memoryLimit) {
+                return false;
+            }
+        }
+
+        if ($this->disk > 0 && $this->disk_overallocate >= 0) {
+            $diskSum = $this->servers_sum_disk ?? $this->servers()->sum('disk');
+            $diskLimit = $this->disk * (1 + ($this->disk_overallocate / 100));
+            if ($diskSum + $disk > $diskLimit) {
+                return false;
+            }
+        }
+
+        if ($this->cpu > 0 && $this->cpu_overallocate >= 0) {
+            $cpuSum = $this->servers_sum_cpu ?? $this->servers()->sum('cpu');
+            $cpuLimit = $this->cpu * (1 + ($this->cpu_overallocate / 100));
+            if ($cpuSum + $cpu > $cpuLimit) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /** @return array<mixed> */
+    public function systemInformation(): array
+    {
+        return cache()->flexible("nodes.$this->id.system_information", [30, 360], function () {
+            try {
+                return (new DaemonSystemRepository())
+                    ->setNode($this)
+                    ->getSystemInformation();
+            } catch (Exception $exception) {
+                $message = str($exception->getMessage());
+
+                if ($message->startsWith('cURL error 6: Could not resolve host')) {
+                    $message = str('Could not resolve host');
+                }
+
+                if ($message->startsWith('cURL error 28: Failed to connect to ')) {
+                    $message = $message->after('cURL error 28: ')->before(' after ');
+                }
+
+                return ['exception' => $message->toString()];
+            }
+        });
+    }
+
+    /** @return array{
+     *     memory_total: int, memory_used: int,
+     *     swap_total: int, swap_used: int,
+     *     load_average1: float, load_average5: float, load_average15: float,
+     *     cpu_percent: float,
+     *     disk_total: int, disk_used: int,
+     * }
+     */
+    public function statistics(): array
+    {
+        $default = [
+            'memory_total' => 0,
+            'memory_used' => 0,
+            'swap_total' => 0,
+            'swap_used' => 0,
+            'load_average1' => 0.00,
+            'load_average5' => 0.00,
+            'load_average15' => 0.00,
+            'cpu_percent' => 0.00,
+            'disk_total' => 0,
+            'disk_used' => 0,
+        ];
+
+        return cache()->flexible("nodes.$this->id.statistics", [5, 30], function () use ($default) {
+            try {
+
+                $data = Http::daemon($this)
+                    ->connectTimeout(1)
+                    ->timeout(1)
+                    ->get('/api/system/utilization')
+                    ->json();
+
+                if (!empty($data['memory_total'])) {
+                    return $data;
+                }
+            } catch (Exception) {
+            }
+
+            return $default;
+        });
+    }
+
+    /** @return string[] */
+    public function ipAddresses(): array
+    {
+        return cache()->remember("nodes.$this->id.ips", now()->addHour(), function () {
+            $ips = collect();
+
+            try {
+                $addresses = Http::daemon($this)->connectTimeout(1)->timeout(1)->get('/api/system/ips')->json();
+                $ips = $ips->concat(fluent($addresses)->get('ip_addresses'));
+            } catch (Exception) {
+                if (is_ip($this->fqdn)) {
+                    $ips->push($this->fqdn);
+                }
+            }
+
+            $ips = $ips->filter(fn (string $ip) => is_ip($ip));
+
+            // TODO: remove later
+            $ips->push('0.0.0.0');
+            $ips->push('::');
+
+            return $ips->unique()->all();
+        });
+    }
+}
