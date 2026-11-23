@@ -28,3 +28,11 @@
 
 @custom-variant dark (.dark &);
 @import './shoebill-motion.css';
+
+/* Shoebill: a larger wordmark on sign-in, register and other single-card pages. */
+.fi-simple-page .fi-logo:not(img) {
+    font-size: 2rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    height: auto !important;
+}
