@@ -10,3 +10,7 @@ Route::get('installer', PanelInstaller::class)->name('installer')
 
 Route::get('update/status', UpdateStatusController::class)->name('update.status')
     ->middleware('auth');
+
+// Licence notices must be reachable without an account.
+Route::view('credits', 'credits')->name('credits')
+    ->withoutMiddleware(['auth', RedirectIfNotInstalled::class]);

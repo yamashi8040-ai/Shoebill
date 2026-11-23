@@ -10,6 +10,7 @@ use App\Facades\Activity;
 use App\Helpers\ProcessEnv;
 use App\Notifications\MailTested;
 use App\Observers\AuditObserver;
+use App\Services\Helpers\LanguageService;
 use App\Services\Helpers\ThemeService;
 use App\Traits\EnvironmentWriterTrait;
 use App\Traits\Filament\CanCustomizeHeaderActions;
@@ -21,6 +22,7 @@ use BladeUI\Icons\Factory as IconFactory;
 use Exception;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
@@ -170,10 +172,50 @@ class Settings extends Page implements HasSchemas
                 ->icon(TablerIcon::BrandOauth)
                 ->schema($this->oauthSettings())
                 ->columns(1),
+            Tab::make('languages')
+                ->label(trans('admin/setting.navigation.languages'))
+                ->icon(TablerIcon::Language)
+                ->schema($this->languageSettings())
+                ->columns(1),
             Tab::make('misc')
                 ->label(trans('admin/setting.navigation.misc'))
                 ->icon(TablerIcon::Tool)
                 ->schema($this->miscSettings()),
+        ];
+    }
+
+    /** @return Component[] */
+    private function languageSettings(): array
+    {
+        $languages = app(LanguageService::class);
+
+        return [
+            CheckboxList::make('APP_LANGUAGES')
+                ->label(trans('admin/setting.languages.enabled'))
+                ->helperText(trans('admin/setting.languages.enabled_help'))
+                ->options(fn () => $languages->getAvailableLanguages(includeDisabled: true))
+                ->formatStateUsing(fn () => config('app.languages') ?: array_keys($languages->getAvailableLanguages(includeDisabled: true)))
+                ->dehydrateStateUsing(fn (?array $state) => implode(',', array_unique(['en', ...($state ?? [])])))
+                ->columns(['default' => 2, 'md' => 4])
+                ->bulkToggleable(),
+            Actions::make([
+                Action::make('add_language')
+                    ->label(trans('admin/setting.languages.add'))
+                    ->icon(TablerIcon::Plus)
+                    ->authorize(fn () => user()?->can('update settings'))
+                    ->schema([
+                        TextInput::make('code')
+                            ->label(trans('admin/setting.languages.code'))
+                            ->helperText(trans('admin/setting.languages.code_help'))
+                            ->required()
+                            ->regex('/^[a-z]{2,3}(_[A-Z][A-Za-z]{1,3})?$/')
+                            ->in(fn () => array_diff(\ResourceBundle::getLocales(''), array_keys($languages->getAvailableLanguages(includeDisabled: true)))),
+                    ])
+                    ->action(function (array $data) use ($languages) {
+                        $languages->addLanguage($data['code']);
+                        Notification::make()->title(trans('admin/setting.languages.added', ['language' => $languages->getLanguageDisplayName($data['code'])]))->success()->send();
+                    }),
+            ]),
         ];
     }
 
@@ -194,13 +236,13 @@ class Settings extends Page implements HasSchemas
                         ->label(trans('admin/setting.general.app_logo'))
                         ->hintIcon(TablerIcon::QuestionMark, trans('admin/setting.general.app_logo_help'))
                         ->default(config('app.logo'))
-                        ->placeholder('/pelican.svg'),
+                        ->placeholder('/shoebill.svg'),
                     TextInput::make('APP_FAVICON')
                         ->label(trans('admin/setting.general.app_favicon'))
                         ->hintIcon(TablerIcon::QuestionMark, trans('admin/setting.general.app_favicon_help'))
                         ->required()
                         ->default(config('app.favicon'))
-                        ->placeholder('/pelican.ico'),
+                        ->placeholder('/shoebill.svg'),
                 ]),
             Group::make()
                 ->columns(2)

@@ -5,6 +5,7 @@ return [
     'save_success' => '设置已保存',
     'save_failed' => '无法保存设置',
     'navigation' => [
+        'languages' => '语言',
         'general' => '常规',
         'captcha' => '人机验证',
         'mail' => '邮箱',
@@ -153,5 +154,13 @@ return [
             'prune_age' => '清理时间',
             'days' => '天',
         ],
+    ],
+    'languages' => [
+        'enabled' => '用户可选择的语言',
+        'enabled_help' => '关闭的语言将从语言选择中移除，使用该语言的用户会看到面板默认语言。英语始终开启，因为其他语言都以它为后备。',
+        'add' => '添加语言',
+        'code' => '语言代码',
+        'code_help' => 'ICU 区域代码，例如 th、ms 或 pt_PT。会在 lang/ 中创建包含英文文件的新文件夹，供翻译人员填写。',
+        'added' => '已添加 :language。请翻译其 lang/ 文件夹中的文件。',
     ],
 ];

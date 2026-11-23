@@ -26,11 +26,24 @@ class LanguageService
         return $trans !== $key ? $trans : title_case(Locale::getDisplayName($code, $code));
     }
 
-    /**
-     * @return array<array-key, string>
-     */
-    public function getAvailableLanguages(string $path = 'lang'): array
+    public function isEnabled(string $code): bool
     {
+        $enabled = config('app.languages');
+
+        return !$enabled || $code === 'en' || in_array($code, $enabled, true);
+    }
+
+    /** Adds a language folder seeded with the English files, so translators have every key to fill in. */
+    public function addLanguage(string $code): void
+    {
+        File::copyDirectory(base_path('lang/en'), base_path('lang/' . $code));
+    }
+
+    /** @return array<array-key, string> */
+    public function getAvailableLanguages(string $path = 'lang', bool $includeDisabled = false): array
+    {
+        $enabled = config('app.languages');
+
         $baseLanguages = collect(File::directories(base_path($path)))->mapWithKeys(function ($path) {
             $code = basename($path);
 
@@ -39,6 +52,12 @@ class LanguageService
 
         $pluginLanguages = collect($this->pluginService->getPluginLanguages())->mapWithKeys(fn ($code) => [$code => $this->getLanguageDisplayName($code)])->toArray();
 
-        return array_sort(array_unique(array_merge($baseLanguages, $pluginLanguages)));
+        $languages = array_merge($baseLanguages, $pluginLanguages);
+        if (!$includeDisabled && $enabled) {
+            // English always stays: it is the fallback every other language builds on.
+            $languages = array_intersect_key($languages, array_flip([...$enabled, 'en']));
+        }
+
+        return array_sort(array_unique($languages));
     }
 }

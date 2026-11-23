@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Services\Helpers\LanguageService;
 use Closure;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
@@ -18,7 +19,9 @@ class LanguageMiddleware
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        $this->app->setLocale($request->user()->language ?? config('app.locale', 'en'));
+        $language = $request->user()?->language;
+        // A language the admin turned off falls back to the panel default.
+        $this->app->setLocale($language && app(LanguageService::class)->isEnabled($language) ? $language : config('app.locale', 'en'));
 
         return $next($request);
     }

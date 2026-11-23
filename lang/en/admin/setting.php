@@ -7,6 +7,7 @@ return [
     'env_locked' => 'Set by :key in the server environment',
     'env_read_only' => 'The .env file is not writable, so these settings are managed outside the panel.',
     'navigation' => [
+        'languages' => 'Languages',
         'general' => 'General',
         'captcha' => 'Captcha',
         'mail' => 'Mail',
@@ -183,5 +184,13 @@ return [
             'prune_age' => 'Prune Age',
             'days' => 'Days',
         ],
+    ],
+    'languages' => [
+        'enabled' => 'Languages users can choose',
+        'enabled_help' => 'Turned-off languages disappear from the language picker; users who had one see the panel default instead. English is always on because every other language falls back to it.',
+        'add' => 'Add language',
+        'code' => 'Language code',
+        'code_help' => 'An ICU locale code such as th, ms or pt_PT. A new folder is created in lang/ with the English files for translators to fill in.',
+        'added' => ':language added. Translate the files in its lang/ folder.',
     ],
 ];
