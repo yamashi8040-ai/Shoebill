@@ -33,10 +33,10 @@ document.addEventListener('DOMContentLoaded', scan);
 document.addEventListener('livewire:navigated', scan);
 new MutationObserver(() => requestAnimationFrame(scan)).observe(document.documentElement, { childList: true, subtree: true });
 
-// Spotlight (rich only): a soft light follows the pointer across cards. Pointer devices only.
+// Spotlight (own admin switch, independent of the motion level): a soft light follows the pointer across cards.
 const SPOT = '.sb-card, .fi-section, .fi-ta-ctn, .fi-wi-stats-overview-stat, .fi-ta-record';
 document.addEventListener('pointermove', (event) => {
-    if (level() !== 'rich' || event.pointerType !== 'mouse') return;
+    if (document.documentElement.dataset.sbSpotlight !== 'on' || event.pointerType !== 'mouse') return;
     const card = event.target.closest?.(SPOT);
     if (!card) return;
     const rect = card.getBoundingClientRect();

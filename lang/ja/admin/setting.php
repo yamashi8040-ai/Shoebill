@@ -52,6 +52,8 @@ return [
         'motion_off' => 'オフ',
         'motion_standard' => '標準',
         'motion_rich' => '多め',
+        'spotlight' => 'カーソルの光',
+        'spotlight_help' => 'マウスカーソルの位置でカードがふんわり光ります。アニメーションの設定に関係なく使えます。',
     ],
     'captcha' => [
         'enable' => '有効',

@@ -81,7 +81,7 @@ class WebhookResource extends Resource
         }
         $count = static::getModel()::where('server_id', $server->id)->count();
 
-        return $count > 0 ? (string) $count : null;
+        return null; // Shoebill: no count badges in the server menu.
     }
 
     public static function defaultTable(Table $table): Table

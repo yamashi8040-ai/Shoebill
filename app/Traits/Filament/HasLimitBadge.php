@@ -16,17 +16,10 @@ trait HasLimitBadge
         return 0;
     }
 
+    // Shoebill: no count badges in the server menu.
     public static function getNavigationBadge(): ?string
     {
-        $count = static::getBadgeCount();
-
-        // Shoebill: an empty section shows no badge instead of a "0" or "0 / 3".
-        if ($count === 0) {
-            return null;
-        }
-
-        // Shoebill: just the count; the limit lives on the page, not in the menu.
-        return (string) $count;
+        return null;
     }
 
     public static function getNavigationBadgeColor(): ?string

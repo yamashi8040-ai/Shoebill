@@ -52,6 +52,8 @@ return [
         'motion_off' => 'Off',
         'motion_standard' => 'Standard',
         'motion_rich' => 'Rich',
+        'spotlight' => 'Cursor Light',
+        'spotlight_help' => 'A soft light follows the mouse over cards. Works at every animation level.',
     ],
     'captcha' => [
         'enable' => 'Enable',

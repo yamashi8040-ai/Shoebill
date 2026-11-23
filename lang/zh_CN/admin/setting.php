@@ -46,6 +46,8 @@ return [
         'motion_off' => '关闭',
         'motion_standard' => '标准',
         'motion_rich' => '丰富',
+        'spotlight' => '光标光效',
+        'spotlight_help' => '鼠标光标所在位置的卡片会柔和发光。与动画设置无关。',
     ],
     'captcha' => [
         'enable' => '启用',

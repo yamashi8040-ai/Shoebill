@@ -12,6 +12,8 @@ return [
         'motion_off' => '끄기',
         'motion_standard' => '표준',
         'motion_rich' => '많이',
+        'spotlight' => '커서 빛',
+        'spotlight_help' => '마우스 커서 위치에서 카드가 은은하게 빛납니다. 애니메이션 설정과 관계없이 사용됩니다.',
     ],
     'misc' => [
         'mail_notifications' => [

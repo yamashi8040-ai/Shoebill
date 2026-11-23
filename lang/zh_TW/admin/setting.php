@@ -46,6 +46,8 @@ return [
         'motion_off' => '關閉',
         'motion_standard' => '標準',
         'motion_rich' => '豐富',
+        'spotlight' => '游標光效',
+        'spotlight_help' => '滑鼠游標所在位置的卡片會柔和發光。與動畫設定無關。',
     ],
     'captcha' => [
         'enable' => '启用',

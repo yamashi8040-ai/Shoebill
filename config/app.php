@@ -10,6 +10,8 @@ return [
     'accent' => env('APP_ACCENT'),
     // Animation level for everyone: off, standard or rich. prefers-reduced-motion always turns it off for that viewer.
     'motion' => env('APP_MOTION', 'rich'),
+    // The light that follows the mouse over cards, on its own switch.
+    'spotlight' => env('APP_SPOTLIGHT', true),
     // Comma-separated language codes users may pick; empty means every folder in lang/.
     'languages' => array_filter(explode(',', (string) env('APP_LANGUAGES', ''))),
     'favicon' => env('APP_FAVICON', '/shoebill.svg'),

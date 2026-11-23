@@ -247,6 +247,16 @@ class Settings extends Page implements HasSchemas
                     'rich' => trans('admin/setting.general.motion_rich'),
                 ])
                 ->default(config('app.motion', 'rich')),
+            Toggle::make('APP_SPOTLIGHT')
+                ->label(trans('admin/setting.general.spotlight'))
+                ->helperText(trans('admin/setting.general.spotlight_help'))
+                ->onIcon(TablerIcon::Check)
+                ->offIcon(TablerIcon::X)
+                ->onColor('success')
+                ->offColor('danger')
+                ->formatStateUsing(fn ($state): bool => (bool) $state)
+                ->afterStateUpdated(fn ($state, Set $set) => $set('APP_SPOTLIGHT', (bool) $state))
+                ->default(config('app.spotlight')),
             Group::make()
                 ->columns(2)
                 ->schema([

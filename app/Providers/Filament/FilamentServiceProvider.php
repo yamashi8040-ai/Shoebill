@@ -87,7 +87,7 @@ class FilamentServiceProvider extends ServiceProvider
 
         FilamentView::registerRenderHook(PanelsRenderHook::PAGE_START, fn () => view('filament.components.announcements'));
         // Animation level chosen by the admin, set before styles apply so pages don't flash.
-        FilamentView::registerRenderHook(PanelsRenderHook::HEAD_START, fn () => new HtmlString('<script>document.documentElement.dataset.sbMotion = ' . json_encode(in_array(config('app.motion'), ['off', 'standard', 'rich'], true) ? config('app.motion') : 'rich') . ';</script>'));
+        FilamentView::registerRenderHook(PanelsRenderHook::HEAD_START, fn () => new HtmlString('<script>document.documentElement.dataset.sbMotion = ' . json_encode(in_array(config('app.motion'), ['off', 'standard', 'rich'], true) ? config('app.motion') : 'rich') . '; document.documentElement.dataset.sbSpotlight = ' . json_encode(config('app.spotlight') ? 'on' : 'off') . ';</script>'));
         FilamentView::registerRenderHook(PanelsRenderHook::USER_MENU_BEFORE, fn () => view('filament.components.language-switcher'));
         FilamentView::registerRenderHook(PanelsRenderHook::SIMPLE_PAGE_END, fn () => view('filament.components.language-switcher', ['simple' => true]));
 
