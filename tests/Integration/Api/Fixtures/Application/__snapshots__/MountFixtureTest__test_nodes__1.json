@@ -31,6 +31,7 @@
                 "daemon_sftp_alias": null,
                 "daemon_connect": 8080,
                 "daemon_config": null,
+                "simulated": false,
                 "pivot": {
                     "mountable_type": "node",
                     "mount_id": 100,

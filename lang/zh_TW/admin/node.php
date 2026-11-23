@@ -149,4 +149,6 @@ return [
     'no_allocations_to_update' => '找不到使用所選舊 IP 位址的分配',
     'ip_updated' => '已成功更新 :count / :total 個分配',
     'ip_update_failed' => '有 :count 個分配更新失敗',
+    'simulated' => '測試模式(無 Wings)',
+    'simulated_help' => '面板會代替此節點回應，因此不需要 Wings 也能建立伺服器並新增連接埠與 IP。伺服器不會真正執行。連接真正的 Wings 後請關閉。',
 ];

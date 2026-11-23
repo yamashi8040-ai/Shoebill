@@ -32,6 +32,7 @@ use App\Models\WebhookConfiguration;
 use App\Observers\AuditObserver;
 use App\Services\Helpers\PluginService;
 use App\Services\Helpers\SoftwareVersionService;
+use App\Services\Nodes\SimulatedWings;
 use Dedoc\Scramble\Scramble;
 use Dedoc\Scramble\Support\Generator\OpenApi;
 use Dedoc\Scramble\Support\Generator\SecurityScheme;
@@ -92,6 +93,8 @@ class AppServiceProvider extends ServiceProvider
                 ->timeout(config('panel.guzzle.timeout'))
                 ->connectTimeout(config('panel.guzzle.connect_timeout'))
                 ->baseUrl($node->getConnectionAddress())
+                // Shoebill test mode: the panel answers for a node that has no Wings.
+                ->when($node->simulated, fn ($request) => $request->withMiddleware(SimulatedWings::middleware($node)))
         );
 
         Passkeys::useUserModel(User::class);

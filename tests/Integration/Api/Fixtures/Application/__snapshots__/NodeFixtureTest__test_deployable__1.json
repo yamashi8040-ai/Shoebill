@@ -31,6 +31,7 @@
                 "daemon_sftp_alias": null,
                 "daemon_connect": 8080,
                 "daemon_config": null,
+                "simulated": false,
                 "servers_sum_memory": 512,
                 "servers_sum_disk": 512,
                 "servers_sum_cpu": 0,

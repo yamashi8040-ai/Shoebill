@@ -61,6 +61,7 @@
                             "daemon_sftp_alias": null,
                             "daemon_connect": 8080,
                             "daemon_config": null,
+                            "simulated": false,
                             "pivot": {
                                 "database_host_id": 100,
                                 "node_id": 100

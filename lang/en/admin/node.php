@@ -317,4 +317,6 @@ return [
             'throttles_line_reset_interval' => 'How often the line counter resets, in milliseconds.',
         ],
     ],
+    'simulated' => 'Test Mode (no Wings)',
+    'simulated_help' => 'The panel answers for this node itself, so you can create servers and add ports and IPs without Wings. Servers never actually run. Turn off once real Wings is connected.',
 ];

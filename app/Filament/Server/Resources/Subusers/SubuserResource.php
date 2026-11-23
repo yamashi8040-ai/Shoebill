@@ -25,15 +25,14 @@ use Filament\Actions\EditAction;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\PageRegistration;
 use Filament\Resources\Resource;
-use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
-use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -78,7 +77,7 @@ class SubuserResource extends Resource
             $descriptions = [];
 
             foreach ($data['permissions'] as $permission) {
-                $options[$permission] = str($permission)->headline();
+                $options[$permission] = trans()->has("server/user.permission_names.$permission") ? trans("server/user.permission_names.$permission") : str($permission)->headline();
                 $descriptions[$permission] = trans($data['translation_prefix']. '.' . $data['name'] . '_' . str($permission)->replace('-', '_'));
                 $permissionsArray[$data['name']][] = $permission;
             }
@@ -159,30 +158,19 @@ class SubuserResource extends Resource
                                 TextInput::make('email')
                                     ->inlineLabel()
                                     ->disabled()
-                                    ->columnSpan([
-                                        'default' => 1,
-                                        'sm' => 1,
-                                        'md' => 4,
-                                        'lg' => 5,
-                                    ])
+                                    ->columnSpanFull()
                                     ->formatStateUsing(fn (Subuser $subuser) => $subuser->user->email),
-                                Actions::make([
-                                    Action::make('exclude_assignAll')
-                                        ->label(trans('server/user.assign_all'))
-                                        ->action(function (Set $set) use ($permissionsArray) {
-                                            $permissions = $permissionsArray;
-                                            foreach ($permissions as $key => $value) {
-                                                $allValues = array_unique($value);
-                                                $set($key, $allValues);
-                                            }
-                                        }),
-                                ])
-                                    ->columnSpan([
-                                        'default' => 1,
-                                        'sm' => 1,
-                                        'md' => 1,
-                                        'lg' => 1,
-                                    ]),
+                                Toggle::make('exclude_all_permissions')
+                                    ->label(trans('server/user.all_permissions'))
+                                    ->helperText(trans('server/user.all_permissions_help'))
+                                    ->dehydrated(false)
+                                    ->live()
+                                    ->afterStateUpdated(function (bool $state, Set $set) use ($permissionsArray) {
+                                        foreach ($permissionsArray as $key => $value) {
+                                            $set($key, $state ? array_values(array_unique($value)) : []);
+                                        }
+                                    })
+                                    ->columnSpanFull(),
                                 Tabs::make()
                                     ->columnSpanFull()
                                     ->schema($tabs),
@@ -218,7 +206,10 @@ class SubuserResource extends Resource
             ])
             ->toolbarActions([
                 CreateAction::make('invite')
-                    ->hiddenLabel()
+                    ->label(trans('server/user.invite_user'))
+                    ->hiddenLabel(false)
+                    ->button()
+                    ->iconSize(null)
                     ->icon(TablerIcon::UserPlus)
                     ->tooltip(trans('server/user.invite_user'))
                     ->createAnother(false)
@@ -236,30 +227,20 @@ class SubuserResource extends Resource
                                 TextInput::make('email')
                                     ->email()
                                     ->inlineLabel()
-                                    ->columnSpan([
-                                        'default' => 1,
-                                        'sm' => 1,
-                                        'md' => 4,
-                                        'lg' => 5,
-                                    ])
+                                    ->columnSpanFull()
                                     ->required(),
-                                Actions::make([
-                                    Action::make('exclude_assignAll')
-                                        ->label(trans('server/user.assign_all'))
-                                        ->action(function (Set $set, Get $get) use ($permissionsArray) {
-                                            $permissions = $permissionsArray;
-                                            foreach ($permissions as $key => $value) {
-                                                $allValues = array_unique($value);
-                                                $set($key, $allValues);
-                                            }
-                                        }),
-                                ])
-                                    ->columnSpan([
-                                        'default' => 1,
-                                        'sm' => 1,
-                                        'md' => 1,
-                                        'lg' => 1,
-                                    ]),
+                                // Shoebill: one switch for every permission (Pterodactyl's "select all"), and off clears them again.
+                                Toggle::make('exclude_all_permissions')
+                                    ->label(trans('server/user.all_permissions'))
+                                    ->helperText(trans('server/user.all_permissions_help'))
+                                    ->dehydrated(false)
+                                    ->live()
+                                    ->afterStateUpdated(function (bool $state, Set $set) use ($permissionsArray) {
+                                        foreach ($permissionsArray as $key => $value) {
+                                            $set($key, $state ? array_values(array_unique($value)) : []);
+                                        }
+                                    })
+                                    ->columnSpanFull(),
                                 Tabs::make()
                                     ->columnSpanFull()
                                     ->schema($tabs),

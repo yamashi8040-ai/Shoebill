@@ -438,6 +438,26 @@ class NodeResource extends Resource
                             1 => 'success',
                             0 => 'danger',
                         ]),
+                    ToggleButtons::make('simulated')
+                        ->columnSpan([
+                            'default' => 1,
+                            'sm' => 1,
+                            'md' => 1,
+                            'lg' => 2,
+                        ])
+                        ->label(trans('admin/node.simulated'))
+                        ->inline()
+                        ->required()
+                        ->hintIcon(TablerIcon::QuestionMark, trans('admin/node.simulated_help'))
+                        ->stateCast(new BooleanStateCast(false, true))
+                        ->options([
+                            1 => trans('admin/node.enabled'),
+                            0 => trans('admin/node.disabled'),
+                        ])
+                        ->colors([
+                            1 => 'warning',
+                            0 => 'gray',
+                        ]),
                     ToggleButtons::make('maintenance_mode')
                         ->columnSpan([
                             'default' => 1,

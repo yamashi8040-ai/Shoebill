@@ -14,6 +14,7 @@
         "daemon_listen": 8080,
         "daemon_connect": 8080,
         "maintenance_mode": false,
+        "simulated": false,
         "tags": [
             "fixture-store"
         ],

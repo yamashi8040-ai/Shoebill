@@ -146,4 +146,6 @@ return [
     'no_allocations_to_update' => '找不到所选旧IP地址的分配',
     'ip_updated' => '成功更新 :count / :total 个分配',
     'ip_update_failed' => ':count 个分配更新失败',
+    'simulated' => '测试模式(无 Wings)',
+    'simulated_help' => '面板会代替此节点应答，因此无需 Wings 也能创建服务器并添加端口和 IP。服务器不会真正运行。连接真正的 Wings 后请关闭。',
 ];

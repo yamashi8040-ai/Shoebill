@@ -235,6 +235,20 @@ class CreateNode extends CreateRecord
                     'lg' => 4,
                 ])
                 ->schema([
+                    ToggleButtons::make('simulated')
+                        ->required()
+                        ->label(trans('admin/node.simulated'))->inline()
+                        ->columnSpan(1)
+                        ->default(false)
+                        ->hintIcon(TablerIcon::QuestionMark, trans('admin/node.simulated_help'))
+                        ->options([
+                            true => trans('admin/node.enabled'),
+                            false => trans('admin/node.disabled'),
+                        ])
+                        ->colors([
+                            true => 'warning',
+                            false => 'gray',
+                        ]),
                     ToggleButtons::make('maintenance_mode')
                         ->required()
                         ->label(trans('admin/node.maintenance_mode'))->inline()
