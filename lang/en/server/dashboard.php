@@ -25,4 +25,6 @@ return [
 
     'power_actions' => 'Power Actions',
     'power_action_sent' => ':action sent to :name',
+    'favorite_add' => 'Add to favourites',
+    'favorite_remove' => 'Remove from favourites',
 ];

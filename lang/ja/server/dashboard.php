@@ -25,4 +25,6 @@ return [
 
     'power_actions' => '電源',
     'power_action_sent' => ':nameに:actionを送信しました',
+    'favorite_add' => 'お気に入りに追加',
+    'favorite_remove' => 'お気に入りから外す',
 ];

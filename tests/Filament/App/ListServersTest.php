@@ -1,8 +1,10 @@
 <?php
 
 use App\Enums\CustomizationKey;
+use App\Enums\ShoebillFeature;
 use App\Enums\SubuserPermission;
 use App\Filament\App\Resources\Servers\Pages\ListServers;
+use App\Services\Features\FeatureService;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -225,4 +227,31 @@ it('does not query per row in the list layout', function () {
     }
 
     expect($count())->toBe($baseline);
+});
+
+it('puts starred servers first and the star toggles', function () {
+    [$user, $first] = generateTestAccount();
+    $user->setCustomization(CustomizationKey::DashboardLayout, 'table');
+    $second = createServerModel(['user_id' => $user->id, 'node_id' => $first->node_id, 'name' => 'zz last by name']);
+    $first->update(['name' => 'aa first by name']);
+    Http::fake(['*' => Http::failedConnection()]);
+    $this->actingAs($user);
+
+    livewire(ListServers::class)
+        ->callTableAction('favorite', $second)
+        ->assertCanSeeTableRecords([$second, $first], inOrder: true);
+
+    expect($user->favoriteServers()->pluck('servers.id')->all())->toBe([$second->id]);
+
+    livewire(ListServers::class)->callTableAction('favorite', $second);
+    expect($user->favoriteServers()->count())->toBe(0);
+});
+
+it('hides the star when favourites are switched off', function () {
+    [$user, $server] = generateTestAccount();
+    Http::fake(['*' => Http::failedConnection()]);
+    app(FeatureService::class)->set(ShoebillFeature::FavoriteServers, 'global', false);
+    $this->actingAs($user);
+
+    livewire(ListServers::class)->assertTableActionHidden('favorite', $server);
 });

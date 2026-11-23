@@ -69,6 +69,7 @@ class Features extends Page implements HasSchemas
                     ->label($feature->getLabel())
                     ->helperText(fn () => $this->helperText($feature))
                     ->inline()
+                    ->required()
                     ->live()
                     ->options(['on' => trans('admin/feature.on'), 'off' => trans('admin/feature.off')])
                     ->colors(['on' => 'success', 'off' => 'danger'])

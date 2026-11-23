@@ -10,6 +10,10 @@ return [
     'off' => 'OFF',
     'saved' => '保存しました',
     'features' => [
+        'favorite_servers' => [
+            'label' => 'お気に入りサーバー',
+            'description' => 'ユーザーがサーバーに星を付けて、一覧の上に固定できます。',
+        ],
         'status_page' => [
             'label' => 'ステータスページ',
             'description' => 'サーバーごとの平均・稼働率・グラフ。',

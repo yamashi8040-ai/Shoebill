@@ -25,4 +25,6 @@ return [
 
     'power_actions' => '전원 작업',
     'power_action_sent' => ':action이(가) :name에 전송되었습니다',
+    'favorite_add' => '즐겨찾기에 추가',
+    'favorite_remove' => '즐겨찾기에서 제거',
 ];

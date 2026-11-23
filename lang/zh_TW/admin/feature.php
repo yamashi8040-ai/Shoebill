@@ -10,6 +10,10 @@ return [
     'off' => '關',
     'saved' => '已儲存',
     'features' => [
+        'favorite_servers' => [
+            'label' => '最愛伺服器',
+            'description' => '使用者可為伺服器加上星號，讓它固定在清單頂端。',
+        ],
         'status_page' => [
             'label' => '狀態頁',
             'description' => '每台伺服器的平均值、運作率和圖表。',

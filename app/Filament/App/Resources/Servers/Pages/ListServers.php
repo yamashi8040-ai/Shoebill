@@ -4,6 +4,7 @@ namespace App\Filament\App\Resources\Servers\Pages;
 
 use App\Enums\CustomizationKey;
 use App\Enums\ServerResourceType;
+use App\Enums\ShoebillFeature;
 use App\Enums\SubuserPermission;
 use App\Enums\TablerIcon;
 use App\Filament\App\Resources\Servers\ServerResource;
@@ -12,6 +13,7 @@ use App\Filament\Components\Tables\Columns\ServerEntryColumn;
 use App\Filament\Server\Pages\Console;
 use App\Models\Server;
 use App\Repositories\Daemon\DaemonServerRepository;
+use App\Services\Features\FeatureService;
 use App\Traits\Filament\CanCustomizeHeaderActions;
 use App\Traits\Filament\CanCustomizeHeaderWidgets;
 use Filament\Actions\Action;
@@ -29,6 +31,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
 
 class ListServers extends ListRecords
@@ -140,7 +143,7 @@ class ListServers extends ListRecords
             ->defaultPaginationPageOption($defaultPerPage)
             ->query(fn () => $baseQuery)
             // Grid cards are lazy components that reload these on hydrate, so only list mode gets transfer and the viewer's subuser.
-            ->modifyQueryUsing(fn (Builder $query) => $query->with($usingGrid ? ['egg', 'node'] : [
+            ->modifyQueryUsing(fn (Builder $query) => $this->favoritesFirst($query)->with($usingGrid ? ['egg', 'node'] : [
                 'egg',
                 'node',
                 'transfer',
@@ -149,7 +152,7 @@ class ListServers extends ListRecords
             ->poll($usingGrid ? null : '15s')
             ->columns($usingGrid ? $this->gridColumns() : $this->tableColumns())
             ->recordUrl(!$usingGrid ? (fn (Server $server) => Console::getUrl(panel: 'server', tenant: $server)) : null)
-            ->recordActions(!$usingGrid ? static::getPowerActionGroup() : [])
+            ->recordActions($usingGrid ? [$this->favoriteAction()] : [$this->favoriteAction(), static::getPowerActionGroup()])
             ->recordActionsAlignment(Alignment::Center->value)
             ->contentGrid($usingGrid ? ['default' => 1, 'md' => 2] : null)
             ->emptyStateIcon(TablerIcon::BrandDocker)
@@ -167,6 +170,34 @@ class ListServers extends ListRecords
                     ->hidden(fn () => $this->showingOwnServers())
                     ->preload(),
             ]);
+    }
+
+    private function favoritesEnabled(): bool
+    {
+        return app(FeatureService::class)->enabled(ShoebillFeature::FavoriteServers);
+    }
+
+    /** Starred servers come first; the flag is selected (not only ordered by) so it also works with DISTINCT. */
+    private function favoritesFirst(Builder $query): Builder
+    {
+        if (!$this->favoritesEnabled()) {
+            return $query;
+        }
+
+        return $query
+            ->addSelect(['is_favorite' => DB::table('server_favorites')->selectRaw('count(*)')->whereColumn('server_favorites.server_id', 'servers.id')->where('server_favorites.user_id', user()?->id)])
+            ->orderByDesc('is_favorite');
+    }
+
+    private function favoriteAction(): Action
+    {
+        return Action::make('favorite')
+            ->iconButton()
+            ->visible(fn () => $this->favoritesEnabled())
+            ->icon(fn (Server $server) => $server->is_favorite ? TablerIcon::StarFilled : TablerIcon::Star)
+            ->color(fn (Server $server) => $server->is_favorite ? 'warning' : 'gray')
+            ->tooltip(fn (Server $server) => $server->is_favorite ? trans('server/dashboard.favorite_remove') : trans('server/dashboard.favorite_add'))
+            ->action(fn (Server $server) => user()?->favoriteServers()->toggle($server->id));
     }
 
     public function updatedActiveTab(): void

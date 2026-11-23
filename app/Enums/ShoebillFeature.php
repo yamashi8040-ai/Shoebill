@@ -13,6 +13,7 @@ enum ShoebillFeature: string implements HasLabel
     case StatusPage = 'status_page';
     case PlayerHistory = 'player_history';
     case CrashAlerts = 'crash_alerts';
+    case FavoriteServers = 'favorite_servers';
 
     public function getLabel(): string
     {
@@ -27,6 +28,6 @@ enum ShoebillFeature: string implements HasLabel
     /** Whether nodes and servers can override the global switch (false for panel-wide tools). */
     public function isServerFeature(): bool
     {
-        return true;
+        return $this !== self::FavoriteServers;
     }
 }

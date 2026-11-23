@@ -10,6 +10,10 @@ return [
     'off' => '关',
     'saved' => '已保存',
     'features' => [
+        'favorite_servers' => [
+            'label' => '收藏服务器',
+            'description' => '用户可以为服务器加星标，让它固定在列表顶部。',
+        ],
         'status_page' => [
             'label' => '状态页',
             'description' => '每台服务器的平均值、在线率和图表。',

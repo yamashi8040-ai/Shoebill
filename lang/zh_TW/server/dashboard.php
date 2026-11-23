@@ -25,4 +25,6 @@ return [
 
     'power_actions' => '電源操作',
     'power_action_sent' => '已將 :action 傳送至 :name',
+    'favorite_add' => '加入最愛',
+    'favorite_remove' => '從最愛移除',
 ];

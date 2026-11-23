@@ -10,6 +10,10 @@ return [
     'off' => '끄기',
     'saved' => '저장했습니다',
     'features' => [
+        'favorite_servers' => [
+            'label' => '즐겨찾는 서버',
+            'description' => '사용자가 서버에 별표를 달아 목록 맨 위에 고정할 수 있습니다.',
+        ],
         'status_page' => [
             'label' => '상태 페이지',
             'description' => '서버별 평균, 가동률, 그래프.',

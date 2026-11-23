@@ -25,4 +25,6 @@ return [
 
     'power_actions' => '电源操作',
     'power_action_sent' => ':action 发送到 :name',
+    'favorite_add' => '加入收藏',
+    'favorite_remove' => '取消收藏',
 ];

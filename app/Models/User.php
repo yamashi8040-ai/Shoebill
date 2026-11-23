@@ -312,6 +312,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * Returns all the servers that a user can access.
      * Either because they are an admin or because they are the owner/ a subuser of the server.
      */
+    /** @return BelongsToMany<Server, $this> servers this user starred; they sort first on the server list */
+    public function favoriteServers(): BelongsToMany
+    {
+        return $this->belongsToMany(Server::class, 'server_favorites');
+    }
+
     public function accessibleServers(): Builder
     {
         if ($this->canned('viewAny', Server::class)) {

@@ -22,6 +22,7 @@ class FeatureOverrides
                 ->label($feature->getLabel())
                 ->helperText($feature->getDescription())
                 ->inline()
+                ->required()
                 ->dehydrated(false)
                 ->live()
                 ->options(['inherit' => trans('admin/feature.inherit'), 'on' => trans('admin/feature.on'), 'off' => trans('admin/feature.off')])

@@ -10,6 +10,10 @@ return [
     'off' => 'Off',
     'saved' => 'Saved',
     'features' => [
+        'favorite_servers' => [
+            'label' => 'Favourite servers',
+            'description' => 'Lets users star servers so they stay at the top of their list.',
+        ],
         'status_page' => [
             'label' => 'Status page',
             'description' => 'Averages, uptime and the chart for each server.',
