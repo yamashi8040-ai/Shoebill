@@ -16,4 +16,5 @@ return [
         'body' => ':server에서 하위 사용자로부터 제거되었습니다.',
     ],
     'server_crashed' => '서버가 예기치 않게 중지됨',
+    'node_unreachable' => '노드에 연결할 수 없습니다',
 ];

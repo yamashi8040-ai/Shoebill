@@ -94,7 +94,7 @@ class SoftwareVersionService
     }
 
     /**
-     * The version for display purposes, e.g. "1.2.3" or "canary (0a1b2c3)". Never use this for comparisons.
+     * The version for display purposes, e.g. "1.2.3" or, on Shoebill builds, "1.0.0-alpha.1 (0a1b2c3)". Never use this for comparisons.
      */
     public function currentPanelVersion(): string
     {
@@ -112,12 +112,12 @@ class SoftwareVersionService
                     $path = base_path('.git/' . trim($head[1]));
 
                     if (file_exists($path)) {
-                        return 'canary (' . substr(file_get_contents($path), 0, 7) . ')';
+                        return config('app.shoebill_version') . ' (' . substr(file_get_contents($path), 0, 7) . ')';
                     }
                 }
             }
 
-            return $version;
+            return config('app.shoebill_version');
         });
     }
 

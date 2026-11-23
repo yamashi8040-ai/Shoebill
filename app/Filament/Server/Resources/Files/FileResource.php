@@ -44,4 +44,15 @@ class FileResource extends Resource
     {
         return trans('server/file.title');
     }
+
+    public static function getModelLabel(): string
+    {
+        return trans('server/file.title');
+    }
+
+    // Translated, so empty tables don't read "No backup found" in other languages.
+    public static function getPluralModelLabel(): string
+    {
+        return trans('server/file.title');
+    }
 }

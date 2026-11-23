@@ -324,4 +324,15 @@ class SubuserResource extends Resource
     {
         return trans('server/user.title');
     }
+
+    public static function getModelLabel(): string
+    {
+        return trans('server/user.title');
+    }
+
+    // Translated, so empty tables don't read "No backup found" in other languages.
+    public static function getPluralModelLabel(): string
+    {
+        return trans('server/user.title');
+    }
 }

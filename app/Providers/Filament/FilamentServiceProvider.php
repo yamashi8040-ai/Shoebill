@@ -21,6 +21,7 @@ use Filament\Forms\Components\TextInput\Actions\CopyAction;
 use Filament\Forms\Components\TextInput\Actions\HidePasswordAction;
 use Filament\Forms\Components\TextInput\Actions\ShowPasswordAction;
 use Filament\Forms\View\FormsIconAlias;
+use Filament\Notifications\Notification;
 use Filament\Notifications\View\NotificationsIconAlias;
 use Filament\Schemas\View\SchemaIconAlias;
 use Filament\Support\Colors\Color;
@@ -33,12 +34,14 @@ use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\View\TablesIconAlias;
 use Filament\View\PanelsIconAlias;
 use Filament\View\PanelsRenderHook;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Component;
 use Livewire\Livewire;
 
 use function Livewire\before;
+use function Livewire\on;
 use function Livewire\store;
 
 class FilamentServiceProvider extends ServiceProvider
@@ -48,6 +51,20 @@ class FilamentServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // A node that can't be reached shows a notification instead of replacing the page with an error screen.
+        on('exception', function ($component, \Throwable $e, callable $stopPropagation) {
+            if (!$e instanceof ConnectionException) {
+                return;
+            }
+            report($e);
+            Notification::make()
+                ->danger()
+                ->title(trans('notifications.node_unreachable'))
+                ->body(trans('server/file.alerts.files_node_error.offline'))
+                ->send();
+            $stopPropagation();
+        });
+
         FilamentColor::register([
             'danger' => Color::Red,
             'gray' => Color::Zinc,

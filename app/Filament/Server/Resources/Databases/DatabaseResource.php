@@ -165,7 +165,10 @@ class DatabaseResource extends Resource
             ])
             ->toolbarActions([
                 CreateAction::make('new')
-                    ->hiddenLabel()
+                    ->hiddenLabel(false)
+                    ->button()
+                    ->iconSize(null)
+                    ->label(fn () => trans('server/database.create_database') . ' (' . $server->databases()->count() . '/' . ($server->database_limit ?? 0) . ')')
                     ->icon(fn () => $server->databases()->count() >= $server->database_limit ? TablerIcon::DatabaseX : TablerIcon::DatabasePlus)
                     ->tooltip(fn () => $server->databases()->count() >= $server->database_limit ? trans('server/database.limit') : trans('server/database.create_database'))
                     ->disabled(fn () => $server->databases()->count() >= $server->database_limit)
@@ -225,6 +228,17 @@ class DatabaseResource extends Resource
     }
 
     public static function getNavigationLabel(): string
+    {
+        return trans('server/database.title');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return trans('server/database.title');
+    }
+
+    // Translated, so empty tables don't read "No backup found" in other languages.
+    public static function getPluralModelLabel(): string
     {
         return trans('server/database.title');
     }

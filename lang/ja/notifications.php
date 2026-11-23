@@ -20,4 +20,5 @@ return [
         'body' => ':server からサブユーザーとして削除されました。',
     ],
     'server_crashed' => 'サーバーが予期せず停止しました',
+    'node_unreachable' => 'ノードに接続できませんでした',
 ];

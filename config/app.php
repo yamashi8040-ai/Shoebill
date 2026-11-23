@@ -12,6 +12,9 @@ return [
     'languages' => array_filter(explode(',', (string) env('APP_LANGUAGES', ''))),
     'favicon' => env('APP_FAVICON', '/shoebill.svg'),
 
+    // Shoebill's own release. app.version stays "canary" so Pelican's self-updater never swaps in an upstream Pelican release.
+    'shoebill_version' => '1.0.0-alpha.1',
+
     'version' => 'canary',
 
     'timezone' => 'UTC',

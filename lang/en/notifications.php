@@ -20,4 +20,5 @@ return [
         'body' => 'You have been removed as a subuser from :server.',
     ],
     'server_crashed' => 'Server Stopped Unexpectedly',
+    'node_unreachable' => 'Could not reach the node',
 ];

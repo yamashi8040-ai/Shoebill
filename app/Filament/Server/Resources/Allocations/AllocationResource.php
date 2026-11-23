@@ -141,4 +141,15 @@ class AllocationResource extends Resource
     {
         return trans('server/network.title');
     }
+
+    public static function getModelLabel(): string
+    {
+        return trans('server/network.title');
+    }
+
+    // Translated, so empty tables don't read "No backup found" in other languages.
+    public static function getPluralModelLabel(): string
+    {
+        return trans('server/network.title');
+    }
 }

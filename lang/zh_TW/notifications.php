@@ -20,4 +20,5 @@ return [
         'body' => '您已從 :server 的子使用者中移除。',
     ],
     'server_crashed' => '伺服器意外停止',
+    'node_unreachable' => '無法連線到節點',
 ];

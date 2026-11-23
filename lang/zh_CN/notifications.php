@@ -16,4 +16,5 @@ return [
         'body' => '您已经被从 :server 移除为子用户。',
     ],
     'server_crashed' => '服务器意外停止',
+    'node_unreachable' => '无法连接到节点',
 ];

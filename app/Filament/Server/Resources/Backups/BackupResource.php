@@ -290,7 +290,11 @@ class BackupResource extends Resource
                     ->disabled(fn () => $server->backups()->count() >= $server->backup_limit)
                     ->color(fn () => $server->backups()->count() >= $server->backup_limit ? 'danger' : 'primary')
                     ->createAnother(false)
-                    ->hiddenLabel()
+                    // Shoebill: labelled like Pterodactyl's "Create Backup" button instead of a bare icon.
+                    ->hiddenLabel(false)
+                    ->button()
+                    ->iconSize(null)
+                    ->label(fn () => trans('server/backup.actions.create.title') . ' (' . $server->backups()->count() . '/' . ($server->backup_limit ?? 0) . ')')
                     ->successNotificationTitle(null)
                     ->action(function (InitiateBackupService $initiateBackupService, $data) use ($server) {
                         $action = $initiateBackupService
@@ -334,6 +338,17 @@ class BackupResource extends Resource
     }
 
     public static function getNavigationLabel(): string
+    {
+        return trans('server/backup.title');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return trans('server/backup.title');
+    }
+
+    // Translated, so empty tables don't read "No backup found" in other languages.
+    public static function getPluralModelLabel(): string
     {
         return trans('server/backup.title');
     }
