@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'title' => 'Features',
+    'global_description' => 'Turn Shoebill features on or off for the whole panel. Nodes and servers can override this on their Features tab.',
+    'overridden' => 'Overridden on :nodes node(s) and :servers server(s).',
     'nav_title' => 'Features',
     'inherit' => 'Inherit',
     'on' => 'On',

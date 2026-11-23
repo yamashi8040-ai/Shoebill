@@ -122,4 +122,10 @@ return [
         ],
         'crashed' => '服务器崩溃',
     ],
+    'audit' => [
+        'feature' => [
+            'enable' => '已为整个面板启用功能 <b>:feature</b>',
+            'disable' => '已为整个面板停用功能 <b>:feature</b>',
+        ],
+    ],
 ];

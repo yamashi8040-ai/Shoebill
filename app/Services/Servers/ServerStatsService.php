@@ -6,6 +6,7 @@ use App\Models\Server;
 use App\Models\ServerStatDaily;
 use App\Models\ServerStatSample;
 use Carbon\CarbonInterface;
+use Illuminate\Support\Carbon;
 
 class ServerStatsService
 {
@@ -178,7 +179,7 @@ class ServerStatsService
             $daily = ServerStatDaily::query()->where('server_id', $server->id)->min('date');
             $sample = ServerStatSample::query()->where('server_id', $server->id)->min('created_at');
 
-            return collect([$daily, $sample])->filter()->map(fn ($at) => \Illuminate\Support\Carbon::parse($at))->min();
+            return collect([$daily, $sample])->filter()->map(fn ($at) => Carbon::parse($at))->min();
         });
     }
 }

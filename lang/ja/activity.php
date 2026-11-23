@@ -121,6 +121,10 @@ return [
         'crashed' => 'サーバーがクラッシュしました',
     ],
     'audit' => [
+        'feature' => [
+            'enable' => 'パネル全体で機能 <b>:feature</b> を ON にしました',
+            'disable' => 'パネル全体で機能 <b>:feature</b> を OFF にしました',
+        ],
         'settings' => [
             'update' => 'パネル設定を <b>:count</b> 件更新しました',
         ],

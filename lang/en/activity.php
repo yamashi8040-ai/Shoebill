@@ -127,6 +127,10 @@ return [
         'crashed' => 'Server crashed',
     ],
     'audit' => [
+        'feature' => [
+            'enable' => 'Enabled feature <b>:feature</b> for the whole panel',
+            'disable' => 'Disabled feature <b>:feature</b> for the whole panel',
+        ],
         'settings' => [
             'update' => 'Updated <b>:count</b> panel setting|Updated <b>:count</b> panel settings',
         ],

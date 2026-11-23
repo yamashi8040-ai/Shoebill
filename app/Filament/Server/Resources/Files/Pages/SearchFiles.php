@@ -2,10 +2,10 @@
 
 namespace App\Filament\Server\Resources\Files\Pages;
 
+use App\Enums\TablerIcon;
 use App\Filament\Components\Tables\Columns\BytesColumn;
 use App\Filament\Components\Tables\Columns\DateTimeColumn;
 use App\Filament\Server\Resources\Files\FileResource;
-use App\Enums\TablerIcon;
 use App\Models\File;
 use App\Models\Server;
 use App\Traits\Filament\CanCustomizeHeaderActions;

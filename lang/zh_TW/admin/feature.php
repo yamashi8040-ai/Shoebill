@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'title' => '功能',
+    'global_description' => '為整個面板開啟或關閉 Shoebill 功能。節點與伺服器可在各自的「功能」分頁中覆寫此設定。',
+    'overridden' => '已在 :nodes 個節點與 :servers 台伺服器上覆寫。',
     'nav_title' => '功能',
     'inherit' => '繼承',
     'on' => '開',

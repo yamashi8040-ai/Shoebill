@@ -125,4 +125,10 @@ return [
         ],
         'crashed' => '伺服器已當機',
     ],
+    'audit' => [
+        'feature' => [
+            'enable' => '已為整個面板啟用功能 <b>:feature</b>',
+            'disable' => '已為整個面板停用功能 <b>:feature</b>',
+        ],
+    ],
 ];

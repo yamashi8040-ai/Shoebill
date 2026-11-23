@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'title' => '機能',
+    'global_description' => 'Shoebill の機能をパネル全体で ON / OFF します。ノードとサーバーは、それぞれの「機能」タブでこの設定を上書きできます。',
+    'overridden' => ':nodes 個のノードと :servers 個のサーバーで上書きされています。',
     'nav_title' => '機能',
     'inherit' => '継承',
     'on' => 'ON',
