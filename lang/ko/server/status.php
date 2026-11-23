@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'title' => '상태',
+    'averages' => '평균',
+    'period' => '기간',
+    'periods' => ['today' => '오늘', 'week' => '최근 7일', 'month' => '최근 30일', 'all' => '전체'],
+    'avg_players' => '평균 인원',
+    'peak_players' => '최대 인원',
+    'avg_cpu' => '평균 CPU',
+    'avg_memory' => '평균 메모리',
+    'cpu' => 'CPU',
+    'memory' => '메모리',
+    'players' => '플레이어',
+    'last_24h' => '최근 24시간 (시간별 평균)',
+    'online_now' => '현재 접속: :count / :max',
+    'no_names' => '이 게임은 플레이어 이름을 제공하지 않습니다.',
+    'empty' => '아직 데이터가 없습니다. 서버가 실행 중일 때 1분마다 기록됩니다.',
+    'protocol' => ':protocol(으)로 인원 조회',
+    'no_players' => '이 게임은 인원 조회를 지원하지 않아 CPU와 메모리만 기록합니다.',
+    'protocols' => ['none' => '없음', 'minecraft' => 'Minecraft: Java Edition', 'bedrock' => 'Minecraft: Bedrock Edition', 'source' => 'Steam / Source (A2S)'],
+    'egg_field' => '플레이어 조회 방식',
+    'egg_field_help' => '상태 페이지에서 인원을 세는 방식입니다. 비워 두면 Egg의 태그와 기능으로 자동 감지합니다.',
+];

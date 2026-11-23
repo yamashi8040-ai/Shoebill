@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'title' => 'ステータス',
+    'averages' => '平均',
+    'period' => '期間',
+    'periods' => ['today' => '今日', 'week' => '過去7日間', 'month' => '過去30日間', 'all' => '全期間'],
+    'avg_players' => '平均人数',
+    'peak_players' => '最大人数',
+    'avg_cpu' => '平均CPU',
+    'avg_memory' => '平均メモリ',
+    'cpu' => 'CPU',
+    'memory' => 'メモリ',
+    'players' => 'プレイヤー',
+    'last_24h' => '過去24時間（1時間ごとの平均）',
+    'online_now' => '現在オンライン: :count / :max',
+    'no_names' => 'このゲームはプレイヤー名を公開していません。',
+    'empty' => 'まだデータがありません。サーバー稼働中は1分ごとに記録されます。',
+    'protocol' => ':protocol で人数を取得',
+    'no_players' => 'このゲームは人数を取得できないため、CPUとメモリのみ記録します。',
+    'protocols' => ['none' => 'なし', 'minecraft' => 'Minecraft: Java Edition', 'bedrock' => 'Minecraft: Bedrock Edition', 'source' => 'Steam / Source (A2S)'],
+    'egg_field' => 'プレイヤー取得方式',
+    'egg_field_help' => 'ステータスページで人数を数える方法です。空欄ならEggのタグと機能から自動判定します。',
+];

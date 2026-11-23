@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\Eggs;
 
 use App\Enums\CustomizationKey;
 use App\Enums\EditorLanguages;
+use App\Enums\QueryProtocol;
 use App\Enums\TablerIcon;
 use App\Filament\Admin\Resources\Eggs\Pages\CreateEgg;
 use App\Filament\Admin\Resources\Eggs\Pages\EditEgg;
@@ -186,6 +187,12 @@ class EggResource extends Resource
                         ->helperText(trans('admin/egg.docker_help')),
                     TagsInput::make('tags')
                         ->label(trans('admin/egg.tags'))
+                        ->columnSpan(['default' => 2, 'sm' => 2, 'md' => 2, 'lg' => 3]),
+                    Select::make('query_protocol')
+                        ->label(trans('server/status.egg_field'))
+                        ->helperText(trans('server/status.egg_field_help'))
+                        ->options(QueryProtocol::class)
+                        ->placeholder(fn (?Egg $record) => $record ? QueryProtocol::forEgg($record)->getLabel() : null)
                         ->columnSpan(['default' => 2, 'sm' => 2, 'md' => 2, 'lg' => 3]),
                     KeyValue::make('docker_images')
                         ->label(trans('admin/egg.docker_images'))

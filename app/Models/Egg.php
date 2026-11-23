@@ -40,6 +40,7 @@ use Illuminate\Support\Str;
  * @property string[]|null $file_denylist
  * @property bool $force_outgoing_ip
  * @property string[] $tags
+ * @property string|null $query_protocol
  * @property array<string, string> $startup_commands
  * @property-read Collection<int, Egg> $children
  * @property-read int|null $children_count
@@ -133,6 +134,7 @@ class Egg extends Model implements Validatable
         'script_container',
         'copy_script_from',
         'tags',
+        'query_protocol',
     ];
 
     /** @var array<array-key, string[]> */
@@ -156,6 +158,7 @@ class Egg extends Model implements Validatable
         'update_url' => ['sometimes', 'nullable', 'string'],
         'force_outgoing_ip' => ['sometimes', 'boolean'],
         'tags' => ['array'],
+        'query_protocol' => ['nullable', 'string', 'max:32'],
     ];
 
     protected $attributes = [

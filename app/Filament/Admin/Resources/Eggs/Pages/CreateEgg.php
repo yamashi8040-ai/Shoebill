@@ -3,10 +3,12 @@
 namespace App\Filament\Admin\Resources\Eggs\Pages;
 
 use App\Enums\EditorLanguages;
+use App\Enums\QueryProtocol;
 use App\Enums\TablerIcon;
 use App\Filament\Admin\Resources\Eggs\EggResource;
 use App\Filament\Components\Forms\Fields\CopyFrom;
 use App\Filament\Components\Forms\Fields\MonacoEditor;
+use App\Models\Egg;
 use App\Models\EggVariable;
 use App\Traits\Filament\CanCustomizeHeaderActions;
 use App\Traits\Filament\CanCustomizeHeaderWidgets;
@@ -124,6 +126,12 @@ class CreateEgg extends CreateRecord
                         ->default(1),
                     TagsInput::make('tags')
                         ->label(trans('admin/egg.tags'))
+                        ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2]),
+                    Select::make('query_protocol')
+                        ->label(trans('server/status.egg_field'))
+                        ->helperText(trans('server/status.egg_field_help'))
+                        ->options(QueryProtocol::class)
+                        ->placeholder(fn (?Egg $record) => $record ? QueryProtocol::forEgg($record)->getLabel() : null)
                         ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 2]),
                     TextInput::make('update_url')
                         ->label(trans('admin/egg.update_url'))

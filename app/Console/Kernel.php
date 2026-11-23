@@ -9,6 +9,8 @@ use App\Console\Commands\Maintenance\PruneImagesCommand;
 use App\Console\Commands\Maintenance\PruneOrphanedBackupsCommand;
 use App\Console\Commands\Schedule\ProcessRunnableCommand;
 use App\Console\Commands\Server\AdvanceTransferBatchesCommand;
+use App\Console\Commands\Server\RecordServerStatsCommand;
+use App\Console\Commands\Server\RollupServerStatsCommand;
 use App\Models\ActivityLog;
 use App\Models\Webhook;
 use Illuminate\Console\Scheduling\Schedule;
@@ -43,6 +45,8 @@ class Kernel extends ConsoleKernel
         $schedule->command(ProcessRunnableCommand::class)->everyMinute()->withoutOverlapping(10);
 
         $schedule->command(AdvanceTransferBatchesCommand::class)->everyMinute();
+        $schedule->command(RecordServerStatsCommand::class)->everyMinute()->withoutOverlapping(5)->runInBackground();
+        $schedule->command(RollupServerStatsCommand::class)->dailyAt('00:01');
 
         $schedule->command(CleanServiceBackupFilesCommand::class)->daily();
         $schedule->command(PruneImagesCommand::class)->daily();

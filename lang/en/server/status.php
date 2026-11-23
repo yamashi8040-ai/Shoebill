@@ -1,0 +1,34 @@
+<?php
+
+return [
+    'title' => 'Status',
+    'averages' => 'Averages',
+    'period' => 'Period',
+    'periods' => [
+        'today' => 'Today',
+        'week' => 'Last 7 days',
+        'month' => 'Last 30 days',
+        'all' => 'All time',
+    ],
+    'avg_players' => 'Avg. players',
+    'peak_players' => 'Peak players',
+    'avg_cpu' => 'Avg. CPU',
+    'avg_memory' => 'Avg. memory',
+    'cpu' => 'CPU',
+    'memory' => 'Memory',
+    'players' => 'Players',
+    'last_24h' => 'Last 24 hours (hourly average)',
+    'online_now' => 'Online now: :count / :max',
+    'no_names' => 'This game does not share player names.',
+    'empty' => 'No data yet. Samples are recorded every minute while the server is running.',
+    'protocol' => 'Player counts via :protocol',
+    'no_players' => 'This game has no player query, so only CPU and memory are tracked.',
+    'protocols' => [
+        'none' => 'None',
+        'minecraft' => 'Minecraft: Java Edition',
+        'bedrock' => 'Minecraft: Bedrock Edition',
+        'source' => 'Steam / Source (A2S)',
+    ],
+    'egg_field' => 'Player query',
+    'egg_field_help' => 'How Shoebill counts players for the Status page. Leave empty to detect it from the egg\'s tags and features.',
+];
