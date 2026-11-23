@@ -17,6 +17,8 @@ return [
     ],
     'general' => [
         'app_name' => 'App Name',
+        'accent' => 'Accent Color',
+        'accent_help' => 'Default primary color for every user. Users can override it on their profile.',
         'app_logo' => 'App Logo',
         'app_logo_help' => 'Logo should be placed in the public folder located in the root panel directory. Leave blank to use App Name instead.',
         'app_favicon' => 'App Favicon',

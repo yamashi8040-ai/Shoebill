@@ -163,3 +163,21 @@ it('fills the button style toggle with one of its options and requires every tog
     expect($toggles)->not->toBeEmpty()
         ->and($toggles->reject->isRequired()->map->getName()->values()->all())->toBe([]);
 });
+
+it('saves a valid accent color and rejects an invalid one', function () {
+    /** @var User $user */
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    livewire(EditProfile::class)
+        ->fillForm(['accent_color' => 'red; }'])
+        ->call('save')
+        ->assertHasFormErrors(['accent_color']);
+
+    livewire(EditProfile::class)
+        ->fillForm(['accent_color' => '#ff8800'])
+        ->call('save')
+        ->assertHasNoFormErrors();
+
+    expect($user->refresh()->accent_color)->toBe('#ff8800');
+});

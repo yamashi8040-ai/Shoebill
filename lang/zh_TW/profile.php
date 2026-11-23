@@ -80,4 +80,6 @@ return [
     'no_ssh_keys' => '沒有 SSH 金鑰',
     'activity_info' => '顯示最後 50 筆活動日誌',
     'classic_ui' => '經典介面',
+    'accent_color' => '強調色',
+    'accent_color_help' => '你的個人主色。留空則使用面板預設值。',
 ];

@@ -24,6 +24,7 @@ use Filament\Actions\ActionGroup;
 use Filament\Auth\MultiFactor\Contracts\MultiFactorAuthenticationProvider;
 use Filament\Auth\Pages\EditProfile as BaseEditProfile;
 use Filament\Facades\Filament;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -172,6 +173,11 @@ class EditProfile extends BaseEditProfile
                         ->helperText(fn ($state, LanguageService $languageService) => new HtmlString($languageService->isLanguageTranslated($state) ? ''
                             : trans('profile.language_help', ['state' => $state]) . ' <u><a href="https://crowdin.com/project/pelican-dev/">Update On Crowdin</a></u>'))
                         ->options(fn (LanguageService $languageService) => $languageService->getAvailableLanguages()),
+                    ColorPicker::make('accent_color')
+                        ->label(trans('profile.accent_color'))
+                        ->helperText(trans('profile.accent_color_help'))
+                        ->regex('/^#[0-9a-fA-F]{6}$/')
+                        ->placeholder(config('app.accent') ?: '#3b82f6'),
                     FileUpload::make('avatar')
                         ->visible(fn () => config('panel.filament.uploadable-avatars'))
                         ->avatar()

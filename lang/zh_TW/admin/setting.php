@@ -15,6 +15,8 @@ return [
     ],
     'general' => [
         'app_name' => '应用名称',
+        'accent' => '強調色',
+        'accent_help' => '所有使用者的預設主色。使用者可在個人資料中覆寫。',
         'app_logo' => '应用 Logo',
         'app_logo_help' => 'Logo 应放置在面板根目录的 public 文件夹中。留空则改用应用名称。',
         'app_favicon' => '应用 Favicon',

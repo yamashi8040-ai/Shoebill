@@ -23,6 +23,8 @@ return [
     'password_confirmation' => 'パスワード確認',
     'timezone' => 'タイムゾーン',
     'language' => '言語',
+    'accent_color' => 'アクセントカラー',
+    'accent_color_help' => '自分用のメインカラー。空欄でパネルの既定色を使います。',
     'language_help' => 'あなたの言語 :state はまだ翻訳されていません！',
     'link' => 'リンク ',
     'unlink' => 'リンク解除 ',

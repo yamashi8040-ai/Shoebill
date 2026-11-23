@@ -15,6 +15,8 @@ return [
     ],
     'general' => [
         'app_name' => '网站名称',
+        'accent' => '强调色',
+        'accent_help' => '所有用户的默认主色。用户可在个人资料中覆盖。',
         'app_logo' => '网站Logo',
         'app_logo_help' => '网站Logo应该放在网站根目录下的Public中，留空即使默认。',
         'app_favicon' => '应用图标',

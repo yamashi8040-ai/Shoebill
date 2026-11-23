@@ -59,6 +59,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $password
  * @property string|null $remember_token
  * @property string $language
+ * @property string|null $accent_color
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property string $username
@@ -151,6 +152,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'email',
         'password',
         'language',
+        'accent_color',
         'timezone',
         'mfa_app_secret',
         'mfa_app_recovery_codes',
@@ -191,6 +193,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'username' => ['required', 'between:1,255', 'unique:users,username'],
         'password' => ['sometimes', 'nullable', 'string'],
         'language' => ['string'],
+        'accent_color' => ['nullable', 'regex:/^#[0-9a-fA-F]{6}$/'],
         'timezone' => ['string'],
         'mfa_app_secret' => ['nullable', 'string'],
         'mfa_app_recovery_codes' => ['nullable', 'array'],

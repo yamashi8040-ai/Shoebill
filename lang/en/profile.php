@@ -23,6 +23,8 @@ return [
     'password_confirmation' => 'Password Confirmation',
     'timezone' => 'Timezone',
     'language' => 'Language',
+    'accent_color' => 'Accent Color',
+    'accent_color_help' => 'Your own primary color. Leave empty to use the panel default.',
     'language_help' => 'Your language :state has not been translated yet!',
     'link' => 'Link :name',
     'unlink' => 'Unlink :name',

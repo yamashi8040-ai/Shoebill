@@ -23,6 +23,7 @@ use Exception;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
 use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Hidden;
@@ -229,6 +230,12 @@ class Settings extends Page implements HasSchemas
                 ->label(trans('admin/setting.general.app_name'))
                 ->required()
                 ->default(config('app.name')),
+            ColorPicker::make('APP_ACCENT')
+                ->label(trans('admin/setting.general.accent'))
+                ->helperText(trans('admin/setting.general.accent_help'))
+                ->regex('/^#[0-9a-fA-F]{6}$/')
+                ->placeholder('#3b82f6')
+                ->default(config('app.accent')),
             Group::make()
                 ->columns(2)
                 ->schema([

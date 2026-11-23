@@ -57,6 +57,9 @@ class FilamentServiceProvider extends ServiceProvider
             'warning' => Color::Amber,
         ]);
 
+        // Shoebill theme customizer: the user's accent, else the admin default, replaces the primary color.
+        FilamentColor::register(fn (): array => ($hex = user()?->accent_color ?: config('app.accent')) ? ['primary' => Color::hex($hex)] : []);
+
         FilamentView::registerRenderHook(
             PanelsRenderHook::PAGE_START,
             fn () => Blade::render('@livewire(\App\Livewire\AlertBannerContainer::class)'),
