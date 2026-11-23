@@ -168,7 +168,7 @@ class DatabaseResource extends Resource
                     ->hiddenLabel(false)
                     ->button()
                     ->iconSize(null)
-                    ->label(fn () => trans('server/database.create_database') . ' (' . $server->databases()->count() . '/' . ($server->database_limit ?? 0) . ')')
+                    ->label(fn () => trans('server/database.create_database'))
                     ->icon(fn () => $server->databases()->count() >= $server->database_limit ? TablerIcon::DatabaseX : TablerIcon::DatabasePlus)
                     ->tooltip(fn () => $server->databases()->count() >= $server->database_limit ? trans('server/database.limit') : trans('server/database.create_database'))
                     ->disabled(fn () => $server->databases()->count() >= $server->database_limit)

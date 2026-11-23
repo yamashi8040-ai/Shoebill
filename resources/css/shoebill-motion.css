@@ -114,15 +114,6 @@
             .fi-section, .sb-card, .fi-wi-stats-overview-stat { transition: transform 220ms var(--sb-ease-out), box-shadow 220ms; }
         }
 
-        /* Animated gradient text for headings that carry the brand. */
-        .sb-gradient-text, .fi-simple-page .sb-brand > span, .fi-header-heading {
-            background: linear-gradient(90deg, var(--sb-ink, currentColor) 0%, var(--sb-accent, #6568d2) 35%, var(--sb-ink, currentColor) 70%) 0 center / 200% auto;
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: sb-gradient 6s linear infinite;
-        }
-
         /* Border beam: a light travels around the sign-in card. */
         .fi-simple-main {
             position: relative;

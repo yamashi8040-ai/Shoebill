@@ -147,3 +147,11 @@
 .sb-announcement-leave { transition: opacity 180ms ease-out, transform 180ms ease-out; }
 .sb-announcement-leave-start { opacity: 1; }
 .sb-announcement-leave-end { opacity: 0; transform: translateY(-4px); }
+
+/* Brand gradient on page headings: white (ink) into the accent, fixed, the way it looks right after a reload. */
+.fi-header-heading, .sb-gradient-text, .fi-simple-page .sb-brand > span {
+    background: linear-gradient(90deg, var(--sb-ink) 0%, var(--sb-ink) 30%, var(--sb-accent) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}

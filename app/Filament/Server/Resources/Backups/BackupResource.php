@@ -294,7 +294,7 @@ class BackupResource extends Resource
                     ->hiddenLabel(false)
                     ->button()
                     ->iconSize(null)
-                    ->label(fn () => trans('server/backup.actions.create.title') . ' (' . $server->backups()->count() . '/' . ($server->backup_limit ?? 0) . ')')
+                    ->label(fn () => trans('server/backup.actions.create.title'))
                     ->successNotificationTitle(null)
                     ->action(function (InitiateBackupService $initiateBackupService, $data) use ($server) {
                         $action = $initiateBackupService
