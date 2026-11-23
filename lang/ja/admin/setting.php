@@ -124,6 +124,7 @@ return [
             'removed_from_server' => 'サーバーからの削除',
             'server_installed' => 'サーバー設置済み',
             'server_reinstalled' => 'サーバー再設置済み',
+            'server_crashed' => 'サーバークラッシュ',
         ],
         'connections' => [
             'title' => '接続',

@@ -15,4 +15,5 @@ return [
         'title' => '已从服务器删除',
         'body' => '您已经被从 :server 移除为子用户。',
     ],
+    'server_crashed' => '服务器意外停止',
 ];

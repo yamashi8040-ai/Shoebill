@@ -19,4 +19,5 @@ return [
         'title' => '已從伺服器移除',
         'body' => '您已從 :server 的子使用者中移除。',
     ],
+    'server_crashed' => '伺服器意外停止',
 ];

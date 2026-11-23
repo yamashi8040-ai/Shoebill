@@ -121,6 +121,7 @@ return [
             'helper' => '切换哪些邮件通知应发送给用户。',
             'server_installed' => '服务器已安装完成',
             'server_reinstalled' => '服务器已重新安装完成',
+            'server_crashed' => '服务器崩溃',
         ],
         'connections' => [
             'title' => '连接',

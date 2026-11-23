@@ -46,4 +46,9 @@ return [
         'subject' => 'Panel Test Message',
         'body' => 'This is a test of the Panel mail system. You\'re good to go!',
     ],
+    'server_crashed' => [
+        'subject' => 'Server ":name" stopped unexpectedly',
+        'body' => 'Your server stopped without a stop, restart or kill request. Check the console for the cause.',
+        'action' => 'Open Console',
+    ],
 ];

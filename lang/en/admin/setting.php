@@ -132,6 +132,7 @@ return [
             'removed_from_server' => 'Removed from Server',
             'server_installed' => 'Server Installed',
             'server_reinstalled' => 'Server Reinstalled',
+            'server_crashed' => 'Server Crashed',
         ],
         'connections' => [
             'title' => 'Connections',

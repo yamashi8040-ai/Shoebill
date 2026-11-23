@@ -16,4 +16,9 @@ return [
         'accent' => '강조 색상',
         'accent_help' => '모든 사용자의 기본 메인 색상입니다. 사용자는 프로필에서 변경할 수 있습니다.',
     ],
+    'misc' => [
+        'mail_notifications' => [
+            'server_crashed' => '서버 충돌',
+        ],
+    ],
 ];

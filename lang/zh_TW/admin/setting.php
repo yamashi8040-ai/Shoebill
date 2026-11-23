@@ -124,6 +124,7 @@ return [
             'removed_from_server' => '已从服务器移除',
             'server_installed' => '服务器已安装',
             'server_reinstalled' => '服务器已重新安装',
+            'server_crashed' => '伺服器當機',
         ],
         'connections' => [
             'title' => '连接',

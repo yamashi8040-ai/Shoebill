@@ -65,6 +65,8 @@ return [
         'send_install_notification' => env('PANEL_SEND_INSTALL_NOTIFICATION', true),
         // Should an email be sent to a server owner whenever their server is reinstalled?
         'send_reinstall_notification' => env('PANEL_SEND_REINSTALL_NOTIFICATION', true),
+        // Should an email be sent to a server owner when their server stops unexpectedly?
+        'send_crash_notification' => env('PANEL_SEND_CRASH_NOTIFICATION', true),
     ],
 
     'filament' => [

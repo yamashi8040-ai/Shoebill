@@ -786,6 +786,16 @@ class Settings extends Page implements HasSchemas
                         ->formatStateUsing(fn ($state): bool => (bool) $state)
                         ->afterStateUpdated(fn ($state, Set $set) => $set('PANEL_SEND_REINSTALL_NOTIFICATION', (bool) $state))
                         ->default(config('panel.email.send_reinstall_notification')),
+                    Toggle::make('PANEL_SEND_CRASH_NOTIFICATION')
+                        ->label(trans('admin/setting.misc.mail_notifications.server_crashed'))
+                        ->onIcon(TablerIcon::Check)
+                        ->offIcon(TablerIcon::X)
+                        ->onColor('success')
+                        ->offColor('danger')
+                        ->live()
+                        ->formatStateUsing(fn ($state): bool => (bool) $state)
+                        ->afterStateUpdated(fn ($state, Set $set) => $set('PANEL_SEND_CRASH_NOTIFICATION', (bool) $state))
+                        ->default(config('panel.email.send_crash_notification')),
                 ]),
             Section::make(trans('admin/setting.misc.connections.title'))
                 ->description(trans('admin/setting.misc.connections.helper'))

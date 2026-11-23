@@ -19,4 +19,5 @@ return [
         'title' => 'Removed from Server',
         'body' => 'You have been removed as a subuser from :server.',
     ],
+    'server_crashed' => 'Server Stopped Unexpectedly',
 ];
