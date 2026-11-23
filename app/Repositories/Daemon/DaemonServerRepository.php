@@ -208,6 +208,10 @@ class DaemonServerRepository extends DaemonRepository
 
     public function getInstallLogs(): string
     {
+        if ($this->node->isPterodactylWings()) {
+            return trans('admin/node.pterodactyl.no_install_logs');
+        }
+
         return $this->getHttpClient()
             ->get("/api/servers/{$this->server->uuid}/install-logs")
             ->throw()

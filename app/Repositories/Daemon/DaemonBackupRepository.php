@@ -2,6 +2,7 @@
 
 namespace App\Repositories\Daemon;
 
+use App\Exceptions\DisplayException;
 use App\Models\Backup;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Response;
@@ -67,6 +68,8 @@ class DaemonBackupRepository extends DaemonRepository
      */
     public function deleteKept(Backup $backup): Response
     {
+        throw_if($this->node->isPterodactylWings(), new DisplayException(trans('admin/node.pterodactyl.no_kept_backups')));
+
         return $this->getHttpClient()->delete("/api/backups/$backup->server_uuid/$backup->uuid");
     }
 

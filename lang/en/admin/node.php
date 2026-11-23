@@ -126,7 +126,6 @@ return [
     'requires_wings' => 'requires Wings :min or newer',
     'node_uuid' => 'Node UUID',
     'node_id' => 'Node ID',
-
     'ip_address' => 'IP Address',
     'ip_help' => 'Usually your machine\'s public IP unless you are port forwarding.',
     'alias_help' => 'Optional display name to help you remember what these are.',
@@ -149,7 +148,6 @@ return [
     'ssl' => 'Communicate over SSL',
     'panel_on_ssl' => 'Your Panel is using a secure SSL connection, so your Daemon must too.',
     'ssl_help' => 'An IP address cannot use SSL.',
-
     'tags' => 'Tags',
     'upload_limit' => 'Upload Limit',
     'upload_limit_help' => 'Enter the maximum size of files that can be uploaded through the web-based file manager.',
@@ -161,7 +159,6 @@ return [
     'use_for_deploy' => 'Use for Deployments?',
     'maintenance_mode' => 'Maintenance Mode',
     'maintenance_mode_help' => 'If the node is marked \'Under Maintenance\' users won\'t be able to access servers that are on that node',
-
     'cpu' => 'CPU',
     'cpu_limit' => 'CPU Limit',
     'memory' => 'Memory',
@@ -175,10 +172,8 @@ return [
     'disabled' => 'Disabled',
     'yes' => 'Yes',
     'no' => 'No',
-
     'instructions' => 'Instructions',
     'instructions_help' => 'Save this file to your daemon\'s root directory, named config.yml',
-
     'auto_deploy' => 'Auto Deploy Command',
     'auto_question' => 'Choose between Standalone and Docker install.',
     'auto_label' => 'Type',
@@ -188,7 +183,6 @@ return [
     'reset_token' => 'Reset Authorization Token',
     'token_reset' => 'The daemon token has been reset.',
     'reset_help' => 'Resetting the daemon token will void any request coming from the old token. This token is used for all sensitive operations on the daemon including server creation and deletion. We suggest changing this token regularly for security.',
-
     'no_nodes' => 'No Nodes',
     'no_allocations' => 'No Allocations',
     'none' => 'None',
@@ -197,17 +191,14 @@ return [
     'disk_chart' => 'Storage - :used of :total',
     'used' => 'Used',
     'unused' => 'Unused',
-
     'node_has_servers' => 'Node Has Servers',
     'create_allocation' => 'Create Allocation',
     'primary_allocation' => 'Primary Allocation',
     'databases' => 'Databases',
     'backups' => 'Backups',
-
     'error_connecting' => 'Error connecting to :node',
     'error_connecting_description' => 'The configuration could not be automatically updated on Wings, you will need to manually update the configuration file.',
     'allocation' => 'Allocation',
-
     'diagnostics' => [
         'header' => 'Node Diagnostics',
         'include_endpoints' => 'Include Endpoints',
@@ -224,14 +215,12 @@ return [
         'pull' => 'Pull',
         'upload' => 'Upload',
         'clear' => 'Clear',
-        '404' => 'The requested diagnostic report could not be found. Make sure wings is up to date and try again.',
+        404 => 'The requested diagnostic report could not be found. Make sure wings is up to date and try again.',
     ],
-
     'cloudflare_issue' => [
         'title' => 'Cloudflare Issue',
         'body' => 'Your Node is not accessible by Cloudflare',
     ],
-
     'bulk_update_ip' => 'Update IPs',
     'bulk_update_ip_description' => 'Replace an old IP address with a new one for allocations. This is useful when a node\'s IP address changes',
     'update_ip' => 'Update IP',
@@ -319,4 +308,10 @@ return [
     ],
     'simulated' => 'Test Mode (no Wings)',
     'simulated_help' => 'The panel answers for this node itself, so you can create servers and add ports and IPs without Wings. Servers never actually run. Turn off once real Wings is connected.',
+    'daemon_type' => 'Wings Type',
+    'daemon_type_help' => 'Which daemon runs on this node. Pterodactyl Wings works too, but has no diagnostics, install logs, recursive file search or crash reports of its own, so the panel works around them.',
+    'pterodactyl' => [
+        'no_install_logs' => 'Pterodactyl Wings does not keep install logs. Check the console of the server instead.',
+        'no_kept_backups' => 'Pterodactyl Wings cannot delete backups of deleted servers. Remove the file from the node\'s backup folder by hand.',
+    ],
 ];

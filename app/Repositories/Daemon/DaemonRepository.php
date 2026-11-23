@@ -59,6 +59,11 @@ abstract class DaemonRepository
         }
 
         $header = $condition->header('User-Agent');
+        // Pterodactyl Wings does not identify itself in responses, so only Pelican Wings can be checked here.
+        if (empty($header) && $this->node->isPterodactylWings()) {
+            return true;
+        }
+
         throw_if(empty($header) ||
             preg_match('/^Pelican Wings\/v(?:\d+\.\d+\.\d+|develop) \(id:(\w*)\)$/', $header, $matches) &&
             array_get($matches, 1, '') !== $this->node->daemon_token_id, new ConnectionException($condition->effectiveUri()->__toString() . ' does not match node token_id !'));

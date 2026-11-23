@@ -4,6 +4,7 @@ namespace App\Filament\Admin\Resources\Nodes;
 
 use App\Enums\CustomizationKey;
 use App\Enums\TablerIcon;
+use App\Enums\WingsType;
 use App\Filament\Admin\Resources\Nodes\Components\NodeMassActions;
 use App\Filament\Admin\Resources\Nodes\Pages\CreateNode;
 use App\Filament\Admin\Resources\Nodes\Pages\EditNode;
@@ -438,6 +439,18 @@ class NodeResource extends Resource
                             1 => 'success',
                             0 => 'danger',
                         ]),
+                    ToggleButtons::make('daemon_type')
+                        ->columnSpan([
+                            'default' => 1,
+                            'sm' => 1,
+                            'md' => 1,
+                            'lg' => 2,
+                        ])
+                        ->label(trans('admin/node.daemon_type'))
+                        ->inline()
+                        ->required()
+                        ->hintIcon(TablerIcon::QuestionMark, trans('admin/node.daemon_type_help'))
+                        ->options(WingsType::class),
                     ToggleButtons::make('simulated')
                         ->columnSpan([
                             'default' => 1,
@@ -915,7 +928,7 @@ class NodeResource extends Resource
                         ->columnSpanFull()
                         ->state(new HtmlString(trans('admin/node.instructions_help'))),
                     CodeEntry::make('config')
-                        ->label('/etc/pelican/config.yml')
+                        ->label(fn (Node $node) => $node->daemon_type->configPath())
                         ->grammar(Grammar::Yaml)
                         ->state(fn (Node $node, string $operation) => $node->getYamlConfiguration($operation === 'view'))
                         ->copyable()
@@ -1000,7 +1013,7 @@ class NodeResource extends Resource
             Tab::make('diagnostics')
                 ->label(trans('admin/node.tabs.diagnostics'))
                 ->icon(TablerIcon::HeartSearch)
-                ->hidden(fn (string $operation) => $operation === 'view')
+                ->hidden(fn (string $operation, ?Node $record) => $operation === 'view' || $record?->isPterodactylWings())
                 ->schema([
                     Section::make('diag')
                         ->heading(trans('admin/node.tabs.diagnostics'))

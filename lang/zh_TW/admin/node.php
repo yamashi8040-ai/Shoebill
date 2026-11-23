@@ -35,7 +35,6 @@ return [
     'latest' => '（最新：:version）',
     'node_uuid' => '節點 UUID',
     'node_id' => '節點 ID',
-
     'ip_address' => 'IP 位址',
     'ip_help' => '通常是您機器的公共 IP，除非您正在進行通訊埠轉發。',
     'alias_help' => '可選的顯示名稱，可幫助您記住這些是什麼。',
@@ -58,7 +57,6 @@ return [
     'ssl' => '透過 SSL 通訊',
     'panel_on_ssl' => '您的面板使用的是安全的 SSL 連線，所以您的守護程序也必須如此。',
     'ssl_help' => 'IP 位址無法使用 SSL。',
-
     'tags' => '標籤',
     'upload_limit' => '上傳限制',
     'upload_limit_help' => '輸入可透過網頁版檔案管理員上傳的檔案最大容量。',
@@ -70,7 +68,6 @@ return [
     'use_for_deploy' => '用於部署？',
     'maintenance_mode' => '維護模式',
     'maintenance_mode_help' => '如果節點被標記為「維護中」，使用者將無法存取該節點上的伺服器',
-
     'cpu' => 'CPU',
     'cpu_limit' => 'CPU 限制',
     'memory' => '記憶體',
@@ -84,10 +81,8 @@ return [
     'disabled' => '已停用',
     'yes' => '是',
     'no' => '否',
-
     'instructions' => '指示',
     'instructions_help' => '將此檔案儲存到守護程序的根目錄，命名為 config.yml',
-
     'auto_deploy' => '自動部署指令',
     'auto_question' => '在獨立安裝與 Docker 安裝之間選擇。',
     'auto_label' => '類型',
@@ -97,7 +92,6 @@ return [
     'reset_token' => '重設授權權杖',
     'token_reset' => '守護程序權杖已重設。',
     'reset_help' => '重設守護程序權杖將會使來自舊權杖的任何請求無效。此權杖用於守護程序上的所有敏感操作，包含伺服器建立與刪除。我們建議定期變更此權杖以確保安全性。',
-
     'no_nodes' => '沒有節點',
     'no_allocations' => '沒有分配',
     'none' => '無',
@@ -106,17 +100,14 @@ return [
     'disk_chart' => '儲存空間 - :used / :total',
     'used' => '已使用',
     'unused' => '未使用',
-
     'node_has_servers' => '節點有伺服器',
     'create_allocation' => '建立分配',
     'primary_allocation' => '主要分配',
     'databases' => '資料庫',
     'backups' => '備份',
-
     'error_connecting' => '連線至 :node 時發生錯誤',
     'error_connecting_description' => '設定無法在 Wings 上自動更新，您需要手動更新設定檔。',
     'allocation' => '分配',
-
     'diagnostics' => [
         'header' => '節點診斷',
         'include_endpoints' => '包含端點',
@@ -133,14 +124,12 @@ return [
         'pull' => '提取',
         'upload' => '上傳',
         'clear' => '清除',
-        '404' => '找不到所請求的診斷報告。請確保 Wings 已是最新版本並重試。',
+        404 => '找不到所請求的診斷報告。請確保 Wings 已是最新版本並重試。',
     ],
-
     'cloudflare_issue' => [
         'title' => 'Cloudflare 問題',
         'body' => 'Cloudflare 無法存取您的節點',
     ],
-
     'bulk_update_ip' => '更新 IP',
     'bulk_update_ip_description' => '為分配將舊 IP 位址替換為新 IP 位址。這在節點的 IP 位址變更時很有用',
     'update_ip' => '更新 IP',
@@ -151,4 +140,10 @@ return [
     'ip_update_failed' => '有 :count 個分配更新失敗',
     'simulated' => '測試模式(無 Wings)',
     'simulated_help' => '面板會代替此節點回應，因此不需要 Wings 也能建立伺服器並新增連接埠與 IP。伺服器不會真正執行。連接真正的 Wings 後請關閉。',
+    'daemon_type' => 'Wings 類型',
+    'daemon_type_help' => '此節點上執行的守護程式。也可以使用 Pterodactyl Wings，但它沒有診斷、安裝日誌、子資料夾檔案搜尋與狀態通知，面板會改用其他方式。',
+    'pterodactyl' => [
+        'no_install_logs' => 'Pterodactyl Wings 不保存安裝日誌。請在伺服器主控台查看。',
+        'no_kept_backups' => 'Pterodactyl Wings 無法刪除已刪除伺服器的備份。請手動從節點的備份資料夾刪除檔案。',
+    ],
 ];

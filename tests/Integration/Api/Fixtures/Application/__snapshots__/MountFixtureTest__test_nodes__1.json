@@ -32,6 +32,7 @@
                 "daemon_connect": 8080,
                 "daemon_config": null,
                 "simulated": false,
+                "daemon_type": "pelican",
                 "pivot": {
                     "mountable_type": "node",
                     "mount_id": 100,

@@ -235,6 +235,11 @@ class DaemonFileRepository extends DaemonRepository
      */
     public function search(string $searchTerm, ?string $directory): array
     {
+        // shortcut: Pterodactyl Wings has no search endpoint, so this only matches names in the folder itself, not subfolders.
+        if ($this->node->isPterodactylWings()) {
+            return array_values(array_filter($this->getDirectory($directory ?? '/'), fn (array $file) => str_contains(mb_strtolower($file['name'] ?? ''), mb_strtolower($searchTerm))));
+        }
+
         return $this->getHttpClient()
             // Wait for up to 2 minutes for the search to be completed when calling this endpoint
             // since it will likely take quite awhile for large directories.

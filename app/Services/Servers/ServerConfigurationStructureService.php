@@ -88,6 +88,8 @@ class ServerConfigurationStructureService
                 'threads' => $server->threads,
                 'disk_space' => (int) round(config('panel.use_binary_prefix') ? $server->disk : $server->disk / 1.048576),
                 'oom_killer' => $server->oom_killer,
+                // Pterodactyl Wings reads the inverse flag.
+                'oom_disabled' => !$server->oom_killer,
             ],
             'container' => [
                 'image' => $server->image,

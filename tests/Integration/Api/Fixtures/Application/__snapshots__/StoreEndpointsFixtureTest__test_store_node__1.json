@@ -15,6 +15,7 @@
         "daemon_connect": 8080,
         "maintenance_mode": false,
         "simulated": false,
+        "daemon_type": "pelican",
         "tags": [
             "fixture-store"
         ],

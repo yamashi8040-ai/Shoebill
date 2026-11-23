@@ -3,6 +3,7 @@
 namespace App\Filament\Admin\Resources\Nodes\Pages;
 
 use App\Enums\TablerIcon;
+use App\Enums\WingsType;
 use App\Filament\Admin\Resources\Nodes\NodeResource;
 use App\Models\Node;
 use App\Traits\Filament\CanCustomizeHeaderActions;
@@ -235,6 +236,21 @@ class CreateNode extends CreateRecord
                     'lg' => 4,
                 ])
                 ->schema([
+                    ToggleButtons::make('daemon_type')
+                        ->label(trans('admin/node.daemon_type'))->inline()
+                        ->hintIcon(TablerIcon::QuestionMark, trans('admin/node.daemon_type_help'))
+                        ->columnSpan(1)
+                        ->required()
+                        ->options(WingsType::class)
+                        ->default(WingsType::Pelican->value)
+                        ->live()
+                        // Keep the data folder in step with the daemon's default, unless the admin already changed it.
+                        ->afterStateUpdated(function ($state, $old, Get $get, Set $set) {
+                            $old = WingsType::tryFrom($old instanceof WingsType ? $old->value : (string) $old);
+                            if ($old && $get('daemon_base') === $old->defaultDataDirectory()) {
+                                $set('daemon_base', WingsType::from($state instanceof WingsType ? $state->value : $state)->defaultDataDirectory());
+                            }
+                        }),
                     ToggleButtons::make('simulated')
                         ->required()
                         ->label(trans('admin/node.simulated'))->inline()

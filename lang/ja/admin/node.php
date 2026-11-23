@@ -308,4 +308,10 @@ return [
     ],
     'simulated' => 'テストモード(Wings なし)',
     'simulated_help' => 'このノードの応答をパネル自身が代わりに返すので、Wings がなくてもサーバー作成やポート・IP の追加ができます。サーバーは実際には動きません。本物の Wings を接続したらオフにしてください。',
+    'daemon_type' => 'Wings の種類',
+    'daemon_type_help' => 'このノードで動くデーモン。Pterodactyl Wings も使えますが、診断・インストールログ・サブフォルダまでのファイル検索・状態の通知がないため、パネル側で代わりの方法を使います。',
+    'pterodactyl' => [
+        'no_install_logs' => 'Pterodactyl Wings はインストールログを保存しません。サーバーのコンソールで確認してください。',
+        'no_kept_backups' => 'Pterodactyl Wings は削除済みサーバーのバックアップを削除できません。ノードのバックアップフォルダから手動でファイルを削除してください。',
+    ],
 ];

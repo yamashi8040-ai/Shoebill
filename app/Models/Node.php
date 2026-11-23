@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\DaemonConfigCast;
 use App\Contracts\Validatable;
 use App\Enums\ServerTransferBatchStatus;
+use App\Enums\WingsType;
 use App\Exceptions\Service\HasActiveServersException;
 use App\Repositories\Daemon\DaemonSystemRepository;
 use App\Traits\HasValidation;
@@ -48,6 +49,7 @@ use Symfony\Component\Yaml\Yaml;
  * @property string|null $description
  * @property bool $maintenance_mode
  * @property bool $simulated
+ * @property WingsType $daemon_type
  * @property string|null $uuid
  * @property string|null $daemon_token_id
  * @property array<array-key, mixed>|null $tags
@@ -190,7 +192,7 @@ class Node extends Model implements Validatable
         'disk_overallocate', 'cpu', 'cpu_overallocate',
         'upload_size', 'daemon_base', 'daemon_config',
         'daemon_sftp', 'daemon_sftp_alias', 'daemon_listen', 'daemon_connect',
-        'description', 'maintenance_mode', 'simulated', 'tags',
+        'description', 'maintenance_mode', 'simulated', 'daemon_type', 'tags',
     ];
 
     /** @var array<array-key, string[]> */
@@ -214,6 +216,7 @@ class Node extends Model implements Validatable
         'daemon_connect' => ['required', 'numeric', 'between:1,65535'],
         'maintenance_mode' => ['boolean'],
         'simulated' => ['boolean'],
+        'daemon_type' => ['sometimes', 'string', 'in:pelican,pterodactyl'],
         'upload_size' => ['int', 'min:1'],
         'tags' => ['array'],
         'daemon_config' => ['nullable', 'array'],
@@ -271,6 +274,7 @@ class Node extends Model implements Validatable
         'daemon_connect' => 8080,
         'maintenance_mode' => false,
         'simulated' => false,
+        'daemon_type' => 'pelican',
         'tags' => '[]',
     ];
 
@@ -288,6 +292,7 @@ class Node extends Model implements Validatable
             'public' => 'boolean',
             'maintenance_mode' => 'boolean',
             'simulated' => 'boolean',
+            'daemon_type' => WingsType::class,
             'tags' => 'array',
             'daemon_config' => DaemonConfigCast::class,
         ];
@@ -482,6 +487,11 @@ class Node extends Model implements Validatable
     public function getJsonConfiguration(bool $pretty = false): string
     {
         return json_encode($this->getConfiguration(), JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | ($pretty ? JSON_PRETTY_PRINT : 0));
+    }
+
+    public function isPterodactylWings(): bool
+    {
+        return $this->daemon_type === WingsType::Pterodactyl;
     }
 
     public function isUnderMaintenance(): bool

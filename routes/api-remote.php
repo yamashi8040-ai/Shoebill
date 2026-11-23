@@ -19,6 +19,8 @@ Route::prefix('/servers/{server:uuid}')->group(function () {
     Route::post('/transfer/success', [Remote\Servers\ServerTransferController::class, 'success']);
 
     Route::post('/container/status', [Remote\Servers\ServerContainersController::class, 'status']);
+    // Pterodactyl Wings reports when a transfer archive is ready; Pelican's transfer flow does not need it.
+    Route::post('/archive', fn () => response()->noContent());
 });
 
 Route::prefix('/backups')->group(function () {

@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Server;
 
+use App\Jobs\Server\CheckServerCrash;
 use App\Models\Server;
 use App\Models\ServerPlayer;
 use App\Models\ServerStatSample;
@@ -24,6 +25,7 @@ class RecordServerStatsCommand extends Command
         Server::query()->whereNull('status')->with(['egg', 'allocation', 'node', 'variables'])->chunkById(100, function ($servers) use ($query, $now) {
             foreach ($servers as $server) {
                 $resources = $server->retrieveResources();
+                $this->watchForCrash($server, $resources['state'] ?? null);
                 if (($resources['state'] ?? null) !== 'running') {
                     continue;
                 }
@@ -59,5 +61,24 @@ class RecordServerStatsCommand extends Command
         ServerPlayer::query()->insertOrIgnore(array_map(fn ($name) => ['server_id' => $server->id, 'name' => $name, 'first_seen_at' => $now, 'last_seen_at' => $now, 'minutes_played' => 0], $names));
         ServerPlayer::query()->where('server_id', $server->id)->whereIn('name', $names)
             ->update(['last_seen_at' => $now, 'minutes_played' => DB::raw('minutes_played + 1')]);
+    }
+
+    /**
+     * Pterodactyl Wings does not report state changes to the panel, so crash alerts compare this minute's state with the last one.
+     * shortcut: a server that crashes and is restarted by Wings within the same minute is missed; Pelican Wings reports those.
+     */
+    public function watchForCrash(Server $server, ?string $state): void
+    {
+        if (!$server->node->isPterodactylWings() || $state === null) {
+            return;
+        }
+
+        $key = "servers.$server->uuid.last_state";
+        $previous = Cache::get($key);
+        Cache::put($key, $state, now()->addMinutes(10));
+
+        if ($previous === 'running' && $state === 'offline') {
+            CheckServerCrash::dispatch($server, now()->getTimestamp())->delay(CheckServerCrash::DELAY_SECONDS);
+        }
     }
 }

@@ -34,17 +34,12 @@ return [
     'latest' => '最新',
     'node_uuid' => '节点UUID',
     'node_id' => '节点ID',
-
     'ip_address' => 'IP 地址',
     'ip_help' => '请直接使用您的外网IP，除非您的服务器处于VPC网络中',
     'alias_help' => '可选的显示名称帮助您记住这些是什么。',
     'refresh' => '刷新',
     'domain' => '域名',
     'ssl_ip' => '您不能通过 SSL 连接到IP地址',
-    'error' => '这是指向节点IP地址的域名。 如果你已经设置了这个字段，你可以通过检查下一个字段来验证它！',
-    'fqdn_help' => '您的面板目前通过SSL证书安全，这意味着您的节点也需要一个。 您必须使用域名，因为您无法获取 IP 地址的 SSL 证书。',
-    'dns' => 'DNS记录检查',
-    'dns_help' => '这让您知道DNS记录指向正确的 IP 地址。',
     'valid' => '有效',
     'invalid' => '无效',
     'port' => '端口',
@@ -58,7 +53,6 @@ return [
     'ssl' => '通过 SSL 通信',
     'panel_on_ssl' => '您的面板正在使用安全的 SSL 连接，<br>因此您的守护进程也必须如此。',
     'ssl_help' => 'IP地址不能使用 SSL。',
-
     'tags' => '标签',
     'upload_limit' => '上传限制',
     'upload_limit_help' => '输入可以通过网络文件管理器上传的文件的最大大小。',
@@ -68,7 +62,6 @@ return [
     'use_for_deploy' => '用于部署？',
     'maintenance_mode' => '维护模式',
     'maintenance_mode_help' => '如果该节点被标记为“正在维护”，用户将无法访问该节点上的服务器',
-
     'cpu' => 'CPU',
     'cpu_limit' => 'CPU 可用线程上限',
     'memory' => '内存',
@@ -82,10 +75,8 @@ return [
     'disabled' => '已禁用',
     'yes' => '是',
     'no' => '否',
-
     'instructions' => '说明',
     'instructions_help' => '将此文件保存到您的守护进程根目录，命名为 config.yml',
-
     'auto_deploy' => '自动部署命令',
     'auto_question' => '在独立或Docker安装之间进行选择。',
     'auto_label' => '类型',
@@ -95,7 +86,6 @@ return [
     'reset_token' => '重置授权令牌',
     'token_reset' => '守护进程令已被重置。',
     'reset_help' => '重置守护令将使来自旧令牌的任何请求无效。 此令牌用于守护进程中的所有敏感操作，包括服务器创建和删除。我们建议为了安全定期更改此令牌。',
-
     'no_nodes' => '无节点',
     'none' => '无',
     'cpu_chart' => 'CPU - :cpu% of :max%',
@@ -103,18 +93,14 @@ return [
     'disk_chart' => '存储 - :used of :total',
     'used' => '已用',
     'unused' => '未使用',
-
-    'next_step' => '下一步',
     'node_has_servers' => '节点有服务器',
     'create_allocation' => '创建分配',
     'primary_allocation' => '主要分配',
     'databases' => '数据库',
     'backups' => '备份',
-
     'error_connecting' => '连接到 :node 时出错',
     'error_connecting_description' => '配置无法自动更新到Wings，您需要手动更新配置文件。',
     'allocation' => '分配',
-
     'diagnostics' => [
         'header' => '节点检测',
         'include_endpoints' => '包括端点',
@@ -130,14 +116,12 @@ return [
         'pull' => '请求',
         'upload' => '上传',
         'clear' => '清空',
-        '404' => '找不到所要求的诊断报告。请确认翼已经更新，然后重试。',
+        404 => '找不到所要求的诊断报告。请确认翼已经更新，然后重试。',
     ],
-
     'cloudflare_issue' => [
         'title' => 'Cloudflare问题',
         'body' => 'Cloudflare无法访问您的节点',
     ],
-
     'bulk_update_ip' => '更新 IP',
     'bulk_update_ip_description' => '用新的 IP 地址替换旧的 IP 地址，以供分配。当节点的 IP 地址发生变化时，这将是有用的',
     'update_ip' => '更新IP',
@@ -148,4 +132,15 @@ return [
     'ip_update_failed' => ':count 个分配更新失败',
     'simulated' => '测试模式(无 Wings)',
     'simulated_help' => '面板会代替此节点应答，因此无需 Wings 也能创建服务器并添加端口和 IP。服务器不会真正运行。连接真正的 Wings 后请关闭。',
+    'daemon_type' => 'Wings 类型',
+    'daemon_type_help' => '此节点上运行的守护进程。也可以使用 Pterodactyl Wings，但它没有诊断、安装日志、子文件夹文件搜索和状态通知，面板会用其他方式代替。',
+    'pterodactyl' => [
+        'no_install_logs' => 'Pterodactyl Wings 不保存安装日志。请在服务器控制台中查看。',
+        'no_kept_backups' => 'Pterodactyl Wings 无法删除已删除服务器的备份。请手动从节点的备份文件夹中删除文件。',
+    ],
+    'error' => '这是指向节点IP地址的域名。 如果你已经设置了这个字段，你可以通过检查下一个字段来验证它！',
+    'fqdn_help' => '您的面板目前通过SSL证书安全，这意味着您的节点也需要一个。 您必须使用域名，因为您无法获取 IP 地址的 SSL 证书。',
+    'dns' => 'DNS记录检查',
+    'dns_help' => '这让您知道DNS记录指向正确的 IP 地址。',
+    'next_step' => '下一步',
 ];
