@@ -19,7 +19,7 @@ class LanguageMiddleware
      */
     public function handle(Request $request, Closure $next): mixed
     {
-        $language = $request->user()?->language;
+        $language = $request->user()?->language ?? $request->session()?->get('locale');
         // A language the admin turned off falls back to the panel default.
         $this->app->setLocale($language && app(LanguageService::class)->isEnabled($language) ? $language : config('app.locale', 'en'));
 

@@ -52,7 +52,7 @@ class FilamentServiceProvider extends ServiceProvider
             'danger' => Color::Red,
             'gray' => Color::Zinc,
             'info' => Color::Sky,
-            'primary' => Color::Blue,
+            'primary' => Color::hex('#6568D2'), // Shoebill brand color
             'success' => Color::Green,
             'warning' => Color::Amber,
         ]);
@@ -66,6 +66,9 @@ class FilamentServiceProvider extends ServiceProvider
         );
 
         $appName = config('app.name', 'Shoebill');
+
+        FilamentView::registerRenderHook(PanelsRenderHook::USER_MENU_BEFORE, fn () => view('filament.components.language-switcher'));
+        FilamentView::registerRenderHook(PanelsRenderHook::SIMPLE_PAGE_END, fn () => view('filament.components.language-switcher', ['simple' => true]));
 
         FilamentView::registerRenderHook(
             PanelsRenderHook::FOOTER,

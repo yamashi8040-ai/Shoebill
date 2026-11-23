@@ -177,7 +177,7 @@ class EditProfile extends BaseEditProfile
                         ->label(trans('profile.accent_color'))
                         ->helperText(trans('profile.accent_color_help'))
                         ->regex('/^#[0-9a-fA-F]{6}$/')
-                        ->placeholder(config('app.accent') ?: '#3b82f6'),
+                        ->placeholder(config('app.accent') ?: '#6568D2'),
                     FileUpload::make('avatar')
                         ->visible(fn () => config('panel.filament.uploadable-avatars'))
                         ->avatar()

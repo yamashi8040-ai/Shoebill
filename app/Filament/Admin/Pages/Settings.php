@@ -234,7 +234,7 @@ class Settings extends Page implements HasSchemas
                 ->label(trans('admin/setting.general.accent'))
                 ->helperText(trans('admin/setting.general.accent_help'))
                 ->regex('/^#[0-9a-fA-F]{6}$/')
-                ->placeholder('#3b82f6')
+                ->placeholder('#6568D2')
                 ->default(config('app.accent')),
             Group::make()
                 ->columns(2)

@@ -36,3 +36,22 @@
     letter-spacing: -0.02em;
     height: auto !important;
 }
+
+/* Shoebill: bird icon next to the panel name in the top bar and sidebar. */
+.sb-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 100%;
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+}
+.sb-brand img {
+    height: 1.4em;
+    width: auto;
+}
+.fi-simple-page .sb-brand {
+    font-size: 2rem;
+}

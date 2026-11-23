@@ -30,6 +30,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\HtmlString;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 abstract class PanelProvider extends BasePanelProvider
@@ -55,7 +56,8 @@ abstract class PanelProvider extends BasePanelProvider
             ])
             ->databaseNotifications()
             ->brandName(config('app.name', 'Pelican'))
-            ->brandLogo(config('app.logo'))
+            // Shoebill: without a custom logo, show the bird icon next to the panel name.
+            ->brandLogo(fn () => config('app.logo') ?: new HtmlString('<span class="sb-brand"><img src="/shoebill.svg" alt="" aria-hidden="true"><span>' . e(config('app.name', 'Shoebill')) . '</span></span>'))
             ->brandLogoHeight('2rem')
             ->favicon(config('app.favicon', '/shoebill.svg'))
             ->topNavigation(function () {
