@@ -37,6 +37,7 @@ return [
         'icon_updated' => 'Icon Updated',
     ],
     'export' => [
+        'as_pterodactyl' => 'For Pterodactyl (.json)',
         'modal' => 'How would you like to export :egg ?',
         'as' => 'As .:format',
     ],

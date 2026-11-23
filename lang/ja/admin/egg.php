@@ -37,6 +37,7 @@ return [
         'icon_updated' => 'アイコンを更新しました',
     ],
     'export' => [
+        'as_pterodactyl' => 'Pterodactyl用 (.json)',
         'modal' => ':egg をどの形式でエクスポートしますか？',
         'as' => '.:format 形式で',
     ],

@@ -8,7 +8,7 @@ class ExportEggRequest extends GetEggRequest
     {
         return [
             /** Format the exported egg is returned in. Defaults to `json`. */
-            'format' => 'nullable|string|in:yaml,json',
+            'format' => 'nullable|string|in:yaml,json,ptdl',
         ];
     }
 }

@@ -5,6 +5,7 @@ namespace App\Services\Eggs\Sharing;
 use App\Enums\EggFormat;
 use App\Models\Egg;
 use App\Models\EggVariable;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
@@ -60,6 +61,53 @@ class EggExporterService
             EggFormat::JSON => json_encode($struct, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES),
             EggFormat::YAML => Yaml::dump($this->yamlExport($struct), 10, 2, Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK | Yaml::DUMP_OBJECT_AS_MAP),
         };
+    }
+
+    /**
+     * The egg in Pterodactyl's PTDL_v2 format, so it can be imported into a Pterodactyl panel.
+     * Pterodactyl has one startup command, no tags and no icons: the first startup command is used and the rest is dropped.
+     */
+    public function toPterodactyl(int $egg): string
+    {
+        $egg = Egg::with(['scriptFrom', 'configFrom', 'variables'])->findOrFail($egg);
+
+        $struct = [
+            '_comment' => 'DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO',
+            'meta' => ['version' => 'PTDL_v2', 'update_url' => null],
+            'exported_at' => Carbon::now()->toAtomString(),
+            'name' => $egg->name,
+            'author' => $egg->author,
+            'description' => $egg->description,
+            'features' => $egg->features,
+            'docker_images' => $egg->docker_images,
+            'file_denylist' => Collection::make($egg->inherit_file_denylist)->filter(fn ($v) => !empty($v))->values(),
+            'startup' => Arr::first($egg->startup_commands ?? []) ?? '',
+            'config' => [
+                'files' => $egg->inherit_config_files,
+                'startup' => $egg->inherit_config_startup,
+                'logs' => $egg->inherit_config_logs,
+                'stop' => $egg->inherit_config_stop,
+            ],
+            'scripts' => [
+                'installation' => [
+                    'script' => $egg->copy_script_install,
+                    'container' => $egg->copy_script_container,
+                    'entrypoint' => $egg->copy_script_entry,
+                ],
+            ],
+            'variables' => $egg->variables->map(fn (EggVariable $v) => [
+                'name' => $v->name,
+                'description' => $v->description,
+                'env_variable' => $v->env_variable,
+                'default_value' => $v->default_value,
+                'user_viewable' => $v->user_viewable,
+                'user_editable' => $v->user_editable,
+                'rules' => implode('|', $v->rules ?? []),
+                'field_type' => 'text',
+            ])->values()->toArray(),
+        ];
+
+        return json_encode($struct, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
     }
 
     /**

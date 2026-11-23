@@ -49,6 +49,10 @@ class ExportEggAction extends Action
                 ->label(trans('admin/egg.export.as', ['format' => 'yaml']))
                 ->url(fn (Egg $egg) => route('api.application.eggs.eggs.export', ['egg' => $egg, 'format' => EggFormat::YAML->value]), true)
                 ->close(),
+            Action::make('exclude_ptdl')
+                ->label(trans('admin/egg.export.as_pterodactyl'))
+                ->url(fn (Egg $egg) => route('api.application.eggs.eggs.export', ['egg' => $egg, 'format' => 'ptdl']), true)
+                ->close(),
         ]);
     }
 }

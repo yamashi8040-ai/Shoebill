@@ -85,6 +85,10 @@ class EggController extends ApplicationApiController
      */
     public function export(ExportEggRequest $request, Egg $egg): StreamedResponse
     {
+        if ($request->input('format') === 'ptdl') {
+            return response()->streamDownload(fn () => print ($this->exporterService->toPterodactyl($egg->id)), 'egg-' . $egg->getKebabName() . '.json', ['Content-Type' => 'application/json']);
+        }
+
         $format = EggFormat::tryFrom($request->input('format')) ?? EggFormat::YAML;
 
         return response()->streamDownload(function () use ($egg, $format) {

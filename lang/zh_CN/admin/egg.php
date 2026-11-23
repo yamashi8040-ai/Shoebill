@@ -32,6 +32,7 @@ return [
         'image_updated' => '图片已更新',
     ],
     'export' => [
+        'as_pterodactyl' => '用于 Pterodactyl (.json)',
         'modal' => '您想如何导出 :egg ？',
         'as' => '作为 .:format',
     ],
