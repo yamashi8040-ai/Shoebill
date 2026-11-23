@@ -6,7 +6,7 @@ return [
     'limit' => 'ポート割り当ての上限に達しました',
     'no_primary' => '追加する前にプライマリ割り当てが必要です',
     'address' => 'アドレス',
-    'port' => 'ぽーと',
+    'port' => 'ポート',
     'port_hidden' => '非表示',
     'notes' => 'メモ',
     'no_notes' => 'メモなし',

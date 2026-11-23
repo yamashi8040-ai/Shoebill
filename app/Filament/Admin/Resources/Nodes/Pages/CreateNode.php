@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources\Nodes\Pages;
 use App\Enums\TablerIcon;
 use App\Enums\WingsType;
 use App\Filament\Admin\Resources\Nodes\NodeResource;
+use App\Models\Egg;
 use App\Models\Node;
 use App\Traits\Filament\CanCustomizeHeaderActions;
 use App\Traits\Filament\CanCustomizeHeaderWidgets;
@@ -198,7 +199,7 @@ class CreateNode extends CreateRecord
                         ->options([
                             'http' => 'HTTP',
                             'https' => 'HTTPS (SSL)',
-                            'https_proxy' => 'HTTPS with (reverse) proxy',
+                            'https_proxy' => trans('admin/node.https_proxy'),
                         ])
                         ->colors([
                             'http' => 'warning',
@@ -294,6 +295,21 @@ class CreateNode extends CreateRecord
                         ]),
                     TagsInput::make('tags')
                         ->label(trans('admin/node.tags'))
+                        ->columnSpan(2),
+                    TextInput::make('location')
+                        ->label(trans('admin/node.location'))
+                        ->hintIcon(TablerIcon::QuestionMark, trans('admin/node.location_help'))
+                        ->datalist(fn () => Node::query()->whereNotNull('location')->distinct()->pluck('location')->all())
+                        ->maxLength(191)
+                        ->columnSpan(2),
+                    TagsInput::make('egg_tags')
+                        ->label(trans('admin/node.egg_tags'))
+                        ->helperText(trans('admin/node.egg_tags_help'))
+                        ->suggestions(fn () => Egg::query()->pluck('tags')->flatten()->filter()->unique()->values()->all())
+                        ->columnSpan(2),
+                    TagsInput::make('reserved_tags')
+                        ->label(trans('admin/node.reserved_tags'))
+                        ->helperText(trans('admin/node.reserved_tags_help'))
                         ->columnSpan(2),
                     TextInput::make('upload_size')
                         ->label(trans('admin/node.upload_limit'))

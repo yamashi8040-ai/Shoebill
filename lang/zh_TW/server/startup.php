@@ -14,4 +14,5 @@ return [
     'update' => '已更新：:variable',
     'fail' => '失敗：:variable',
     'validation_fail' => '驗證失敗：:variable',
+    'admin_only' => '只有管理員可以在管理面板中變更啟動指令。',
 ];

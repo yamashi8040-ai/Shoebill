@@ -14,4 +14,5 @@ return [
     'update' => '已更新: :variable',
     'fail' => '失败: :variable',
     'validation_fail' => '验证失败: :variable',
+    'admin_only' => '只有管理员可以在管理面板中更改启动命令。',
 ];

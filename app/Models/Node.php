@@ -50,6 +50,9 @@ use Symfony\Component\Yaml\Yaml;
  * @property bool $maintenance_mode
  * @property bool $simulated
  * @property WingsType $daemon_type
+ * @property string|null $location
+ * @property string[]|null $egg_tags
+ * @property string[]|null $reserved_tags
  * @property string|null $uuid
  * @property string|null $daemon_token_id
  * @property array<array-key, mixed>|null $tags
@@ -192,7 +195,7 @@ class Node extends Model implements Validatable
         'disk_overallocate', 'cpu', 'cpu_overallocate',
         'upload_size', 'daemon_base', 'daemon_config',
         'daemon_sftp', 'daemon_sftp_alias', 'daemon_listen', 'daemon_connect',
-        'description', 'maintenance_mode', 'simulated', 'daemon_type', 'tags',
+        'description', 'maintenance_mode', 'simulated', 'daemon_type', 'location', 'egg_tags', 'reserved_tags', 'tags',
     ];
 
     /** @var array<array-key, string[]> */
@@ -217,6 +220,9 @@ class Node extends Model implements Validatable
         'maintenance_mode' => ['boolean'],
         'simulated' => ['boolean'],
         'daemon_type' => ['sometimes', 'string', 'in:pelican,pterodactyl'],
+        'location' => ['nullable', 'string', 'max:191'],
+        'egg_tags' => ['nullable', 'array'],
+        'reserved_tags' => ['nullable', 'array'],
         'upload_size' => ['int', 'min:1'],
         'tags' => ['array'],
         'daemon_config' => ['nullable', 'array'],
@@ -293,6 +299,8 @@ class Node extends Model implements Validatable
             'maintenance_mode' => 'boolean',
             'simulated' => 'boolean',
             'daemon_type' => WingsType::class,
+            'egg_tags' => 'array',
+            'reserved_tags' => 'array',
             'tags' => 'array',
             'daemon_config' => DaemonConfigCast::class,
         ];
@@ -487,6 +495,18 @@ class Node extends Model implements Validatable
     public function getJsonConfiguration(bool $pretty = false): string
     {
         return json_encode($this->getConfiguration(), JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES | ($pretty ? JSON_PRETTY_PRINT : 0));
+    }
+
+    /** A node with egg tags only runs eggs that carry one of them; without any it runs every egg. */
+    public function acceptsEgg(Egg $egg): bool
+    {
+        return empty($this->egg_tags) || collect($egg->tags)->intersect($this->egg_tags)->isNotEmpty();
+    }
+
+    /** A reserved node only takes deployments that ask for every one of its reserved tags. */
+    public function acceptsDeploymentTags(array $tags): bool
+    {
+        return empty($this->reserved_tags) || collect($this->reserved_tags)->diff($tags)->isEmpty();
     }
 
     public function isPterodactylWings(): bool

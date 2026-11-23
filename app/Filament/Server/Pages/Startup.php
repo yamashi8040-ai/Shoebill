@@ -61,10 +61,12 @@ class Startup extends ServerFormPage
                     ->label(trans('server/startup.command'))
                     ->live()
                     ->visible(fn (Server $server) => in_array($server->startup, $server->egg->startup_commands))
-                    ->disabled(fn (Server $server) => !user()?->can(SubuserPermission::StartupUpdate, $server))
+                    // Shoebill (as in Pterodactyl): only admins pick the startup command, from the admin panel.
+                    ->disabled()
+                    ->helperText(trans('server/startup.admin_only'))
                     ->formatStateUsing(fn (Server $server) => $server->startup)
                     ->afterStateUpdated(function ($state, Server $server, Set $set) {
-                        abort_unless(user()?->can(SubuserPermission::StartupUpdate, $server), 403);
+                        abort(403);
                         abort_unless(in_array($state, $server->egg->startup_commands, true), 422);
                         $original = $server->startup;
                         $server->forceFill(['startup' => $state])->saveOrFail();

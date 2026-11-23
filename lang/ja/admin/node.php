@@ -314,4 +314,12 @@ return [
         'no_install_logs' => 'Pterodactyl Wings はインストールログを保存しません。サーバーのコンソールで確認してください。',
         'no_kept_backups' => 'Pterodactyl Wings は削除済みサーバーのバックアップを削除できません。ノードのバックアップフォルダから手動でファイルを削除してください。',
     ],
+    'location' => 'ロケーション',
+    'location_help' => 'ノードの場所(例: 東京、埼玉)。ノード一覧に表示されます。',
+    'egg_tags' => 'ゲーム(Egg タグ)',
+    'egg_tags_help' => 'このタグのいずれかを持つ Egg だけがこのノードで動きます。空欄ならすべての Egg を受け付けます。',
+    'reserved_tags' => '予約',
+    'reserved_tags_help' => '予約ノードは、これらのタグをすべて指定した自動デプロイだけを受け付けます。通常のノードは空欄にします。',
+    'https_proxy' => 'HTTPS(プロキシ経由:Cloudflare Tunnel など)',
+    'egg_not_accepted' => 'ノード :node は Egg :egg を受け付けません(ゲームのタグが一致しません)。',
 ];

@@ -18,6 +18,16 @@ class ServerResource extends Resource
 
     protected static bool $shouldRegisterNavigation = false;
 
+    public static function getModelLabel(): string
+    {
+        return trans('server/dashboard.title');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return trans('server/dashboard.title');
+    }
+
     public static function getNavigationBadge(): ?string
     {
         return (string) user()?->directAccessibleServers()->where('owner_id', user()?->id)->count();

@@ -84,6 +84,7 @@ class FilamentServiceProvider extends ServiceProvider
 
         $appName = config('app.name', 'Shoebill');
 
+        FilamentView::registerRenderHook(PanelsRenderHook::PAGE_START, fn () => view('filament.components.announcements'));
         FilamentView::registerRenderHook(PanelsRenderHook::USER_MENU_BEFORE, fn () => view('filament.components.language-switcher'));
         FilamentView::registerRenderHook(PanelsRenderHook::SIMPLE_PAGE_END, fn () => view('filament.components.language-switcher', ['simple' => true]));
 

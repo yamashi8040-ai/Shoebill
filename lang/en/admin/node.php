@@ -314,4 +314,12 @@ return [
         'no_install_logs' => 'Pterodactyl Wings does not keep install logs. Check the console of the server instead.',
         'no_kept_backups' => 'Pterodactyl Wings cannot delete backups of deleted servers. Remove the file from the node\'s backup folder by hand.',
     ],
+    'location' => 'Location',
+    'location_help' => 'Where this node is, e.g. Tokyo or Saitama. Shown in the node list.',
+    'egg_tags' => 'Games (egg tags)',
+    'egg_tags_help' => 'A server can only use an egg here if the egg has one of these tags. Leave empty to accept every egg.',
+    'reserved_tags' => 'Reservations',
+    'reserved_tags_help' => 'A reserved node only takes automatic deployments that ask for every one of these tags. Leave empty for a normal node.',
+    'https_proxy' => 'HTTPS behind a proxy (Cloudflare Tunnel, etc.)',
+    'egg_not_accepted' => 'The node :node does not accept the egg :egg (its Games tags do not match).',
 ];

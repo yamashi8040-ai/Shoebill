@@ -40,6 +40,12 @@ class ListNodes extends ListRecords
                     ->label(trans('admin/node.table.name'))
                     ->sortable()
                     ->searchable(),
+                TextColumn::make('location')
+                    ->label(trans('admin/node.location'))
+                    ->icon(TablerIcon::MapPin)
+                    ->placeholder('—')
+                    ->sortable()
+                    ->searchable(),
                 TextColumn::make('fqdn')
                     ->visibleFrom('md')
                     ->label(trans('admin/node.table.address'))

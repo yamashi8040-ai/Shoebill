@@ -14,4 +14,5 @@ return [
     'update' => 'Updated: :variable',
     'fail' => 'Failed: :variable',
     'validation_fail' => 'Validation Failed: :variable',
+    'admin_only' => 'Only an administrator can change the startup command, from the admin panel.',
 ];

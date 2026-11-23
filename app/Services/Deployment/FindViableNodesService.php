@@ -2,6 +2,7 @@
 
 namespace App\Services\Deployment;
 
+use App\Models\Egg;
 use App\Models\Node;
 use Illuminate\Support\Collection;
 
@@ -19,7 +20,7 @@ class FindViableNodesService
      *
      * @param  string[]  $tags
      */
-    public function handle(int $memory = 0, int $disk = 0, int $cpu = 0, array $tags = []): Collection
+    public function handle(int $memory = 0, int $disk = 0, int $cpu = 0, array $tags = [], ?Egg $egg = null): Collection
     {
         $nodes = Node::query()
             ->withSum('servers', 'memory')
@@ -30,6 +31,7 @@ class FindViableNodesService
 
         return $nodes
             ->filter(fn (Node $node) => !$tags || collect($node->tags)->intersect($tags)->isNotEmpty())
+            ->filter(fn (Node $node) => $node->acceptsDeploymentTags($tags) && (!$egg || $node->acceptsEgg($egg)))
             ->filter(fn (Node $node) => $node->isViable($memory, $disk, $cpu));
     }
 }

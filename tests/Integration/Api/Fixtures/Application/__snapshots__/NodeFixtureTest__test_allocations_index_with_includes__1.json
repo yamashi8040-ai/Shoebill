@@ -43,6 +43,9 @@
                             "daemon_config": null,
                             "simulated": false,
                             "daemon_type": "pelican",
+                            "location": null,
+                            "egg_tags": null,
+                            "reserved_tags": null,
                             "allocated_resources": {
                                 "memory": 512,
                                 "disk": 512,
@@ -140,6 +143,9 @@
                             "daemon_config": null,
                             "simulated": false,
                             "daemon_type": "pelican",
+                            "location": null,
+                            "egg_tags": null,
+                            "reserved_tags": null,
                             "allocated_resources": {
                                 "memory": 512,
                                 "disk": 512,
@@ -237,6 +243,9 @@
                             "daemon_config": null,
                             "simulated": false,
                             "daemon_type": "pelican",
+                            "location": null,
+                            "egg_tags": null,
+                            "reserved_tags": null,
                             "allocated_resources": {
                                 "memory": 512,
                                 "disk": 512,

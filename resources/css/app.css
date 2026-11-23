@@ -55,3 +55,14 @@
 .fi-simple-page .sb-brand {
     font-size: 2rem;
 }
+
+/* Shoebill: IP addresses are blurred until hovered or focused (marked by resources/js/shoebill-ip-blur.js). */
+.sb-ip,
+.sb-ip-input:not(:focus):not(:hover) {
+    filter: blur(5px);
+    transition: filter 150ms ease-out;
+}
+.sb-ip:hover,
+.fi-ta-row:hover .sb-ip:hover {
+    filter: none;
+}

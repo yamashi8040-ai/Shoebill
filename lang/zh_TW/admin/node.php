@@ -146,4 +146,12 @@ return [
         'no_install_logs' => 'Pterodactyl Wings 不保存安裝日誌。請在伺服器主控台查看。',
         'no_kept_backups' => 'Pterodactyl Wings 無法刪除已刪除伺服器的備份。請手動從節點的備份資料夾刪除檔案。',
     ],
+    'location' => '位置',
+    'location_help' => '節點所在位置，例如東京、埼玉。會顯示在節點列表中。',
+    'egg_tags' => '遊戲(Egg 標籤)',
+    'egg_tags_help' => '只有帶有其中某個標籤的 Egg 才能在此節點執行。留空則接受所有 Egg。',
+    'reserved_tags' => '預留',
+    'reserved_tags_help' => '預留節點只接受指定了全部這些標籤的自動部署。一般節點請留空。',
+    'https_proxy' => 'HTTPS(經代理:Cloudflare Tunnel 等)',
+    'egg_not_accepted' => '節點 :node 不接受 Egg :egg(遊戲標籤不符)。',
 ];

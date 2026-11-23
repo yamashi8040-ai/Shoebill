@@ -14,4 +14,5 @@ return [
     'update' => '更新しました: :variable',
     'fail' => '失敗しました: :variable',
     'validation_fail' => 'バリデーションに失敗しました: :variable',
+    'admin_only' => '起動コマンドは管理者だけが管理パネルから変更できます。',
 ];
