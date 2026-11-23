@@ -15,10 +15,10 @@ module.exports = {
     },
     entry: ['react-hot-loader/patch', './resources/scripts/index.tsx'],
     output: {
-        path: path.join(__dirname, '/public/assets'),
+        path: path.join(__dirname, '../public/classic-assets'),
         filename: isProduction ? 'bundle.[chunkhash:8].js' : 'bundle.[fullhash:8].js',
         chunkFilename: isProduction ? '[name].[chunkhash:8].js' : '[name].[fullhash:8].js',
-        publicPath: process.env.WEBPACK_PUBLIC_PATH || '/assets/',
+        publicPath: process.env.WEBPACK_PUBLIC_PATH || '/classic-assets/',
         crossOriginLoading: 'anonymous',
     },
     module: {
@@ -151,7 +151,7 @@ module.exports = {
         },
         static: {
             directory: path.join(__dirname, '/public'),
-            publicPath: process.env.WEBPACK_PUBLIC_PATH || '/assets/',
+            publicPath: process.env.WEBPACK_PUBLIC_PATH || '/classic-assets/',
         },
         allowedHosts: ['.pterodactyl.test'],
         headers: {

@@ -2,7 +2,6 @@ import * as React from 'react';
 import ContentBox from '@/components/elements/ContentBox';
 import UpdatePasswordForm from '@/components/dashboard/forms/UpdatePasswordForm';
 import UpdateEmailAddressForm from '@/components/dashboard/forms/UpdateEmailAddressForm';
-import ConfigureTwoFactorForm from '@/components/dashboard/forms/ConfigureTwoFactorForm';
 import PageContentBlock from '@/components/elements/PageContentBlock';
 import tw from 'twin.macro';
 import { breakpoint } from '@/theme';
@@ -45,7 +44,14 @@ export default () => {
                     <UpdateEmailAddressForm />
                 </ContentBox>
                 <ContentBox css={tw`md:ml-8 mt-8 md:mt-0`} title={'Two-Step Verification'}>
-                    <ConfigureTwoFactorForm />
+                    {/* Shoebill: two-step verification is managed by the main panel profile. */}
+                    <p css={tw`text-sm`}>
+                        Two-step verification and passkeys are managed on your{' '}
+                        <a href={'/profile'} css={tw`text-cyan-400 underline`}>
+                            profile page
+                        </a>
+                        .
+                    </p>
                 </ContentBox>
             </Container>
         </PageContentBlock>

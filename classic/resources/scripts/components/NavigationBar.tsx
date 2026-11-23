@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCogs, faLayerGroup, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
+import { faCogs, faExchangeAlt, faLayerGroup, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { useStoreState } from 'easy-peasy';
 import { ApplicationStore } from '@/state';
 import SearchContainer from '@/components/dashboard/search/SearchContainer';
@@ -39,9 +39,10 @@ export default () => {
 
     const onTriggerLogout = () => {
         setIsLoggingOut(true);
-        http.post('/auth/logout').finally(() => {
+        // Shoebill: the session belongs to the main panel, so log out there.
+        http.post('/logout').finally(() => {
             // @ts-expect-error this is valid
-            window.location = '/';
+            window.location = '/login';
         });
     };
 
@@ -65,6 +66,11 @@ export default () => {
                         <NavLink to={'/'} exact>
                             <FontAwesomeIcon icon={faLayerGroup} />
                         </NavLink>
+                    </Tooltip>
+                    <Tooltip placement={'bottom'} content={'Switch to Shoebill UI'}>
+                        <a href={'/'}>
+                            <FontAwesomeIcon icon={faExchangeAlt} />
+                        </a>
                     </Tooltip>
                     {rootAdmin && (
                         <Tooltip placement={'bottom'} content={'Admin'}>

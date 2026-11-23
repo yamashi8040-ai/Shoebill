@@ -13,6 +13,7 @@ import AccountApiContainer from '@/components/dashboard/AccountApiContainer';
 import AccountSSHContainer from '@/components/dashboard/ssh/AccountSSHContainer';
 import ActivityLogContainer from '@/components/dashboard/activity/ActivityLogContainer';
 import ServerActivityLogContainer from '@/components/server/ServerActivityLogContainer';
+import StatusContainer from '@/components/server/status/StatusContainer';
 
 // Each of the router files is already code split out appropriately — so
 // all of the items above will only be loaded in when that router is loaded.
@@ -73,6 +74,12 @@ export default {
             name: 'Console',
             component: ServerConsole,
             exact: true,
+        },
+        {
+            path: '/status',
+            permission: null,
+            name: 'Status',
+            component: StatusContainer,
         },
         {
             path: '/files',
