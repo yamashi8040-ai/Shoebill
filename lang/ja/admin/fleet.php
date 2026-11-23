@@ -29,4 +29,5 @@ return [
         'node_full' => 'ほぼ満杯',
         'install_failed' => 'インストール失敗',
     ],
+    'uptime' => '稼働率(24時間)',
 ];

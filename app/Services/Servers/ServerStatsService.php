@@ -22,14 +22,19 @@ class ServerStatsService
         $days = array_key_exists($period, self::PERIODS) ? self::PERIODS[$period] : 1;
 
         if ($days === null) {
-            return ['current' => $this->summary($server)['all'], 'previous' => null, 'series' => $this->dailySeries($server)];
+            $all = $this->summary($server)['all'];
+            $first = $this->firstRecordedAt($server);
+
+            return ['current' => $all + ['uptime' => $first ? $this->uptimeShare($all['samples'], $first, now()) : null], 'previous' => null, 'series' => $this->dailySeries($server)];
         }
 
         $since = now()->subDays($days);
+        $current = $this->totals($server, $since);
+        $previous = $this->totals($server, $since->copy()->subDays($days), $since);
 
         return [
-            'current' => $this->averages($this->totals($server, $since)),
-            'previous' => $this->averages($this->totals($server, $since->copy()->subDays($days), $since)),
+            'current' => $this->averages($current) + ['uptime' => $this->uptime($server, $current['samples'], $since, now())],
+            'previous' => $this->averages($previous) + ['uptime' => $this->uptime($server, $previous['samples'], $since->copy()->subDays($days), $since)],
             'series' => $this->sampleSeries($server, $since, $days === 1 ? 'H:00' : ($days <= 7 ? 'n/j H:00' : 'n/j')),
         ];
     }
@@ -144,5 +149,36 @@ class ServerStatsService
             'memory' => $days->pluck('memory')->all(),
             'players' => $days->pluck('players')->all(),
         ];
+    }
+
+    /**
+     * Share of the window the server was running: samples are only taken while it runs, one per minute.
+     * The window starts no earlier than the first recording, so servers older than the stats don't look down.
+     */
+    public function uptime(Server $server, int $samples, CarbonInterface $from, CarbonInterface $to): ?float
+    {
+        $first = $this->firstRecordedAt($server);
+        if (!$first || $first->greaterThanOrEqualTo($to)) {
+            return null;
+        }
+
+        return $this->uptimeShare($samples, $first->greaterThan($from) ? $first : $from, $to);
+    }
+
+    private function uptimeShare(int $samples, CarbonInterface $from, CarbonInterface $to): ?float
+    {
+        $minutes = (int) $from->diffInMinutes($to);
+
+        return $minutes < 1 ? null : min(1.0, $samples / $minutes);
+    }
+
+    private function firstRecordedAt(Server $server): ?CarbonInterface
+    {
+        return once(function () use ($server) {
+            $daily = ServerStatDaily::query()->where('server_id', $server->id)->min('date');
+            $sample = ServerStatSample::query()->where('server_id', $server->id)->min('created_at');
+
+            return collect([$daily, $sample])->filter()->map(fn ($at) => \Illuminate\Support\Carbon::parse($at))->min();
+        });
     }
 }

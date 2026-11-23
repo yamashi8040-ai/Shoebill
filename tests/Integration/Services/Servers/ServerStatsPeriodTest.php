@@ -32,4 +32,18 @@ class ServerStatsPeriodTest extends IntegrationTestCase
 
         $this->assertArrayHasKey('previous', app(ServerStatsService::class)->forPeriod($server, 'bogus'));
     }
+
+    public function test_uptime_counts_running_minutes_from_the_first_recording(): void
+    {
+        $server = $this->createServerModel();
+        $this->freezeTime();
+        // Recording began 10 minutes ago and the server ran for 5 of them.
+        foreach (range(1, 5) as $minute) {
+            ServerStatSample::create(['server_id' => $server->id, 'cpu' => 1, 'memory_bytes' => 1, 'created_at' => now()->subMinutes(10 - $minute + 1)]);
+        }
+
+        $uptime = app(ServerStatsService::class)->forPeriod($server, 'day')['current']['uptime'];
+
+        $this->assertEqualsWithDelta(0.5, $uptime, 0.001);
+    }
 }

@@ -39,6 +39,7 @@ class FleetStatsService
             'cpu_before' => $this->averageCpu($now->copy()->subDay()->subHour(), $now->copy()->subDay()),
             'players' => $this->playersAt($live),
             'players_before' => $this->playersAt($dayAgo),
+            'uptime' => $this->fleetUptime(),
             'memory_allocated' => (int) Server::query()->sum('memory'),
             'memory_total' => (int) $nodes->sum('memory'),
         ];
@@ -129,5 +130,20 @@ class FleetStatsService
         $rows = ServerStatSample::query()->joinSub($latest, 'l', fn ($join) => $join->on('server_stat_samples.server_id', '=', 'l.server_id')->on('server_stat_samples.created_at', '=', 'l.at'))->get(['players']);
 
         return $rows->isEmpty() ? null : (int) $rows->sum('players');
+    }
+
+    /**
+     * Running minutes over expected minutes across all servers in the last 24 hours.
+     * shortcut: one uptime lookup per server; aggregate in SQL if fleets grow past a few hundred servers.
+     */
+    private function fleetUptime(): ?float
+    {
+        $stats = app(ServerStatsService::class);
+        $since = now()->subDay();
+        $samples = ServerStatSample::query()->where('created_at', '>=', $since)->selectRaw('server_id, count(*) as n')->groupBy('server_id')->pluck('n', 'server_id');
+
+        $shares = Server::query()->get()->map(fn (Server $server) => $stats->uptime($server, (int) ($samples[$server->id] ?? 0), $since, now()))->filter(fn ($share) => $share !== null);
+
+        return $shares->isEmpty() ? null : $shares->avg();
     }
 }

@@ -29,4 +29,5 @@ return [
         'node_full' => 'Nearly full',
         'install_failed' => 'Install failed',
     ],
+    'uptime' => 'Uptime (24h)',
 ];

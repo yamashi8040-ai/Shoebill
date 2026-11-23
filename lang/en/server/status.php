@@ -43,4 +43,5 @@ return [
     'previous_baseline' => 'Previous period :value',
     'all_time_note' => 'Since records began',
     'chart' => ':period',
+    'uptime' => 'Uptime',
 ];

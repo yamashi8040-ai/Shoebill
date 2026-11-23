@@ -7,6 +7,7 @@
             $hasPlayers ? ['label' => trans('server/status.avg_players'), 'value' => $num($cur['players']) ?? '—', 'base' => $num($prev['players'] ?? null)] : null,
             $hasPlayers ? ['label' => trans('server/status.peak_players'), 'value' => $cur['peak'] ?? '—', 'base' => $prev['peak'] ?? null] : null,
             ['label' => trans('server/status.avg_cpu'), 'value' => $num($cur['cpu'], '%') ?? '—', 'base' => $num($prev['cpu'] ?? null, '%'), 'share' => $cpuLimit && $cur['cpu'] !== null ? $cur['cpu'] / $cpuLimit : null, 'tip' => $cpuLimit ? '/ ' . $cpuLimit . '%' : null],
+            ['label' => trans('server/status.uptime'), 'value' => $cur['uptime'] === null ? '—' : format_number($cur['uptime'] * 100, maxPrecision: 1) . '%', 'base' => ($prev['uptime'] ?? null) === null ? null : format_number($prev['uptime'] * 100, maxPrecision: 1) . '%', 'share' => $cur['uptime'], 'good' => true],
             ['label' => trans('server/status.avg_memory'), 'value' => $fmtMem($cur['memory']), 'base' => ($prev['memory'] ?? null) === null ? null : $fmtMem($prev['memory']), 'share' => $memoryLimit && $cur['memory'] !== null ? $cur['memory'] / $memoryLimit : null, 'tip' => $memoryLimit ? '/ ' . convert_bytes_to_readable($memoryLimit) : null],
         ]));
     @endphp
@@ -29,7 +30,7 @@
                 <div class="sb-kpi-label">{{ $tile['label'] }}</div>
                 <div class="sb-kpi-value" data-sb-count>{{ $tile['value'] }}</div>
                 @if(isset($tile['share']) && $tile['share'] !== null)
-                    <div class="sb-meter"><span @class(['sb-meter-fill', 'sb-meter-warn' => $tile['share'] >= 0.9]) style="width: {{ min(100, round($tile['share'] * 100)) }}%"></span></div>
+                    <div class="sb-meter"><span @class(['sb-meter-fill', 'sb-meter-warn' => empty($tile['good']) ? $tile['share'] >= 0.9 : $tile['share'] < 0.9]) style="width: {{ min(100, round($tile['share'] * 100)) }}%"></span></div>
                 @endif
                 <div class="sb-delta sb-delta-flat">{{ $prev === null ? trans('server/status.all_time_note') : ($tile['base'] === null ? trans('admin/fleet.no_baseline') : trans('server/status.previous_baseline', ['value' => $tile['base']])) }}</div>
             </div>

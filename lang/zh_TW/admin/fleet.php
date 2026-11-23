@@ -29,4 +29,5 @@ return [
         'node_full' => '快滿了',
         'install_failed' => '安裝失敗',
     ],
+    'uptime' => '運作率(24 小時)',
 ];

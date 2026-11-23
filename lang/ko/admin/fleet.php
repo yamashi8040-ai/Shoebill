@@ -29,4 +29,5 @@ return [
         'node_full' => '거의 가득',
         'install_failed' => '설치 실패',
     ],
+    'uptime' => '가동률 (24시간)',
 ];

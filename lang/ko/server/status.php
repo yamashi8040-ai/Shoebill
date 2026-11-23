@@ -43,4 +43,5 @@ return [
     'previous_baseline' => '이전 기간 :value',
     'all_time_note' => '기록 시작부터',
     'chart' => ':period',
+    'uptime' => '가동률',
 ];

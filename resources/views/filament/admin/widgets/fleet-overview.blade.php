@@ -33,6 +33,13 @@
                 <div class="sb-delta sb-delta-flat">{{ trans('admin/fleet.online') }}</div>
             @endif
         </div>
+        <div class="sb-kpi">
+            <div class="sb-kpi-label">{{ trans('admin/fleet.uptime') }}</div>
+            <div class="sb-kpi-value" data-sb-count>{{ $summary['uptime'] === null ? '—' : format_number($summary['uptime'] * 100, maxPrecision: 1) . '%' }}</div>
+            @if($summary['uptime'] !== null)
+                <div class="sb-meter"><span @class(['sb-meter-fill', 'sb-meter-warn' => $summary['uptime'] < 0.9]) style="width: {{ round($summary['uptime'] * 100) }}%"></span></div>
+            @endif
+        </div>
         <div class="sb-kpi" title="{{ trans('admin/fleet.cpu_help') }}">
             <div class="sb-kpi-label">{{ trans('admin/fleet.cpu') }}</div>
             <div class="sb-kpi-value" data-sb-count>{{ $summary['cpu'] === null ? '—' : format_number($summary['cpu'], maxPrecision: 1) . '%' }}</div>

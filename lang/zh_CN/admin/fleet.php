@@ -29,4 +29,5 @@ return [
         'node_full' => '快满了',
         'install_failed' => '安装失败',
     ],
+    'uptime' => '在线率(24 小时)',
 ];
