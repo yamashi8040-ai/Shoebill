@@ -51,11 +51,6 @@ class EggResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function getNavigationBadge(): ?string
-    {
-        return ($count = static::getModel()::count()) > 0 ? (string) $count : null;
-    }
-
     public static function getNavigationGroup(): ?string
     {
         if (user()?->getCustomization(CustomizationKey::TopNavigation) === 'topbar') {

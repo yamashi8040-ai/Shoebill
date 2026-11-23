@@ -99,11 +99,6 @@ class UserResource extends Resource
         return trans('admin/dashboard.user');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return ($count = static::getModel()::count()) > 0 ? (string) $count : null;
-    }
-
     /**
      * @throws Exception
      */

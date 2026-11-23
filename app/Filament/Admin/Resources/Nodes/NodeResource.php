@@ -92,11 +92,6 @@ class NodeResource extends Resource
         return trans('admin/dashboard.server');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getEloquentQuery()->count() ?: null;
-    }
-
     /** @return class-string<RelationManager>[] */
     public static function getDefaultRelations(): array
     {

@@ -11,7 +11,6 @@ use App\Filament\Server\Resources\Webhooks\Pages\EditWebhook;
 use App\Filament\Server\Resources\Webhooks\Pages\ListWebhooks;
 use App\Filament\Server\Resources\Webhooks\Pages\ViewWebhook;
 use App\Livewire\AlertBanner;
-use App\Models\Server;
 use App\Models\WebhookConfiguration;
 use App\Traits\Filament\CanCustomizePages;
 use App\Traits\Filament\CanCustomizeRelations;
@@ -23,7 +22,6 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ReplicateAction;
 use Filament\Actions\ViewAction;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\PageRegistration;
@@ -70,18 +68,6 @@ class WebhookResource extends Resource
     public static function getPluralModelLabel(): string
     {
         return trans('admin/webhook.model_label_plural');
-    }
-
-    public static function getNavigationBadge(): ?string
-    {
-        /** @var Server|null $server */
-        $server = Filament::getTenant();
-        if (!$server instanceof Server) {
-            return null;
-        }
-        $count = static::getModel()::where('server_id', $server->id)->count();
-
-        return null; // Shoebill: no count badges in the server menu.
     }
 
     public static function defaultTable(Table $table): Table

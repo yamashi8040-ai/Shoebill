@@ -34,7 +34,7 @@ enum ContainerStatus: string implements HasColor, HasIcon, HasLabel
             self::Restarting => TablerIcon::HeartBolt,
             self::Exited => TablerIcon::HeartExclamation,
             self::Paused => TablerIcon::HeartPause,
-            self::Dead, self::Offline => TablerIcon::HeartX,
+            self::Dead, self::Offline => TablerIcon::HeartOff, // same mark as an unreachable node
             self::Removing => TablerIcon::HeartDown,
             self::Missing => TablerIcon::HeartSearch,
             self::Stopping => TablerIcon::HeartMinus,

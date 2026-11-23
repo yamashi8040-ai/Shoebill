@@ -46,11 +46,6 @@ class AnnouncementResource extends Resource
         return trans('admin/dashboard.advanced');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) Announcement::query()->active()->count() ?: null;
-    }
-
     public static function form(Schema $schema): Schema
     {
         return $schema->columns(2)->components([

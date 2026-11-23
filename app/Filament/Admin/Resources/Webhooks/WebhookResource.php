@@ -71,11 +71,6 @@ class WebhookResource extends Resource
         return trans('admin/webhook.model_label_plural');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return ($count = static::getModel()::count()) > 0 ? (string) $count : null;
-    }
-
     public static function getNavigationGroup(): ?string
     {
         return trans('admin/dashboard.advanced');

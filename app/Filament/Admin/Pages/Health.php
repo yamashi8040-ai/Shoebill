@@ -84,51 +84,6 @@ class Health extends Page
             ->send();
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        // @phpstan-ignore myCustomRules.forbiddenGlobalFunctions
-        $results = app(ResultStore::class)->latestResults();
-
-        if ($results === null) {
-            return null;
-        }
-
-        $results = json_decode($results->toJson(), true);
-
-        $failed = array_reduce($results['checkResults'], function ($numFailed, $result) {
-            return $numFailed + ($result['status'] === 'failed' ? 1 : 0);
-        }, 0);
-
-        return $failed === 0 ? null : (string) $failed;
-    }
-
-    public static function getNavigationBadgeColor(): string
-    {
-        return self::getNavigationBadge() > null ? 'danger' : '';
-    }
-
-    public static function getNavigationBadgeTooltip(): ?string
-    {
-        // @phpstan-ignore myCustomRules.forbiddenGlobalFunctions
-        $results = app(ResultStore::class)->latestResults();
-
-        if ($results === null) {
-            return null;
-        }
-
-        $results = json_decode($results->toJson(), true);
-
-        $failedNames = array_reduce($results['checkResults'], function ($carry, $result) {
-            if ($result['status'] === 'failed') {
-                $carry[] = $result['name'];
-            }
-
-            return $carry;
-        }, []);
-
-        return trans('admin/health.checks.failed', ['checks' => implode(', ', $failedNames)]);
-    }
-
     public static function getNavigationIcon(): BackedEnum
     {
         // @phpstan-ignore myCustomRules.forbiddenGlobalFunctions

@@ -54,11 +54,6 @@ class ApiKeyResource extends Resource
         return trans('admin/apikey.model_label_plural');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getEloquentQuery()->count() ?: null;
-    }
-
     public static function getEloquentQuery(): Builder
     {
         $query = parent::getEloquentQuery();

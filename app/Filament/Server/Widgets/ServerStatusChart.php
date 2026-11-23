@@ -6,9 +6,14 @@ use App\Models\Server;
 use App\Services\Servers\ServerStatsService;
 use Filament\Facades\Filament;
 use Filament\Widgets\ChartWidget;
+use Livewire\Attributes\Reactive;
 
 class ServerStatusChart extends ChartWidget
 {
+    /** Follows the period picked on the Status page. */
+    #[Reactive]
+    public string $period = 'day';
+
     protected ?string $pollingInterval = '60s';
 
     protected ?string $maxHeight = '260px';
@@ -19,11 +24,11 @@ class ServerStatusChart extends ChartWidget
     {
         /** @var Server $server */
         $server = Filament::getTenant();
-        $day = app(ServerStatsService::class)->lastDay($server);
+        $day = app(ServerStatsService::class)->forPeriod($server, $this->period)['series'];
 
         $datasets = [
-            ['label' => trans('server/status.cpu') . ' (%)', 'data' => $day['cpu'], 'borderColor' => '#60a5fa', 'tension' => 0.3, 'yAxisID' => 'y'],
-            ['label' => trans('server/status.memory') . ' (MiB)', 'data' => $day['memory'], 'borderColor' => '#a78bfa', 'tension' => 0.3, 'yAxisID' => 'y1'],
+            ['label' => trans('server/status.cpu') . ' (%)', 'data' => $day['cpu'], 'borderColor' => '#6568d2', 'tension' => 0.3, 'yAxisID' => 'y'],
+            ['label' => trans('server/status.memory') . ' (MiB)', 'data' => $day['memory'], 'borderColor' => '#a1a1aa', 'tension' => 0.3, 'yAxisID' => 'y1'],
         ];
 
         if (array_filter($day['players'], fn ($v) => $v !== null)) {
@@ -50,6 +55,6 @@ class ServerStatusChart extends ChartWidget
 
     public function getHeading(): string
     {
-        return trans('server/status.last_24h');
+        return trans('server/status.chart', ['period' => trans('server/status.periods.' . $this->period)]);
     }
 }

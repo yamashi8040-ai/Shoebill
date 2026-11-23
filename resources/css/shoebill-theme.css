@@ -155,3 +155,18 @@
     background-clip: text;
     color: transparent;
 }
+
+/* ---- Segmented period picker (Status page): selected = soft fill with a faint ring ---- */
+.sb-status-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.sb-status-source { font-size: 13px; }
+.sb-segmented { display: inline-flex; gap: 2px; padding: 3px; border-radius: 12px; background: var(--sb-soft); box-shadow: inset 0 0 0 1px var(--sb-line); max-width: 100%; }
+.sb-segment {
+    min-width: 0; padding: 6px 12px; border-radius: 9px; font-size: 13px; font-weight: 500; color: var(--sb-ink-2);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    transition: background-color 180ms, color 180ms, box-shadow 180ms;
+}
+.sb-segment:hover { color: var(--sb-ink); }
+.sb-segment-active {
+    color: var(--sb-ink); background: var(--sb-card);
+    box-shadow: var(--sb-shadow-card), 0 0 0 1px color-mix(in srgb, var(--sb-accent) 25%, transparent);
+}

@@ -51,11 +51,6 @@ class PluginResource extends Resource
         return trans('admin/plugin.model_label_plural');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getEloquentQuery()->count() ?: null;
-    }
-
     public static function table(Table $table): Table
     {
         return $table

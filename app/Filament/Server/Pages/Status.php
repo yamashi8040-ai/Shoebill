@@ -13,6 +13,7 @@ use BackedEnum;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Cache;
+use Livewire\Attributes\Url;
 
 class Status extends Page
 {
@@ -21,6 +22,10 @@ class Status extends Page
     protected static string|BackedEnum|null $navigationIcon = TablerIcon::ChartLine;
 
     protected string $view = 'filament.server.pages.status';
+
+    /** Chosen period, kept in the URL so a reload or a shared link shows the same view. */
+    #[Url]
+    public string $period = 'day';
 
     public static function canAccess(): bool
     {
@@ -33,8 +38,11 @@ class Status extends Page
         $server = Filament::getTenant();
         $protocol = QueryProtocol::forEgg($server->egg);
 
+        $this->period = array_key_exists($this->period, ServerStatsService::PERIODS) ? $this->period : 'day';
+
         return [
-            'summary' => app(ServerStatsService::class)->summary($server),
+            'stats' => app(ServerStatsService::class)->forPeriod($server, $this->period),
+            'periods' => array_keys(ServerStatsService::PERIODS),
             'hasPlayers' => $protocol !== QueryProtocol::None,
             'protocol' => $protocol,
             'online' => Cache::get("servers.$server->uuid.players"),
@@ -42,6 +50,11 @@ class Status extends Page
             'cpuLimit' => $server->cpu,
             'memoryLimit' => $server->memory * 1048576,
         ];
+    }
+
+    public function getWidgetData(): array
+    {
+        return ['period' => $this->period];
     }
 
     protected function getFooterWidgets(): array

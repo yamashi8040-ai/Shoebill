@@ -44,11 +44,6 @@ class BackupHostResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getEloquentQuery()->count() ?: null;
-    }
-
     public static function getNavigationLabel(): string
     {
         return static::getPluralModelLabel();

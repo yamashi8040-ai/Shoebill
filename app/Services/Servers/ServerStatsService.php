@@ -9,6 +9,31 @@ use Carbon\CarbonInterface;
 
 class ServerStatsService
 {
+    /** Periods the Status page can show, in days; null is all time. */
+    public const PERIODS = ['day' => 1, 'week' => 7, 'month' => 30, 'all' => null];
+
+    /**
+     * Averages for the chosen period, the same-length period before it, and a chart series covering it.
+     *
+     * @return array{current: array, previous: ?array, series: array{labels: string[], cpu: float[], memory: float[], players: (float|null)[]}}
+     */
+    public function forPeriod(Server $server, string $period): array
+    {
+        $days = array_key_exists($period, self::PERIODS) ? self::PERIODS[$period] : 1;
+
+        if ($days === null) {
+            return ['current' => $this->summary($server)['all'], 'previous' => null, 'series' => $this->dailySeries($server)];
+        }
+
+        $since = now()->subDays($days);
+
+        return [
+            'current' => $this->averages($this->totals($server, $since)),
+            'previous' => $this->averages($this->totals($server, $since->copy()->subDays($days), $since)),
+            'series' => $this->sampleSeries($server, $since, $days === 1 ? 'H:00' : ($days <= 7 ? 'n/j H:00' : 'n/j')),
+        ];
+    }
+
     /**
      * Averages for today, the last 7 days, the last 30 days and all time.
      *
@@ -54,9 +79,10 @@ class ServerStatsService
     }
 
     /** @return array{samples: int, cpu_sum: float, memory_sum: float, player_samples: int, players_sum: int, peak: ?int} */
-    private function totals(Server $server, CarbonInterface $since): array
+    private function totals(Server $server, CarbonInterface $since, ?CarbonInterface $until = null): array
     {
         $row = ServerStatSample::query()->where('server_id', $server->id)->where('created_at', '>=', $since)
+            ->when($until, fn ($query) => $query->where('created_at', '<', $until))
             ->selectRaw('count(*) as samples, coalesce(sum(cpu), 0) as cpu_sum, coalesce(sum(memory_bytes), 0) as memory_sum, count(players) as player_samples, coalesce(sum(players), 0) as players_sum, max(players) as peak')
             ->first();
 
@@ -79,6 +105,44 @@ class ServerStatsService
             'memory' => $t['samples'] ? $t['memory_sum'] / $t['samples'] : null,
             'players' => $t['player_samples'] ? $t['players_sum'] / $t['player_samples'] : null,
             'peak' => $t['peak'],
+        ];
+    }
+
+    /** Per-minute samples since $since, averaged into buckets labelled with $format (hours or days). */
+    private function sampleSeries(Server $server, CarbonInterface $since, string $format): array
+    {
+        $buckets = ServerStatSample::query()->where('server_id', $server->id)->where('created_at', '>=', $since)
+            ->orderBy('created_at')->get(['cpu', 'memory_bytes', 'players', 'created_at'])
+            ->groupBy(fn (ServerStatSample $sample) => $sample->created_at->format($format));
+
+        return [
+            'labels' => $buckets->keys()->all(),
+            'cpu' => $buckets->map(fn ($s) => round($s->avg('cpu'), 1))->values()->all(),
+            'memory' => $buckets->map(fn ($s) => round($s->avg('memory_bytes') / 1048576))->values()->all(),
+            'players' => $buckets->map(fn ($s) => $s->whereNotNull('players')->isEmpty() ? null : round($s->avg('players'), 1))->values()->all(),
+        ];
+    }
+
+    /** All time: one point per day from the daily rollups, plus today from the samples. */
+    private function dailySeries(Server $server): array
+    {
+        $days = ServerStatDaily::query()->where('server_id', $server->id)->orderBy('date')->get()
+            ->mapWithKeys(fn (ServerStatDaily $day) => [$day->date->format('Y/n/j') => [
+                'cpu' => $day->samples ? round($day->cpu_sum / $day->samples, 1) : 0,
+                'memory' => $day->samples ? round($day->memory_sum / $day->samples / 1048576) : 0,
+                'players' => $day->player_samples ? round($day->players_sum / $day->player_samples, 1) : null,
+            ]]);
+
+        $today = $this->averages($this->totals($server, now()->startOfDay()));
+        if ($today['samples']) {
+            $days[now()->format('Y/n/j')] = ['cpu' => round($today['cpu'], 1), 'memory' => round($today['memory'] / 1048576), 'players' => $today['players'] === null ? null : round($today['players'], 1)];
+        }
+
+        return [
+            'labels' => $days->keys()->all(),
+            'cpu' => $days->pluck('cpu')->all(),
+            'memory' => $days->pluck('memory')->all(),
+            'players' => $days->pluck('players')->all(),
         ];
     }
 }

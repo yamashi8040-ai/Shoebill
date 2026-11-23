@@ -28,11 +28,6 @@ class ServerResource extends Resource
         return trans('server/dashboard.title');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) user()?->directAccessibleServers()->where('owner_id', user()?->id)->count();
-    }
-
     public static function canAccess(): bool
     {
         return true;

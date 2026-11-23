@@ -45,11 +45,6 @@ class DatabaseHostResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getEloquentQuery()->count() ?: null;
-    }
-
     public static function getNavigationLabel(): string
     {
         return trans('admin/databasehost.nav_title');

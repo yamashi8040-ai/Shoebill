@@ -60,11 +60,6 @@ class MountResource extends Resource
         return trans('admin/mount.model_label_plural');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getEloquentQuery()->count() ?: null;
-    }
-
     public static function getNavigationGroup(): ?string
     {
         return trans('admin/dashboard.advanced');

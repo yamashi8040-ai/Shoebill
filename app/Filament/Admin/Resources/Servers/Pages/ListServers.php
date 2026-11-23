@@ -16,6 +16,8 @@ use Filament\Actions\CreateAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Support\Enums\IconSize;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Grouping\Group;
@@ -34,9 +36,9 @@ class ListServers extends ListRecords
         return $table
             ->defaultGroup('node.name')
             ->groups([
-                Group::make('node.name')->getDescriptionFromRecordUsing(fn (Server $server) => str($server->node->description)->limit(150)),
-                Group::make('user.username')->getDescriptionFromRecordUsing(fn (Server $server) => $server->user->email),
-                Group::make('egg.name')->getDescriptionFromRecordUsing(fn (Server $server) => str($server->egg->description)->limit(150)),
+                Group::make('node.name')->label(trans('admin/server.node'))->getDescriptionFromRecordUsing(fn (Server $server) => str($server->node->description)->limit(150)),
+                Group::make('user.username')->label(trans('admin/server.owner'))->getDescriptionFromRecordUsing(fn (Server $server) => $server->user->email),
+                Group::make('egg.name')->label(trans('admin/server.egg'))->getDescriptionFromRecordUsing(fn (Server $server) => str($server->egg->description)->limit(150)),
             ])
             ->modifyQueryUsing(fn (Builder $query) => $query->with([
                 'allocations',
@@ -47,12 +49,14 @@ class ListServers extends ListRecords
                 'subusers' => fn ($query) => $query->where('user_id', user()?->id),
             ]))
             ->columns([
-                TextColumn::make('condition')
+                // Shoebill: just the heart icon, like the node health column; the status name is the tooltip.
+                IconColumn::make('condition')
                     ->label(trans('admin/server.condition'))
-                    ->default('unknown')
-                    ->badge()
                     ->icon(fn (Server $server) => $server->condition->getIcon())
-                    ->color(fn (Server $server) => $server->condition->getColor()),
+                    ->color(fn (Server $server) => $server->condition->getColor())
+                    ->tooltip(fn (Server $server) => $server->condition->getLabel())
+                    ->size(IconSize::Large)
+                    ->alignCenter(),
                 TextColumn::make('uuid')
                     ->hidden()
                     ->label(trans('admin/server.uuid'))

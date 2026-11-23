@@ -9,6 +9,7 @@ return [
         'week' => 'Last 7 days',
         'month' => 'Last 30 days',
         'all' => 'All time',
+        'day' => 'Last 24 hours',
     ],
     'avg_players' => 'Avg. players',
     'peak_players' => 'Peak players',
@@ -39,4 +40,7 @@ return [
     'first_seen' => 'First Seen',
     'play_time' => 'Play Time',
     'week_baseline' => '7-day avg :value',
+    'previous_baseline' => 'Previous period :value',
+    'all_time_note' => 'Since records began',
+    'chart' => ':period',
 ];

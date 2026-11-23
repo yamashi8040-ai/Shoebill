@@ -105,11 +105,6 @@ class ServerResource extends Resource
         return trans('admin/dashboard.server');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return (string) static::getEloquentQuery()->count() ?: null;
-    }
-
     /**
      * @throws Exception
      */

@@ -71,11 +71,6 @@ class RoleResource extends Resource
         return user()?->getCustomization(CustomizationKey::TopNavigation) === 'topbar' ? trans('admin/dashboard.advanced') : trans('admin/dashboard.user');
     }
 
-    public static function getNavigationBadge(): ?string
-    {
-        return ($count = static::getModel()::count()) > 0 ? (string) $count : null;
-    }
-
     /**
      * @throws Exception
      */
