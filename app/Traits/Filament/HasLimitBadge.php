@@ -16,10 +16,15 @@ trait HasLimitBadge
         return 0;
     }
 
-    public static function getNavigationBadge(): string
+    public static function getNavigationBadge(): ?string
     {
         $limit = static::getBadgeLimit();
         $count = static::getBadgeCount();
+
+        // Shoebill: an empty section shows no badge instead of a "0" or "0 / 3".
+        if ($count === 0) {
+            return null;
+        }
 
         return $count . ($limit === 0 ? '' : ' / ' . $limit);
     }
