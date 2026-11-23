@@ -34,13 +34,6 @@ return [
             'extra_note' => 'Si vous rencontrez des problèmes, merci de les signaler sur GitHub.',
             'button_label' => 'Créer un premier nœud',
         ],
-        'intro-support' => [
-            'heading' => 'Soutenir Pelican',
-            'content' => 'Merci d\'utiliser Pelican, cela n\'aurait pas été possible sans votre soutien, celui de nos contributeurs, et de tous nos autres partisans !',
-            'extra_note' => 'Nous apprécions tout soutien, quel qu\'il soit, de la part de tout le monde.',
-            'button_translate' => 'Aider à traduire',
-            'button_donate' => 'Faire un don',
-        ],
         'intro-help' => [
             'heading' => 'Besoin d’aide ?',
             'content' => 'Jetez d\'abord un œil à la documentation ! Si vous avez toujours besoin d\'aide, rejoignez notre serveur Discord !',

@@ -144,7 +144,7 @@ class ServerCreationService
         }
 
         // A test-mode node has no Wings to report the install finishing, so treat it as installed now.
-        if ($server->node->simulated) {
+        if ($server->node->isSimulated()) {
             $server->update(['status' => null]);
         }
 

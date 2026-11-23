@@ -29,13 +29,6 @@ return [
             'extra_note' => 'Ha bármilyen problémába ütközik, kérjük jelentse a GitHubon.',
             'button_label' => 'Hozd létre az első Node-ot',
         ],
-        'intro-support' => [
-            'heading' => 'Pelican támogatása',
-            'content' => 'Köszönjük, hogy használja a Pelicant, ezt csak az Ön és a támogatóink segítségével tudtuk elérni!',
-            'extra_note' => 'Nagyra értékelünk minden támogatást bárkitől.',
-            'button_translate' => 'Segítség a fordításhoz',
-            'button_donate' => 'Közvetlen adományozás',
-        ],
         'intro-help' => [
             'heading' => 'Segítségre van szüksége?',
             'content' => 'Először nézd meg a dokumentációt! Ha még mindig segítségre van szükséged, látogass el a Discord szerverünkre!',

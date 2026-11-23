@@ -253,6 +253,7 @@ class CreateNode extends CreateRecord
                             }
                         }),
                     ToggleButtons::make('simulated')
+                        ->visible(fn () => app()->environment('local', 'testing'))
                         ->required()
                         ->label(trans('admin/node.simulated'))->inline()
                         ->columnSpan(1)

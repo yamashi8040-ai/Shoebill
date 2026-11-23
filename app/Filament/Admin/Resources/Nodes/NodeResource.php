@@ -466,6 +466,7 @@ class NodeResource extends Resource
                         ->hintIcon(TablerIcon::QuestionMark, trans('admin/node.daemon_type_help'))
                         ->options(WingsType::class),
                     ToggleButtons::make('simulated')
+                        ->visible(fn () => app()->environment('local', 'testing'))
                         ->columnSpan([
                             'default' => 1,
                             'sm' => 1,

@@ -29,13 +29,6 @@ return [
             'extra_note' => 'Se incontri errori segnalali su GitHub, grazie.',
             'button_label' => 'Crea il primo nodo',
         ],
-        'intro-support' => [
-            'heading' => 'Supporta Pelican',
-            'content' => 'Grazie per aver installato Pelican, questo è stato possibile solo con il tuo sostegno e quello dei nostri collaboratori e del resto dei nostri sostenitori!',
-            'extra_note' => 'Apprezziamo qualsiasi forma di supporto, da chiunque.',
-            'button_translate' => 'Contribuisci alla traduzione',
-            'button_donate' => 'Fai una donazione',
-        ],
         'intro-help' => [
             'heading' => 'Serve aiuto?',
             'content' => 'Leggi prima la documentazione! Se poi serve ancora aiuto entra e chiedi nel nostro server Discord!',

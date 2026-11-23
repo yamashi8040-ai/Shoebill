@@ -35,13 +35,6 @@ return [
             'extra_note' => 'もし問題が発生した場合は、GitHubでご報告ください。',
             'button_label' => 'Pelicanで最初のノードを作成',
         ],
-        'intro-support' => [
-            'heading' => 'Pelican をサポート',
-            'content' => 'Pelicanをご利用いただき、ありがとうございます。これは、皆様、貢献者の皆様、そしてその他のサポーターの皆様のご支援のおかげで実現できたものです！',
-            'extra_note' => 'どなたからのいかなるご支援も、心より感謝申し上げます。',
-            'button_translate' => '翻訳に協力する',
-            'button_donate' => '直接寄付',
-        ],
         'intro-help' => [
             'heading' => 'お困りですか？',
             'content' => 'まずドキュメントをご確認ください！それでもお困りの場合は、Discordサーバーにアクセスしてください！',

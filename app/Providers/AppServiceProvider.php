@@ -97,7 +97,7 @@ class AppServiceProvider extends ServiceProvider
                 ->connectTimeout(config('panel.guzzle.connect_timeout'))
                 ->baseUrl($node->getConnectionAddress())
                 // Shoebill test mode: the panel answers for a node that has no Wings.
-                ->when($node->simulated, fn ($request) => $request->withMiddleware(SimulatedWings::middleware($node)))
+                ->when($node->isSimulated(), fn ($request) => $request->withMiddleware(SimulatedWings::middleware($node)))
         );
 
         Passkeys::useUserModel(User::class);

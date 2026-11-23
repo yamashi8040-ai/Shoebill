@@ -108,7 +108,7 @@ class FleetStatsService
 
     private function isDown(Node $node): bool
     {
-        if ($node->simulated) {
+        if ($node->isSimulated()) {
             return false;
         }
 

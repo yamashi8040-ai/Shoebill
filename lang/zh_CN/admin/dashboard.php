@@ -29,13 +29,6 @@ return [
             'extra_note' => '如果您遇到任何问题，请在GitHub上报告它们。',
             'button_label' => '在Pelican建立第一个节点',
         ],
-        'intro-support' => [
-            'heading' => '支持Pelican',
-            'content' => '感谢您使用Pelican！这得益于您的支持、我们贡献者的努力以及所有支持者的帮助。',
-            'extra_note' => '我们感谢任何人的任何支持。',
-            'button_translate' => '协助翻译',
-            'button_donate' => '支持此项目',
-        ],
         'intro-help' => [
             'heading' => '需要帮助？',
             'content' => '请先查阅文档！如果您仍然需要帮助，请加入我们的 Discord 服务器！',

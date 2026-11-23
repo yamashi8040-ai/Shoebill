@@ -44,7 +44,7 @@ file manager, SFTP, console, activity log, API (application and client), webhook
 | Uptime rate per period, and fleet uptime on the admin dashboard | Status page, Admin dashboard |
 | Favourite servers (star a server to keep it at the top) | Server list |
 | Feature switches: turn each Shoebill feature on/off globally, per node or per server | Admin → Advanced → Features, node/server *Features* tab |
-| Pelican **and** Pterodactyl Wings per node, plus a Wings-less test mode | Admin → Nodes → Advanced |
+| Pelican **and** Pterodactyl Wings per node | Admin → Nodes → Advanced |
 | Egg export in Pterodactyl `PTDL_v2` format (import of `PTDL_v1/v2` and `PLCN` was already there) | Admin → Eggs → Export |
 | Announcements banner with schedule and Markdown | Admin → Advanced → Announcements |
 | Node location, egg tags and reserved tags (Pterodactyl 2.0) | Admin → Nodes |
@@ -81,10 +81,27 @@ curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt install -y node
 ```
 
 ### 2. Download Shoebill
+Pick one. **Git is recommended**, because updating is then a single `git pull`.
+
+**A. Git**
 ```bash
 git clone https://github.com/yamashi8040-ai/Shoebill.git /var/www/shoebill
 cd /var/www/shoebill
 ```
+
+**B. ZIP / tarball (no Git)**
+```bash
+mkdir -p /var/www/shoebill && cd /var/www/shoebill
+curl -L https://github.com/yamashi8040-ai/Shoebill/archive/refs/heads/main.tar.gz | tar -xz --strip-components=1
+```
+In a browser this is **Code → Download ZIP** on the GitHub page; upload the extracted files to `/var/www/shoebill`.
+
+**C. Release archive** (once releases are published on the [Releases page](https://github.com/yamashi8040-ai/Shoebill/releases))
+```bash
+mkdir -p /var/www/shoebill && cd /var/www/shoebill
+curl -L https://github.com/yamashi8040-ai/Shoebill/releases/latest/download/panel.tar.gz | tar -xz
+```
+The release archive already contains the built front-end, so in step 3 you can skip the `yarn` line.
 
 ### 3. Install PHP and front-end packages
 ```bash
@@ -117,7 +134,11 @@ chown -R www-data:www-data /var/www/shoebill
 chmod -R 755 storage/* bootstrap/cache/
 ```
 
-### 7. Web server (Nginx)
+### 7. Web server
+Use **one** of Nginx, Apache or Caddy. Replace `panel.example.com` with your domain. Uploads up to 100 MB are allowed
+below; also raise `upload_max_filesize` and `post_max_size` in `/etc/php/8.4/fpm/php.ini` if you need larger files.
+
+#### Nginx
 Create `/etc/nginx/sites-available/shoebill.conf`:
 ```nginx
 server {
@@ -144,7 +165,61 @@ server {
 ln -s /etc/nginx/sites-available/shoebill.conf /etc/nginx/sites-enabled/
 nginx -t && systemctl restart nginx
 ```
-Use HTTPS in production, for example with Certbot: `apt install -y certbot python3-certbot-nginx && certbot --nginx -d panel.example.com`.
+HTTPS with Certbot: `apt install -y certbot python3-certbot-nginx && certbot --nginx -d panel.example.com`.
+
+#### Apache
+```bash
+apt install -y apache2 && a2enmod rewrite proxy_fcgi setenvif && a2enconf php8.4-fpm
+```
+Create `/etc/apache2/sites-available/shoebill.conf`:
+```apache
+<VirtualHost *:80>
+    ServerName panel.example.com
+    DocumentRoot "/var/www/shoebill/public"
+    AllowEncodedSlashes On
+    LimitRequestBody 104857600
+
+    <Directory "/var/www/shoebill/public">
+        Require all granted
+        AllowOverride all
+    </Directory>
+
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/run/php/php8.4-fpm.sock|fcgi://localhost"
+    </FilesMatch>
+</VirtualHost>
+```
+```bash
+a2ensite shoebill && a2dissite 000-default
+apachectl configtest && systemctl restart apache2
+```
+`public/.htaccess` handles the URL rewriting. HTTPS with Certbot: `apt install -y certbot python3-certbot-apache && certbot --apache -d panel.example.com`.
+
+#### Caddy (automatic HTTPS)
+```bash
+apt install -y caddy
+usermod -aG www-data caddy   # lets Caddy use PHP-FPM's socket
+```
+Replace `/etc/caddy/Caddyfile` with:
+```caddy
+panel.example.com {
+    root * /var/www/shoebill/public
+    encode gzip
+    php_fastcgi unix//run/php/php8.4-fpm.sock
+    file_server
+
+    request_body {
+        max_size 100MB
+    }
+
+    @hidden path /.*
+    respond @hidden 404
+}
+```
+```bash
+caddy validate --config /etc/caddy/Caddyfile && systemctl restart caddy
+```
+Caddy gets a Let's Encrypt certificate by itself once the domain points at the server and ports 80/443 are open.
 
 ### 8. Scheduler (cron)
 Shoebill records server stats every minute and runs schedules, so the Laravel scheduler must run:
@@ -203,9 +278,6 @@ volume (the volume name is kept from upstream). Open `https://your-domain/instal
 
 **Behind Cloudflare Tunnel or another HTTPS proxy:** set *SSL* to "HTTPS (behind a proxy)". The panel connects on 443
 and Wings listens on 8080.
-
-**Test mode (no Wings):** turn on *Test mode* on a node to let the panel answer for Wings. You can create servers,
-allocations and see usage without a real node (servers don't actually start). Turn it off once real Wings is connected.
 
 Pterodactyl Wings lacks a few Pelican Wings endpoints; Shoebill covers them on the panel side (file search within the
 current folder, crash detection from minute samples). Install logs and diagnostics show as unsupported on those nodes.
@@ -276,6 +348,11 @@ chown -R www-data:www-data /var/www/shoebill
 php artisan queue:restart
 php artisan up
 ```
+Installed from a ZIP or release archive? Replace `git pull` with downloading the new archive over the old files.
+`.env`, the files in `storage/` and your database are kept; the archive only holds the code:
+```bash
+curl -L https://github.com/yamashi8040-ai/Shoebill/archive/refs/heads/main.tar.gz | tar -xz --strip-components=1
+```
 
 ## Local development
 ```bash
@@ -288,7 +365,7 @@ php artisan p:user:make
 php artisan serve            # http://localhost:8000
 php artisan schedule:work    # in a second terminal, records stats every minute
 ```
-Create a node with **Test mode** on to try servers without Wings.
+For development only, a node's *Test mode* (shown when `APP_ENV=local`) lets the panel answer for Wings, so you can create servers without a real node. It has no effect in production.
 
 Tests and formatting:
 ```bash

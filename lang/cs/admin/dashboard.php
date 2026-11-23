@@ -34,13 +34,6 @@ return [
             'extra_note' => 'Pokud naleznete bugy nahlaste je na GitHub',
             'button_label' => 'Vytvořit první uzel',
         ],
-        'intro-support' => [
-            'heading' => 'Podpořte Pelican!',
-            'content' => 'Děkujeme za používání Pelican, toto je možné vytvářet jen díky vaší podpoře, přespěvatelům a dalším podporovatelům!',
-            'extra_note' => 'Vážíme si jaké koliv podpory od kohokoliv.',
-            'button_translate' => 'Pomocte Přeložit',
-            'button_donate' => 'Darovat přímo',
-        ],
         'intro-help' => [
             'heading' => 'Potřebujete pomoc?',
             'content' => 'Nejdříve se podívejte na dokumentaci! Pokud stále potřebujete pomoc, přejděte na náš Discord server!',

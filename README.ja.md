@@ -42,7 +42,7 @@
 | 期間ごとの稼働率、管理ダッシュボードに全体の稼働率 | ステータスページ・管理ダッシュボード |
 | お気に入りサーバー(星を付けると一覧の上に固定) | サーバー一覧 |
 | 機能スイッチ:Shoebill の機能を全体・ノード・サーバー単位で ON/OFF | 管理 → 詳細設定 → 機能、ノード/サーバーの「機能」タブ |
-| ノードごとに Pelican / Pterodactyl Wings を選択、Wings なしのテストモード | 管理 → ノード → 詳細設定 |
+| ノードごとに Pelican / Pterodactyl Wings を選択 | 管理 → ノード → 詳細設定 |
 | Egg を Pterodactyl の `PTDL_v2` 形式でも書き出し(`PTDL_v1/v2`・`PLCN` の読み込みは対応済み) | 管理 → Egg → エクスポート |
 | お知らせバナー(表示期間・Markdown 対応) | 管理 → 詳細設定 → お知らせ |
 | ノードのロケーション・Egg タグ・予約タグ(Pterodactyl 2.0) | 管理 → ノード |
@@ -77,10 +77,27 @@ curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && apt install -y node
 ```
 
 ### 2. Shoebill をダウンロード
+どれか1つを選びます。アップデートが `git pull` 1回で済むので **Git がおすすめ** です。
+
+**A. Git**
 ```bash
 git clone https://github.com/yamashi8040-ai/Shoebill.git /var/www/shoebill
 cd /var/www/shoebill
 ```
+
+**B. ZIP / tar(Git なし)**
+```bash
+mkdir -p /var/www/shoebill && cd /var/www/shoebill
+curl -L https://github.com/yamashi8040-ai/Shoebill/archive/refs/heads/main.tar.gz | tar -xz --strip-components=1
+```
+ブラウザなら GitHub のページで **Code → Download ZIP** を押し、展開したファイルを `/var/www/shoebill` にアップロードします。
+
+**C. リリース版**([Releases ページ](https://github.com/yamashi8040-ai/Shoebill/releases) でリリースが公開されている場合)
+```bash
+mkdir -p /var/www/shoebill && cd /var/www/shoebill
+curl -L https://github.com/yamashi8040-ai/Shoebill/releases/latest/download/panel.tar.gz | tar -xz
+```
+リリース版にはビルド済みのフロントエンドが入っているので、手順3の `yarn` の行は省略できます。
 
 ### 3. PHP とフロントエンドのパッケージを入れる
 ```bash
@@ -114,7 +131,10 @@ chown -R www-data:www-data /var/www/shoebill
 chmod -R 755 storage/* bootstrap/cache/
 ```
 
-### 7. Web サーバー(Nginx)
+### 7. Web サーバー
+Nginx・Apache・Caddy の **どれか1つ** を使います。`panel.example.com` は自分のドメインに置き換えてください。以下の設定ではアップロードを 100MB まで許可しています。もっと大きいファイルを扱う場合は `/etc/php/8.4/fpm/php.ini` の `upload_max_filesize` と `post_max_size` も上げてください。
+
+#### Nginx
 `/etc/nginx/sites-available/shoebill.conf` を作成:
 ```nginx
 server {
@@ -141,7 +161,61 @@ server {
 ln -s /etc/nginx/sites-available/shoebill.conf /etc/nginx/sites-enabled/
 nginx -t && systemctl restart nginx
 ```
-本番では HTTPS にしてください。例:`apt install -y certbot python3-certbot-nginx && certbot --nginx -d panel.example.com`
+Certbot で HTTPS にする:`apt install -y certbot python3-certbot-nginx && certbot --nginx -d panel.example.com`
+
+#### Apache
+```bash
+apt install -y apache2 && a2enmod rewrite proxy_fcgi setenvif && a2enconf php8.4-fpm
+```
+`/etc/apache2/sites-available/shoebill.conf` を作成:
+```apache
+<VirtualHost *:80>
+    ServerName panel.example.com
+    DocumentRoot "/var/www/shoebill/public"
+    AllowEncodedSlashes On
+    LimitRequestBody 104857600
+
+    <Directory "/var/www/shoebill/public">
+        Require all granted
+        AllowOverride all
+    </Directory>
+
+    <FilesMatch \.php$>
+        SetHandler "proxy:unix:/run/php/php8.4-fpm.sock|fcgi://localhost"
+    </FilesMatch>
+</VirtualHost>
+```
+```bash
+a2ensite shoebill && a2dissite 000-default
+apachectl configtest && systemctl restart apache2
+```
+URL の書き換えは `public/.htaccess` が処理します。Certbot で HTTPS にする:`apt install -y certbot python3-certbot-apache && certbot --apache -d panel.example.com`
+
+#### Caddy(HTTPS 自動)
+```bash
+apt install -y caddy
+usermod -aG www-data caddy   # Caddy が PHP-FPM のソケットを使えるようにする
+```
+`/etc/caddy/Caddyfile` を次の内容に置き換え:
+```caddy
+panel.example.com {
+    root * /var/www/shoebill/public
+    encode gzip
+    php_fastcgi unix//run/php/php8.4-fpm.sock
+    file_server
+
+    request_body {
+        max_size 100MB
+    }
+
+    @hidden path /.*
+    respond @hidden 404
+}
+```
+```bash
+caddy validate --config /etc/caddy/Caddyfile && systemctl restart caddy
+```
+ドメインがこのサーバーを向いていて 80/443 番ポートが開いていれば、Caddy が Let's Encrypt の証明書を自動で取得します。
 
 ### 8. スケジューラー(cron)
 ステータスの記録(毎分)とスケジュール実行のため、Laravel のスケジューラーが必要です:
@@ -194,8 +268,6 @@ docker compose up -d --build
 5. **割り当て**:サーバーが使える IP とポートを追加。
 
 **Cloudflare Tunnel など HTTPS プロキシ経由の場合:**「SSL で通信」を「HTTPS(プロキシ経由)」に。パネルは 443 で接続し、Wings は 8080 で待ち受けます。
-
-**テストモード(Wings なし):** ノードの「テストモード」を ON にすると、パネル自身が Wings の代わりに応答します。実機なしでサーバー作成・割り当て・使用量表示を試せます(サーバーは実際には起動しません)。本物の Wings をつないだら OFF にしてください。
 
 Pterodactyl Wings には Pelican Wings の一部機能がないため、パネル側で補っています(ファイル検索は表示中のフォルダ内のみ、クラッシュ検出は毎分の記録から)。インストールログと診断はそのノードでは「非対応」と表示されます。
 
@@ -261,6 +333,10 @@ chown -R www-data:www-data /var/www/shoebill
 php artisan queue:restart
 php artisan up
 ```
+ZIP やリリース版で入れた場合は、`git pull` の代わりに新しいアーカイブを古いファイルの上に展開します。アーカイブに入っているのはコードだけなので、`.env`・`storage/` 内のファイル・データベースはそのまま残ります:
+```bash
+curl -L https://github.com/yamashi8040-ai/Shoebill/archive/refs/heads/main.tar.gz | tar -xz --strip-components=1
+```
 
 ## ローカル開発
 ```bash
@@ -273,7 +349,7 @@ php artisan p:user:make
 php artisan serve            # http://localhost:8000
 php artisan schedule:work    # 別のターミナルで。毎分ステータスを記録
 ```
-ノードを **テストモード** で作ると、Wings なしでサーバーを試せます。
+開発用として、ノードの「テストモード」(`APP_ENV=local` のときだけ表示)を ON にすると、パネルが Wings の代わりに応答し、実機なしでサーバーを作れます。本番環境では無効です。
 
 テストと整形:
 ```bash

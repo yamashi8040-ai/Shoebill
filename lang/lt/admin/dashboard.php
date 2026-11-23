@@ -29,13 +29,6 @@ return [
             'extra_note' => 'Jei susidūrėte su kokiomis nors problemomis, prašome pranešti apie jas „GitHub“ platformoje.',
             'button_label' => 'Sukurti pirmąjį „Pelican“ „node“',
         ],
-        'intro-support' => [
-            'heading' => 'Paremkite Pelican',
-            'content' => 'Ačiū, kad naudojatės Pelican! Tai galėjo būti pasiekta tik su jūsų, mūsų prisidėjusių asmenų ir kitų mūsų rėmėjų pagalba!',
-            'extra_note' => 'Mes labai vertiname bet kokią pagalbą iš visų rėmėjų.',
-            'button_translate' => 'Padėti išversti',
-            'button_donate' => 'Paremti tiesiogiai',
-        ],
         'intro-help' => [
             'heading' => 'Reikia pagalbos?',
             'content' => 'Pirmiausia peržiūrėkite dokumentaciją! Jei vis dar reikia pagalbos, apsilankykite mūsų „Discord“ serveryje!',

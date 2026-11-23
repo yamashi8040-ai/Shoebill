@@ -29,13 +29,6 @@ return [
             'extra_note' => 'Dacă întâmpinați orice probleme, vă rugăm să le raportați pe GitHub.',
             'button_label' => 'Crează primul node',
         ],
-        'intro-support' => [
-            'heading' => 'Susține Pelican',
-            'content' => 'Vă mulţumim că utilizaţi Pelican, acest lucru poate fi realizat doar prin sprijinul dumneavoastră, al contribuitorilor noştri şi al celorlalţi susţinători ai noştri!',
-            'extra_note' => 'Apreciem orice sprijin din partea oricui.',
-            'button_translate' => 'Ajută la traducere',
-            'button_donate' => 'Donează direct',
-        ],
         'intro-help' => [
             'heading' => 'Aveți nevoie de ajutor?',
             'content' => 'Verificați documentația mai întâi! Dacă încă aveți nevoie de ajutor intrați pe discordul nostru!',

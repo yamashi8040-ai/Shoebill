@@ -514,6 +514,15 @@ class Node extends Model implements Validatable
         return $this->daemon_type === WingsType::Pterodactyl;
     }
 
+    /**
+     * Wings-less test mode, a development aid only: it never takes effect outside local and testing environments,
+     * so a node flagged in a copied database can't fake Wings in production.
+     */
+    public function isSimulated(): bool
+    {
+        return $this->simulated && app()->environment('local', 'testing');
+    }
+
     public function isUnderMaintenance(): bool
     {
         return $this->maintenance_mode;

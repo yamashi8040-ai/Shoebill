@@ -34,13 +34,6 @@ return [
             'extra_note' => 'Wenn Sie auf Probleme stoßen, melden Sie diese bitte auf GitHub.',
             'button_label' => 'Erste Node erstellen',
         ],
-        'intro-support' => [
-            'heading' => 'Pelican unterstützen',
-            'content' => 'Vielen Dank für die Verwendung von Pelican, dies konnte nur durch die Unterstützung von Ihnen, unseren Mitwirkenden und den Rest unserer Unterstützer erreicht werden!',
-            'extra_note' => 'Wir freuen uns über jede Unterstützung.',
-            'button_translate' => 'Beim Übersetzen helfen',
-            'button_donate' => 'Direkt spenden',
-        ],
         'intro-help' => [
             'heading' => 'Benötigen Sie Hilfe?',
             'content' => 'Schauen Sie sich zuerst die Dokumentation an! Wenn Sie immer noch Hilfe brauchen, besuchen Sie unseren Discord Server!',

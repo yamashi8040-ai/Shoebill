@@ -34,13 +34,6 @@ return [
             'extra_note' => 'Jeśli napotkasz jakieś problemy, zgłoś je na GitHubie.',
             'button_label' => 'Stwórz pierwszy węzeł',
         ],
-        'intro-support' => [
-            'heading' => 'Wspomóż Pelican',
-            'content' => 'Dziękujemy za korzystanie z Pelican, jest to możliwe jedynie dzięki waszemu wsparciu, naszym współtwórcom i pozostałym naszym zwolennikom!',
-            'extra_note' => 'Doceniamy wszelkie wsparcie ze strony każdego.',
-            'button_translate' => 'Pomóż w tłumaczeniu',
-            'button_donate' => 'Darowizna',
-        ],
         'intro-help' => [
             'heading' => 'Potrzebujesz pomocy?',
             'content' => 'Najpierw sprawdź dokumentację! Jeśli nadal potrzebujesz pomocy, wejdź na nasz serwer Discord!',

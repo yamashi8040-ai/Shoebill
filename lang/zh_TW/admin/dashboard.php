@@ -34,13 +34,6 @@ return [
             'extra_note' => '如果您遇到任何問題，請在 GitHub 上回報。',
             'button_label' => '建立第一個節點',
         ],
-        'intro-support' => [
-            'heading' => '支持 Pelican',
-            'content' => '感謝您使用 Pelican，這一切都要歸功於您、我們的貢獻者以及所有支持者的幫助！',
-            'extra_note' => '我們感謝任何人提供的任何支持。',
-            'button_translate' => '協助翻譯',
-            'button_donate' => '直接贊助',
-        ],
         'intro-help' => [
             'heading' => '需要協助嗎？',
             'content' => '請先查看文件！如果您仍然需要幫助，請前往我們的 Discord 伺服器！',

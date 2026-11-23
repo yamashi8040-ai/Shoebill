@@ -35,13 +35,6 @@ return [
             'extra_note' => 'If you run into any issues, please report them on GitHub.',
             'button_label' => 'Create first Node',
         ],
-        'intro-support' => [
-            'heading' => 'Support Pelican',
-            'content' => 'Thank you for using Pelican, this could only be achieved through the support of you, our contributors, and the rest of our supporters!',
-            'extra_note' => 'We appreciate any and all support from anybody.',
-            'button_translate' => 'Help Translate',
-            'button_donate' => 'Donate Directly',
-        ],
         'intro-help' => [
             'heading' => 'Need Help?',
             'content' => 'Check out the documentation first! If you still need help head on over to our discord server!',

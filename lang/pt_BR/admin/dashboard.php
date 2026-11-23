@@ -29,13 +29,6 @@ return [
             'extra_note' => 'Se você encontrar quaisquer problemas, por favor relate-os no GitHub.',
             'button_label' => 'Criar o primeiro nó',
         ],
-        'intro-support' => [
-            'heading' => 'Apoie o Pelican',
-            'content' => 'Obrigado por usar o Pelican, isso só foi possível através do apoio de vocês, dos nossos colaboradores e dos nossos apoiadores!',
-            'extra_note' => 'Apreciamos todo e qualquer apoio de qualquer um.',
-            'button_translate' => 'Ajudar na Tradução',
-            'button_donate' => 'Doar Diretamente',
-        ],
         'intro-help' => [
             'heading' => 'Precisa de Ajuda?',
             'content' => 'Confira a documentação primeiro! Se você ainda precisa de ajuda vá para o nosso servidor Discord!',
