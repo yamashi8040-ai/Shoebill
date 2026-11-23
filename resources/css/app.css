@@ -27,3 +27,4 @@
 @source '../../vendor/gboquizosanchez/filament-log-viewer/resources/views/**/*.blade.php';
 
 @custom-variant dark (.dark &);
+@import './shoebill-motion.css';

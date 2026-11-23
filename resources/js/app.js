@@ -15,4 +15,4 @@
       success ? resolve() : reject('Fallback copy failed');
     });
 })();
-import './passkeys/index.js';
+import './passkeys/index.js';import './shoebill-motion.js';

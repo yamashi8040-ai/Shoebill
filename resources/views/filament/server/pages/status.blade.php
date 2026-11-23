@@ -18,8 +18,8 @@
                         <tr class="border-t border-gray-200 dark:border-white/10">
                             <td class="py-2 pe-4 font-medium">{{ trans("server/status.periods.$period") }}</td>
                             @if($hasPlayers)
-                                <td class="py-2 pe-4">{{ $row['players'] === null ? '—' : format_number($row['players'], maxPrecision: 1) }}</td>
-                                <td class="py-2 pe-4">{{ $row['peak'] ?? '—' }}</td>
+                                <td class="py-2 pe-4" data-sb-count>{{ $row['players'] === null ? '—' : format_number($row['players'], maxPrecision: 1) }}</td>
+                                <td class="py-2 pe-4" data-sb-count>{{ $row['peak'] ?? '—' }}</td>
                             @endif
                             <td class="py-2 pe-4">
                                 @if($row['cpu'] === null) — @else
