@@ -2,10 +2,12 @@
 
 namespace App\Console\Commands\Server;
 
+use App\Enums\ShoebillFeature;
 use App\Jobs\Server\CheckServerCrash;
 use App\Models\Server;
 use App\Models\ServerPlayer;
 use App\Models\ServerStatSample;
+use App\Services\Features\FeatureService;
 use App\Services\GameQuery\GameQueryService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
@@ -53,6 +55,9 @@ class RecordServerStatsCommand extends Command
     public function recordPlayers(Server $server, array $names, \DateTimeInterface $now): void
     {
         // shortcut: Minecraft only reports a sample of up to 12 names, so on busy servers history misses some players; use RCON/query if that matters.
+        if (!app(FeatureService::class)->enabled(ShoebillFeature::PlayerHistory, $server)) {
+            return;
+        }
         $names = array_slice(array_unique(array_map(fn ($n) => mb_substr($n, 0, 255), $names)), 0, 200);
         if (!$names) {
             return;

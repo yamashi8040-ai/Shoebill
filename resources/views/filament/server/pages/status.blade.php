@@ -54,6 +54,7 @@
             @endif
         </x-filament::section>
 
+        @if($historyEnabled)
         <x-filament::section :heading="trans('server/status.history')" :description="trans('server/status.history_help')">
             @if($history->isEmpty())
                 <p class="text-sm text-gray-500">{{ trans('server/status.history_empty') }}</p>
@@ -82,5 +83,6 @@
                 </div>
             @endif
         </x-filament::section>
+        @endif
     @endif
 </x-filament-panels::page>

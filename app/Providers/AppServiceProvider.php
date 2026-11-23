@@ -30,6 +30,7 @@ use App\Models\User;
 use App\Models\UserSSHKey;
 use App\Models\WebhookConfiguration;
 use App\Observers\AuditObserver;
+use App\Services\Features\FeatureService;
 use App\Services\Helpers\PluginService;
 use App\Services\Helpers\SoftwareVersionService;
 use App\Services\Nodes\SimulatedWings;
@@ -82,6 +83,8 @@ class AppServiceProvider extends ServiceProvider
         ] as $model) {
             $model::observe(AuditObserver::class);
         }
+
+        $this->app->scoped(FeatureService::class);
 
         Http::macro(
             'daemon',

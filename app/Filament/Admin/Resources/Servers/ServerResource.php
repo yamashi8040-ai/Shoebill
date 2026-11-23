@@ -18,6 +18,7 @@ use App\Filament\Admin\Resources\Servers\RelationManagers\DatabasesRelationManag
 use App\Filament\Components\Actions\DeleteIcon;
 use App\Filament\Components\Actions\PreviewStartupAction;
 use App\Filament\Components\Actions\UploadIcon;
+use App\Filament\Components\Forms\FeatureOverrides;
 use App\Filament\Components\Forms\Fields\MonacoEditor;
 use App\Filament\Components\Forms\Fields\StartupVariable;
 use App\Filament\Components\StateCasts\ServerConditionStateCast;
@@ -28,6 +29,7 @@ use App\Models\Server;
 use App\Models\User;
 use App\Repositories\Daemon\DaemonServerRepository;
 use App\Services\Eggs\EggChangerService;
+use App\Services\Features\FeatureService;
 use App\Services\Servers\RandomWordService;
 use App\Services\Servers\ReinstallServerService;
 use App\Services\Servers\SuspensionService;
@@ -167,6 +169,7 @@ class ServerResource extends Resource
     public static function detailTabs(bool $materializeVariables = true): array
     {
         return [
+            FeatureOverrides::tab(FeatureService::SERVER),
             Tab::make('information')
                 ->label(trans('admin/server.tabs.information'))
                 ->icon(TablerIcon::InfoCircle)

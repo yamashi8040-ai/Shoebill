@@ -14,9 +14,11 @@ use App\Filament\Admin\Resources\Nodes\RelationManagers\AllocationsRelationManag
 use App\Filament\Admin\Resources\Nodes\RelationManagers\BackupsRelationManager;
 use App\Filament\Admin\Resources\Nodes\RelationManagers\ServersRelationManager;
 use App\Filament\Admin\Resources\Nodes\RelationManagers\ServerTransferBatchesRelationManager;
+use App\Filament\Components\Forms\FeatureOverrides;
 use App\Models\Egg;
 use App\Models\Node;
 use App\Repositories\Daemon\DaemonSystemRepository;
+use App\Services\Features\FeatureService;
 use App\Services\Helpers\SoftwareVersionService;
 use App\Services\Nodes\NodeAutoDeployService;
 use App\Services\Nodes\NodeUpdateService;
@@ -125,6 +127,7 @@ class NodeResource extends Resource
     public static function detailTabs(): array
     {
         return [
+            FeatureOverrides::tab(FeatureService::NODE),
             Tab::make('overview')
                 ->label(trans('admin/node.tabs.overview'))
                 ->icon(TablerIcon::ChartAreaLineFilled)

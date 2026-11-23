@@ -2,8 +2,10 @@
 
 namespace App\Jobs\Server;
 
+use App\Enums\ShoebillFeature;
 use App\Events\Server\Crashed;
 use App\Models\Server;
+use App\Services\Features\FeatureService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -27,6 +29,10 @@ class CheckServerCrash implements ShouldQueue
 
     public function handle(): void
     {
+        if (!app(FeatureService::class)->enabled(ShoebillFeature::CrashAlerts, $this->server)) {
+            return;
+        }
+
         $intended = $this->server->activity()
             ->whereIn('event', ['server:console.command', 'server:power.stop', 'server:power.kill', 'server:power.restart'])
             ->where('timestamp', '>=', now()->setTimestamp($this->exitedAt)->subMinutes(3))
