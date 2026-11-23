@@ -1,16 +1,24 @@
 /*
- * Shoebill motion layer. Patterns after designbookmark.com/motion (stat card, tab pill, spring dropdown,
- * stagger reveal, notification stack). Short, interruptible, and off for prefers-reduced-motion.
+ * Shoebill motion layer, three levels set by the admin (<html data-sb-motion="off|standard|rich">).
+ * Effects are re-implemented in plain CSS after patterns from Magic UI (blur fade, border beam, animated gradient text,
+ * number ticker), Aceternity UI (card spotlight), Motion Primitives and Animate UI (press feedback, hover lift).
+ * prefers-reduced-motion always switches everything off for that viewer.
+ * Fill mode is backwards, never both: a transform animation that stays applied makes its element the containing
+ * block for fixed modals inside it, which clipped them.
  */
 :root {
     --sb-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
     --sb-spring: cubic-bezier(0.34, 1.36, 0.64, 1);
 }
 
-/* Fill mode is backwards, never both: a transform animation that stays applied makes its element the containing block for fixed modals inside it, which clipped them. */
 @keyframes sb-rise {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: none; }
+}
+
+@keyframes sb-blur-fade {
+    from { opacity: 0; transform: translateY(10px); filter: blur(6px); }
+    to { opacity: 1; transform: none; filter: none; }
 }
 
 @keyframes sb-pop {
@@ -18,40 +26,128 @@
     to { opacity: 1; transform: none; }
 }
 
+@keyframes sb-grow {
+    from { transform: scaleX(0); }
+    to { transform: none; }
+}
+
+@keyframes sb-pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--sb-live, #12a150) 45%, transparent); }
+    100% { box-shadow: 0 0 0 8px transparent; }
+}
+
+@keyframes sb-gradient {
+    to { background-position: 200% center; }
+}
+
+@property --sb-beam-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+}
+
+@keyframes sb-beam {
+    to { --sb-beam-angle: 360deg; }
+}
+
+/* ---------- standard (and rich): short, purposeful ---------- */
 @media (prefers-reduced-motion: no-preference) {
-    /* Page enter: content rises in once per navigation. */
-    .fi-main > * { animation: sb-rise 260ms var(--sb-ease-out) backwards; }
+    :root:not([data-sb-motion='off']) {
+        /* Page enter: content rises in once per navigation. */
+        .fi-main > * { animation: sb-rise 260ms var(--sb-ease-out) backwards; }
 
-    /* Stagger reveal for lists, stat cards, widgets and table rows (first rows only, so long tables don't wait). */
-    .sb-stagger > *,
-    .fi-wi-stats-overview-stats-ctn > *,
-    .fi-wi > *,
-    .fi-ta-content .fi-ta-row:nth-child(-n + 12),
-    .fi-ta-content-grid > *:nth-child(-n + 12) {
-        animation: sb-rise 320ms var(--sb-ease-out) backwards;
+        /* Stagger reveal for lists, cards, widgets and the first table rows. */
+        .sb-stagger > *,
+        .sb-kpis > *,
+        .sb-fleet-grid > *,
+        .fi-wi-stats-overview-stats-ctn > *,
+        .fi-wi > *,
+        .fi-ta-content .fi-ta-row:nth-child(-n + 12),
+        .fi-ta-content-grid > *:nth-child(-n + 12) {
+            animation: sb-rise 320ms var(--sb-ease-out) backwards;
+        }
+        :is(.sb-stagger, .sb-kpis, .sb-fleet-grid, .fi-wi-stats-overview-stats-ctn, .fi-ta-content-grid) > *:nth-child(2), .fi-ta-row:nth-child(2) { animation-delay: 30ms; }
+        :is(.sb-stagger, .sb-kpis, .sb-fleet-grid, .fi-wi-stats-overview-stats-ctn, .fi-ta-content-grid) > *:nth-child(3), .fi-ta-row:nth-child(3) { animation-delay: 60ms; }
+        :is(.sb-stagger, .sb-kpis, .sb-fleet-grid, .fi-wi-stats-overview-stats-ctn, .fi-ta-content-grid) > *:nth-child(4), .fi-ta-row:nth-child(4) { animation-delay: 90ms; }
+        :is(.sb-stagger, .sb-kpis, .sb-fleet-grid, .fi-ta-content-grid) > *:nth-child(5), .fi-ta-row:nth-child(5) { animation-delay: 120ms; }
+        :is(.sb-stagger, .sb-kpis, .sb-fleet-grid, .fi-ta-content-grid) > *:nth-child(n + 6), .fi-ta-row:nth-child(n + 6) { animation-delay: 150ms; }
+
+        /* Dropdowns grow from their trigger; modals pop. */
+        .fi-dropdown-panel { transform-origin: top; animation: sb-pop 180ms var(--sb-spring) backwards; }
+        .fi-modal-window { animation: sb-pop 200ms var(--sb-ease-out) backwards; }
+
+        /* Notifications slide in. */
+        .fi-no-notification { animation: sb-rise 240ms var(--sb-ease-out) backwards; }
+
+        /* Press feedback: buttons give a little under the pointer. */
+        .fi-btn, .fi-icon-btn, .fi-ta-record { transition: transform 120ms var(--sb-ease-out), background-color 150ms, box-shadow 150ms; }
+        .fi-btn:active, .fi-icon-btn:active { transform: scale(0.97); }
+
+        /* Bars fill from the left once. */
+        .sb-meter-fill, .sb-row-fill { transform-origin: left; animation: sb-grow 600ms var(--sb-ease-out) 120ms backwards; }
+
+        /* Server cards lift on hover (pointer devices only). */
+        @media (hover: hover) {
+            .fi-ta-content-grid .fi-ta-record:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.35); }
+        }
+
+        /* Tab pills and sidebar highlight slide between states instead of jumping. */
+        .fi-tabs-item, .fi-sidebar-item-btn, .fi-topbar-item-btn, .sb-row { transition: background-color 180ms var(--sb-ease-out), color 180ms var(--sb-ease-out); }
     }
-    .sb-stagger > *:nth-child(2), .fi-ta-row:nth-child(2), .fi-wi-stats-overview-stats-ctn > *:nth-child(2), .fi-ta-content-grid > *:nth-child(2) { animation-delay: 30ms; }
-    .sb-stagger > *:nth-child(3), .fi-ta-row:nth-child(3), .fi-wi-stats-overview-stats-ctn > *:nth-child(3), .fi-ta-content-grid > *:nth-child(3) { animation-delay: 60ms; }
-    .sb-stagger > *:nth-child(4), .fi-ta-row:nth-child(4), .fi-wi-stats-overview-stats-ctn > *:nth-child(4), .fi-ta-content-grid > *:nth-child(4) { animation-delay: 90ms; }
-    .sb-stagger > *:nth-child(5), .fi-ta-row:nth-child(5), .fi-ta-content-grid > *:nth-child(5) { animation-delay: 120ms; }
-    .sb-stagger > *:nth-child(n + 6), .fi-ta-row:nth-child(n + 6), .fi-ta-content-grid > *:nth-child(n + 6) { animation-delay: 150ms; }
 
-    /* Spring dropdown and popovers grow from their trigger. */
-    .fi-dropdown-panel { transform-origin: top; animation: sb-pop 180ms var(--sb-spring) backwards; }
-    .fi-modal-window { animation: sb-pop 200ms var(--sb-ease-out) backwards; }
+    /* ---------- rich: more motion and a few showpieces ---------- */
+    :root[data-sb-motion='rich'] {
+        /* Blur fade instead of a plain rise. */
+        .fi-main > *,
+        :is(.sb-kpis, .sb-fleet-grid, .fi-wi-stats-overview-stats-ctn) > *,
+        .fi-ta-content-grid > *:nth-child(-n + 12) {
+            animation-name: sb-blur-fade;
+            animation-duration: 480ms;
+        }
 
-    /* Notification stack slides in. */
-    .fi-no-notification { animation: sb-rise 240ms var(--sb-ease-out) backwards; }
+        /* Spotlight: a soft light follows the pointer (position set by shoebill-motion.js). */
+        @media (hover: hover) {
+            :is(.sb-card, .fi-section, .fi-ta-ctn, .fi-wi-stats-overview-stat, .fi-ta-record) {
+                background-image: radial-gradient(420px circle at var(--sb-mx, -999px) var(--sb-my, -999px), color-mix(in srgb, var(--sb-accent, #6568d2) 9%, transparent), transparent 60%);
+            }
+            .fi-section:hover, .sb-card:hover, .fi-wi-stats-overview-stat:hover { transform: translateY(-1px); }
+            .fi-section, .sb-card, .fi-wi-stats-overview-stat { transition: transform 220ms var(--sb-ease-out), box-shadow 220ms; }
+        }
 
-    /* Press feedback: buttons give a little under the pointer. */
-    .fi-btn, .fi-icon-btn, .fi-ta-record { transition: transform 120ms var(--sb-ease-out), background-color 150ms, box-shadow 150ms; }
-    .fi-btn:active, .fi-icon-btn:active { transform: scale(0.97); }
+        /* Animated gradient text for headings that carry the brand. */
+        .sb-gradient-text, .fi-simple-page .sb-brand > span, .fi-header-heading {
+            background: linear-gradient(90deg, var(--sb-ink, currentColor) 0%, var(--sb-accent, #6568d2) 35%, var(--sb-ink, currentColor) 70%) 0 center / 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: sb-gradient 6s linear infinite;
+        }
 
-    /* Server cards lift on hover (pointer devices only). */
-    @media (hover: hover) {
-        .fi-ta-content-grid .fi-ta-record:hover { transform: translateY(-2px); box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.35); }
+        /* Border beam: a light travels around the sign-in card. */
+        .fi-simple-main {
+            position: relative;
+            isolation: isolate;
+        }
+        .fi-simple-main::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            z-index: -1;
+            border-radius: inherit;
+            padding: 1px;
+            background: conic-gradient(from var(--sb-beam-angle), transparent 0 75%, var(--sb-accent, #6568d2) 90%, transparent 100%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: sb-beam 5s linear infinite;
+            pointer-events: none;
+        }
+
+        /* Live dot breathes. */
+        .sb-live-dot { animation: sb-pulse 1.8s ease-out infinite; }
+
+        /* Sidebar items nudge toward the pointer. */
+        .fi-sidebar-item-btn { transition: transform 180ms var(--sb-ease-out), background-color 180ms; }
+        .fi-sidebar-item-btn:hover { transform: translateX(2px); }
     }
-
-    /* Tab pill and sidebar highlight slide between states instead of jumping. */
-    .fi-tabs-item, .fi-sidebar-item-btn, .fi-topbar-item-btn { transition: background-color 180ms var(--sb-ease-out), color 180ms var(--sb-ease-out); }
 }

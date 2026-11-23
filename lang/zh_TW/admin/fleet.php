@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'title' => '整體狀況',
+    'updated' => ':time 更新',
+    'running' => '執行中',
+    'servers' => '伺服器',
+    'nodes' => '節點',
+    'online' => '線上',
+    'nodes_down' => ':count 台離線',
+    'cpu' => 'CPU(近 1 小時)',
+    'cpu_help' => '執行中伺服器近 1 小時的平均 CPU。100% = 1 個執行緒。',
+    'memory' => '已分配記憶體',
+    'unlimited' => '不限',
+    'players' => '線上人數',
+    'no_baseline' => '無比較資料',
+    'was' => '昨日 :value',
+    'vs_yesterday' => '較昨日',
+    'attention' => '需要處理',
+    'all_good' => '一切正常',
+    'capacity' => '節點容量',
+    'busiest' => '今日高負載',
+    'players_short' => ':count 人',
+    'no_nodes' => '沒有節點',
+    'no_samples' => '尚無資料',
+    'kinds' => [
+        'crash' => '當機',
+        'node_down' => '離線',
+        'node_full' => '快滿了',
+        'install_failed' => '安裝失敗',
+    ],
+];

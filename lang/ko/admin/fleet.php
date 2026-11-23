@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'title' => '전체 현황',
+    'updated' => ':time 업데이트',
+    'running' => '실행 중',
+    'servers' => '서버',
+    'nodes' => '노드',
+    'online' => '온라인',
+    'nodes_down' => ':count대 중지',
+    'cpu' => 'CPU (최근 1시간)',
+    'cpu_help' => '실행 중인 서버의 최근 1시간 평균 CPU. 100% = 1 스레드.',
+    'memory' => '메모리 할당',
+    'unlimited' => '무제한',
+    'players' => '접속 인원',
+    'no_baseline' => '비교 데이터 없음',
+    'was' => '전날 :value',
+    'vs_yesterday' => '전날 대비',
+    'attention' => '조치 필요',
+    'all_good' => '문제 없음',
+    'capacity' => '노드 용량',
+    'busiest' => '오늘 부하 높음',
+    'players_short' => ':count명',
+    'no_nodes' => '노드 없음',
+    'no_samples' => '아직 데이터가 없습니다',
+    'kinds' => [
+        'crash' => '충돌',
+        'node_down' => '오프라인',
+        'node_full' => '거의 가득',
+        'install_failed' => '설치 실패',
+    ],
+];

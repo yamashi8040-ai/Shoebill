@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'title' => '整体状况',
+    'updated' => ':time 更新',
+    'running' => '运行中',
+    'servers' => '服务器',
+    'nodes' => '节点',
+    'online' => '在线',
+    'nodes_down' => ':count 台离线',
+    'cpu' => 'CPU(近 1 小时)',
+    'cpu_help' => '运行中服务器近 1 小时的平均 CPU。100% = 1 个线程。',
+    'memory' => '已分配内存',
+    'unlimited' => '不限',
+    'players' => '在线人数',
+    'no_baseline' => '无对比数据',
+    'was' => '昨日 :value',
+    'vs_yesterday' => '较昨日',
+    'attention' => '需要处理',
+    'all_good' => '一切正常',
+    'capacity' => '节点容量',
+    'busiest' => '今日高负载',
+    'players_short' => ':count 人',
+    'no_nodes' => '没有节点',
+    'no_samples' => '暂无数据',
+    'kinds' => [
+        'crash' => '崩溃',
+        'node_down' => '离线',
+        'node_full' => '快满了',
+        'install_failed' => '安装失败',
+    ],
+];

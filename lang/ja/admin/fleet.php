@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'title' => '全体の状況',
+    'updated' => ':time 更新',
+    'running' => '稼働中',
+    'servers' => 'サーバー',
+    'nodes' => 'ノード',
+    'online' => 'オンライン',
+    'nodes_down' => ':count 台停止',
+    'cpu' => 'CPU(直近1時間)',
+    'cpu_help' => '稼働中サーバーの直近1時間の平均 CPU。100% = 1 スレッド。',
+    'memory' => 'メモリ割り当て',
+    'unlimited' => '無制限',
+    'players' => 'オンライン人数',
+    'no_baseline' => '比較データなし',
+    'was' => '前日 :value',
+    'vs_yesterday' => '前日比',
+    'attention' => '要対応',
+    'all_good' => '問題なし',
+    'capacity' => 'ノードの空き',
+    'busiest' => '今日の高負荷',
+    'players_short' => ':count 人',
+    'no_nodes' => 'ノードなし',
+    'no_samples' => 'まだデータがありません',
+    'kinds' => [
+        'crash' => 'クラッシュ',
+        'node_down' => 'オフライン',
+        'node_full' => 'ほぼ満杯',
+        'install_failed' => 'インストール失敗',
+    ],
+];

@@ -3,6 +3,7 @@
 namespace App\Listeners\Server;
 
 use App\Events\Server\Crashed;
+use App\Facades\Activity;
 use App\Filament\Server\Pages\Console;
 use App\Notifications\ServerCrashed;
 use Filament\Actions\Action;
@@ -13,6 +14,8 @@ class ServerCrashedListener
     public function handle(Crashed $event): void
     {
         $event->server->loadMissing('user');
+        // Recorded so the admin dashboard can list recent crashes.
+        Activity::event('server:crashed')->subject($event->server)->log();
         $locale = $event->server->user->language ?? 'en';
 
         Notification::make()

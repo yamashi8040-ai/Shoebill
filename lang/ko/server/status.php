@@ -28,4 +28,5 @@ return [
     'last_seen' => '마지막 접속',
     'first_seen' => '첫 접속',
     'play_time' => '플레이 시간',
+    'week_baseline' => '7일 평균 :value',
 ];

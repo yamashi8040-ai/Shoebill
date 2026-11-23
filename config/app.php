@@ -8,6 +8,8 @@ return [
     'source_url' => env('SHOEBILL_SOURCE_URL'),
     // Default accent (primary) color as #rrggbb; users can pick their own on their profile.
     'accent' => env('APP_ACCENT'),
+    // Animation level for everyone: off, standard or rich. prefers-reduced-motion always turns it off for that viewer.
+    'motion' => env('APP_MOTION', 'rich'),
     // Comma-separated language codes users may pick; empty means every folder in lang/.
     'languages' => array_filter(explode(',', (string) env('APP_LANGUAGES', ''))),
     'favicon' => env('APP_FAVICON', '/shoebill.svg'),

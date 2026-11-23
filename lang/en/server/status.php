@@ -38,4 +38,5 @@ return [
     'last_seen' => 'Last Seen',
     'first_seen' => 'First Seen',
     'play_time' => 'Play Time',
+    'week_baseline' => '7-day avg :value',
 ];

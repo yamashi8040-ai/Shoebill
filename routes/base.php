@@ -3,6 +3,7 @@
 use App\Http\Controllers\UpdateStatusController;
 use App\Http\Middleware\RedirectIfNotInstalled;
 use App\Livewire\Installer\PanelInstaller;
+use App\Models\Announcement;
 use App\Services\Helpers\LanguageService;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,12 @@ Route::get('update/status', UpdateStatusController::class)->name('update.status'
 // Licence notices must be reachable without an account.
 Route::view('credits', 'credits')->name('credits')
     ->withoutMiddleware(['auth', RedirectIfNotInstalled::class]);
+
+Route::post('announcements/{announcement}/dismiss', function (Announcement $announcement) {
+    $announcement->dismissFor(user());
+
+    return response()->noContent();
+})->name('announcements.dismiss')->middleware('auth');
 
 // Language switcher in the top bar and on the sign-in page.
 Route::get('language/{code}', function (string $code, LanguageService $languages) {

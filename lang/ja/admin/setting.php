@@ -47,6 +47,11 @@ return [
         'display_width' => '表示幅',
         'avatar_provider' => 'アバタープロバイダ',
         'uploadable_avatars' => 'ユーザーが自分のアバターをアップロードできるようにしますか？',
+        'motion' => 'アニメーション',
+        'motion_help' => '全員に適用される画面の動きの量。端末で「視差効果を減らす」を設定している人には常にオフになります。',
+        'motion_off' => 'オフ',
+        'motion_standard' => '標準',
+        'motion_rich' => '多め',
     ],
     'captcha' => [
         'enable' => '有効',

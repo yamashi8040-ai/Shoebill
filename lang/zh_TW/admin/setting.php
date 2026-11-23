@@ -41,6 +41,11 @@ return [
         'display_width' => '显示宽度',
         'avatar_provider' => '头像提供商',
         'uploadable_avatars' => '允许用户上传自己的头像吗？',
+        'motion' => '動畫',
+        'motion_help' => '對所有人生效的介面動態程度。在系統中開啟「減少動態效果」的使用者一律不顯示動畫。',
+        'motion_off' => '關閉',
+        'motion_standard' => '標準',
+        'motion_rich' => '豐富',
     ],
     'captcha' => [
         'enable' => '启用',

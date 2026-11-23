@@ -41,6 +41,11 @@ return [
         'display_width' => '显示器宽度',
         'avatar_provider' => '第三方头像来源',
         'uploadable_avatars' => '是否允许用户上传头像？',
+        'motion' => '动画',
+        'motion_help' => '对所有人生效的界面动态程度。在系统中开启“减弱动态效果”的用户始终不显示动画。',
+        'motion_off' => '关闭',
+        'motion_standard' => '标准',
+        'motion_rich' => '丰富',
     ],
     'captcha' => [
         'enable' => '启用',

@@ -28,4 +28,5 @@ return [
     'last_seen' => '最後上線',
     'first_seen' => '首次上線',
     'play_time' => '遊戲時間',
+    'week_baseline' => '7 日平均 :value',
 ];

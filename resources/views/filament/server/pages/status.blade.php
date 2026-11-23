@@ -1,4 +1,28 @@
 <x-filament-panels::page class="fi-status-page">
+    @php
+        $today = $summary['today']; $week = $summary['week'];
+        $fmtMem = fn ($b) => $b === null ? '—' : convert_bytes_to_readable((int) $b);
+        $tiles = array_values(array_filter([
+            $hasPlayers ? ['label' => trans('server/status.avg_players'), 'value' => $today['players'] === null ? '—' : format_number($today['players'], maxPrecision: 1), 'base' => $week['players'] === null ? null : format_number($week['players'], maxPrecision: 1)] : null,
+            $hasPlayers ? ['label' => trans('server/status.peak_players'), 'value' => $today['peak'] ?? '—', 'base' => $week['peak'] ?? null] : null,
+            ['label' => trans('server/status.avg_cpu'), 'value' => $today['cpu'] === null ? '—' : format_number($today['cpu'], maxPrecision: 1) . '%', 'base' => $week['cpu'] === null ? null : format_number($week['cpu'], maxPrecision: 1) . '%', 'share' => $cpuLimit && $today['cpu'] !== null ? $today['cpu'] / $cpuLimit : null],
+            ['label' => trans('server/status.avg_memory'), 'value' => $fmtMem($today['memory']), 'base' => $week['memory'] === null ? null : $fmtMem($week['memory']), 'share' => $memoryLimit && $today['memory'] !== null ? $today['memory'] / $memoryLimit : null],
+        ]));
+    @endphp
+
+    {{-- Today at a glance, each number against its 7-day average (dashboard-design: every number answers "compared to what?"). --}}
+    <div class="sb-card sb-kpis" style="grid-template-columns: repeat({{ count($tiles) }}, minmax(0, 1fr))">
+        @foreach($tiles as $tile)
+            <div class="sb-kpi">
+                <div class="sb-kpi-label">{{ $tile['label'] }} <span class="sb-muted">· {{ trans('server/status.periods.today') }}</span></div>
+                <div class="sb-kpi-value" data-sb-count>{{ $tile['value'] }}</div>
+                @if(isset($tile['share']) && $tile['share'] !== null)
+                    <div class="sb-meter"><span @class(['sb-meter-fill', 'sb-meter-warn' => $tile['share'] >= 0.9]) style="width: {{ min(100, round($tile['share'] * 100)) }}%"></span></div>
+                @endif
+                <div class="sb-delta sb-delta-flat">{{ $tile['base'] === null ? trans('admin/fleet.no_baseline') : trans('server/status.week_baseline', ['value' => $tile['base']]) }}</div>
+            </div>
+        @endforeach
+    </div>
     <x-filament::section :heading="trans('server/status.averages')" :description="$hasPlayers ? trans('server/status.protocol', ['protocol' => $protocol->getLabel()]) : trans('server/status.no_players')">
         <div class="overflow-x-auto">
             <table class="w-full text-sm sb-stagger">

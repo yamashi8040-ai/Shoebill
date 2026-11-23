@@ -236,6 +236,17 @@ class Settings extends Page implements HasSchemas
                 ->regex('/^#[0-9a-fA-F]{6}$/')
                 ->placeholder('#6568D2')
                 ->default(config('app.accent')),
+            ToggleButtons::make('APP_MOTION')
+                ->label(trans('admin/setting.general.motion'))
+                ->helperText(trans('admin/setting.general.motion_help'))
+                ->inline()
+                ->required()
+                ->options([
+                    'off' => trans('admin/setting.general.motion_off'),
+                    'standard' => trans('admin/setting.general.motion_standard'),
+                    'rich' => trans('admin/setting.general.motion_rich'),
+                ])
+                ->default(config('app.motion', 'rich')),
             Group::make()
                 ->columns(2)
                 ->schema([

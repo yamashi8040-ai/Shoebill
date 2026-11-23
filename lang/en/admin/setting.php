@@ -47,6 +47,11 @@ return [
         'display_width' => 'Display Width',
         'avatar_provider' => 'Avatar Provider',
         'uploadable_avatars' => 'Allow users to upload own avatar?',
+        'motion' => 'Animations',
+        'motion_help' => 'How much the interface moves, for everyone. Viewers who ask their system for reduced motion always get none.',
+        'motion_off' => 'Off',
+        'motion_standard' => 'Standard',
+        'motion_rich' => 'Rich',
     ],
     'captcha' => [
         'enable' => 'Enable',

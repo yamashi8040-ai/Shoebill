@@ -1,0 +1,32 @@
+<?php
+
+return [
+    'title' => 'Fleet',
+    'updated' => 'Updated :time',
+    'running' => 'Running',
+    'servers' => 'servers',
+    'nodes' => 'Nodes',
+    'online' => 'online',
+    'nodes_down' => ':count down',
+    'cpu' => 'CPU (last hour)',
+    'cpu_help' => 'Average CPU of running servers over the last hour, 100% = one thread.',
+    'memory' => 'Memory allocated',
+    'unlimited' => 'unlimited',
+    'players' => 'Players online',
+    'no_baseline' => 'no baseline',
+    'was' => 'was :value',
+    'vs_yesterday' => 'vs yesterday',
+    'attention' => 'Needs attention',
+    'all_good' => 'All clear',
+    'capacity' => 'Node capacity',
+    'busiest' => 'Busiest today',
+    'players_short' => ':count players',
+    'no_nodes' => 'No nodes',
+    'no_samples' => 'No data yet',
+    'kinds' => [
+        'crash' => 'Crashed',
+        'node_down' => 'Offline',
+        'node_full' => 'Nearly full',
+        'install_failed' => 'Install failed',
+    ],
+];

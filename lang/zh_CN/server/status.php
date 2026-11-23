@@ -28,4 +28,5 @@ return [
     'last_seen' => '最后在线',
     'first_seen' => '首次在线',
     'play_time' => '游戏时长',
+    'week_baseline' => '7 日平均 :value',
 ];
