@@ -1,27 +1,16 @@
 # Security Policy
 
-## Supported Versions
+## Supported versions
 
-We only provide security fixes for the most recent release. Older releases are unsupported; upgrade to receive fixes. See the [versioning and support policy](https://pelican.dev/docs/versioning).  
-![](https://img.shields.io/github/v/release/pelican/panel?label=latest-release)
+Only the latest commit on `main` (currently 1.0.0-alpha) receives security fixes.
 
-## Reporting a Vulnerability
+## Reporting a vulnerability
 
-Please report any vulnerabilities via _one_ of the following methods:
+Report vulnerabilities privately through a [GitHub security advisory](https://github.com/yamashi8040-ai/Shoebill/security/advisories/new).
+Do not open a public issue.
 
-- [Create a security advisory on GitHub](https://github.com/pelican/panel/security/advisories/new)
-- Send an e-mail to <team@pelican.dev>
+Include steps to reproduce, the affected version or commit, the impact, and a proof of concept if you have one.
+Please do not disclose the issue publicly until a fix is released. Researchers are credited on request.
 
-Include steps to reproduce, affected versions, impact, and a proof of concept if available.
-
-You can expect a response within 72 hours.  
-Please do not disclose vulnerabilities publicly until we have released a fix. We will acknowledge receipt and can credit researchers upon request.
-
-## Disclosure Process
-
-1. We confirm the report and assess its severity.
-2. We develop the fix privately in the GitHub security advisory.
-3. We publish a patch release with the fix, then publish the advisory and request a CVE through GitHub.
-4. Reporters who ask for credit are credited in the advisory.
-
-All interactions around vulnerability reports are covered by our [code of conduct](./code_of_conduct.md).
+If the vulnerability is in code Shoebill shares unchanged with [Pelican](https://github.com/pelican-dev/panel/security)
+or [Pterodactyl](https://github.com/pterodactyl/panel/security), please report it to that project as well.

@@ -1,11 +1,11 @@
-blank_issues_enabled: true
+blank_issues_enabled: false
 contact_links:
-  - name: Feature Request
-    url: https://github.com/pelican/panel/discussions
-    about: Suggest a new feature or improvement for the software.
-  - name: Installation Help
-    url: https://pelican.dev/discord
-    about: Please visit our Discord for help with your installation.
-  - name: General Question
-    url: https://pelican.dev/discord
-    about: Please visit our Discord for general questions about Pelican.
+  - name: Feature request or idea
+    url: https://github.com/yamashi8040-ai/Shoebill/discussions/new?category=ideas
+    about: Suggest a new feature or an improvement.
+  - name: Installation help and questions
+    url: https://github.com/yamashi8040-ai/Shoebill/discussions/new?category=q-a
+    about: Ask for help installing or configuring Shoebill. Read the README first.
+  - name: Security vulnerability
+    url: https://github.com/yamashi8040-ai/Shoebill/security/advisories/new
+    about: Report it privately, never in a public issue.

@@ -5,7 +5,7 @@ return [
     'name' => env('APP_NAME', 'Shoebill'),
     'logo' => env('APP_LOGO'),
     // AGPL-3.0 section 13: where users of this panel can get its source code.
-    'source_url' => env('SHOEBILL_SOURCE_URL'),
+    'source_url' => env('SHOEBILL_SOURCE_URL', 'https://github.com/yamashi8040-ai/Shoebill'),
     // Default accent (primary) color as #rrggbb; users can pick their own on their profile.
     'accent' => env('APP_ACCENT'),
     // Animation level for everyone: off, standard or rich. prefers-reduced-motion always turns it off for that viewer.

@@ -1,5 +1,5 @@
 name: Stamp version
-description: Replace the canary version in config/app.php with the release version and fail if the replacement did not happen
+description: Write the release version into shoebill_version in config/app.php. app.version stays 'canary' so Pelican's self-updater never replaces Shoebill
 
 inputs:
   version:
@@ -19,8 +19,8 @@ runs:
           echo "Invalid version '$VERSION', refusing to update config"
           exit 1
         fi
-        sed -i "s|'version' => 'canary',|'version' => '$VERSION',|" config/app.php
-        if ! grep -qF "'version' => '$VERSION'," config/app.php; then
+        sed -i -E "s|'shoebill_version' => '[^']*',|'shoebill_version' => '$VERSION',|" config/app.php
+        if ! grep -qF "'shoebill_version' => '$VERSION'," config/app.php; then
           echo "Version stamp failed, config/app.php still does not contain '$VERSION'"
           exit 1
         fi
